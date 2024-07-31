@@ -4,7 +4,7 @@ from Joana_OpenTripMapAPI import OpenTripMapApi
 kinds_choices = ['interesting_places', 'historic', 'beaches', 'nature_reserves', 'cultural', 'theaters_and_entertainments', 'amusements', 'sport']
 
 def main():
-    api_key = '5ae2e3f221c38a28845f05b611437f75b92d726137cebc93ee19bb4b'
+    api_key = 'ENTER API KEY HERE'
     opentripmap_api = OpenTripMapApi(api_key)
 
     city = 'Moscow'

@@ -31,9 +31,9 @@ class OpenTripMapApi:
         response = requests.get(endpoint, params=params)
         return response.json()
 
-# coordinates = OpenTripMapApi('5ae2e3f221c38a28845f05b611437f75b92d726137cebc93ee19bb4b')
+# coordinates = OpenTripMapApi('API KEY')
 # lat = coordinates.get_coordinates('Moscow')['lat']
 # lon = coordinates.get_coordinates('Moscow')['lon']
 # print(lat, lon)
-# activities = OpenTripMapApi('5ae2e3f221c38a28845f05b611437f75b92d726137cebc93ee19bb4b')
+# activities = OpenTripMapApi('API KEY')
 # print(activities.get_activities('Moscow', lat, lon, kinds='Historical'))
