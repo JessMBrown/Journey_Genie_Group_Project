@@ -1,32 +1,78 @@
 from Joana_OpenTripMapAPI import OpenTripMapApi
+from pprint import pprint
+from collections import deque
 
 """
-Need fixing : 3 choices max in kinds
-Can make a new method to get details on the activities. And possibly pictures or something.
+Little explanation before you dive in: I put fixed user choices and commented out user input possibilities (that i used for testing as I went)
+
+double check list of kinds with API
 """
 
 # Won't stay here. This is just a list of the different types of activities the APi would return.
 # To be used in dropdown or tick your choice display.
-kinds_choices = ['interesting_places', 'historic', 'beaches',
-                 'nature_reserves', 'theatres_and_entertainments', 'museums', 'sport', 'amusements']
+kinds_choices = ['historic', 'beaches', 'nature_reserves', 'theatres_and_entertainments',
+                 'museums', 'sport', 'amusements']
 
 
 def main():
     api_key = ''  # enter your own API
     opentripmap_api = OpenTripMapApi(api_key)  # do not change
 
-    city = 'London'  # replace by user input variable
+    city = 'London'  # input('Which town would you like to go to ? ')  # replace by user input variable
+
     coordinates = opentripmap_api.get_coordinates(city)  # do not change
     lat = coordinates['lat']  # do not change
     lon = coordinates['lon']  # do not change
-    rates = '3'  # rate is maximum 3(but for some reason some activities have a rate of 7...
-    # but if you enter 7 as a rate option, it throws an error)
-    # rates need to be changed with user input. Can take several choices.
-    kinds = 'amusements', 'sport'  # will need to be changed with user input can take up to 3.
 
-    activities = opentripmap_api.get_activities(city, lat, lon, kinds, rates)  # change 'city' with user input name
+    kinds = 'museums,sport,amusements'  # input('Please choose which type of activity you would like ? ')
+    # will need to be changed with user input can take up to 3 separated by a comma but no space
+
+    limit_per_kind = 5
+
+    activities = opentripmap_api.get_activities(city, lat, lon, kinds)  # change 'city' with user input variable name
     # and 'kinds' by whatever type the user selected
-    print(activities)  # probably replace by a return and use it in some text to be displayed
+
+    # sort activities by rate
+    sorted_activities = sorted(activities, key=lambda x: x.get('rate',3), reverse=True)
+
+    # splitting kinds
+    split_kinds = kinds.split(',')
+
+    # containers using deque for each kind of split_list
+    kind_deques = {kind: deque(maxlen=limit_per_kind) for kind in split_kinds}
+
+    # appending activities to each deque
+    for activity in sorted_activities:
+        activity_kind = activity['kinds']
+        for kind in split_kinds:
+            if kind in activity_kind.split(','):
+                kind_deques[kind].append(activity)
+                break
+
+    # joining deques together
+    results = []
+    for kind in split_kinds:
+        results.extend(kind_deques[kind])
+
+    final_results = [(item['name'], item['rate']) for item in results]
+    print(f'Here are the activities available to you in {city}:')  # change to what is necessary
+    pprint(final_results)
+
+    # to get activity details
+    activity_choice = 'London Stadium' # input('Do you want more details on any of them? If so type their name: ')
+
+    xid = None
+    for item in activities:
+        if activity_choice == item['name']:
+            xid = item['xid']
+            break
+    else:
+        print('Error')
+        return
+
+    details = opentripmap_api.get_activity_details(xid)
+    print(f'Here are the details for {activity_choice}:')
+    pprint(details)
 
 
 if __name__ == "__main__":
