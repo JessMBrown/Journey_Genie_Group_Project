@@ -1,10 +1,5 @@
 import requests
 
-"""
-Will need to create error handling with try except...
-"""
-
-
 class OpenTripMapApi:
     def __init__(self, api_key):
         self.api_key = api_key
@@ -73,4 +68,3 @@ class OpenTripMapApi:
 
         except requests.exceptions.RequestException:
             print('Request failed')
-

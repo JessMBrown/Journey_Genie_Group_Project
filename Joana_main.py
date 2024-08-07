@@ -3,9 +3,9 @@ from pprint import pprint
 from collections import deque
 
 """
-Little explanation before you dive in: I put fixed user choices and commented out user input possibilities (that i used for testing as I went)
+Little explanation before you dive in: I put fixed user choices and commented out user input possibilities 
+(that i used for testing as I went)
 
-double check list of kinds with API
 """
 
 # Won't stay here. This is just a list of the different types of activities the APi would return.
@@ -18,22 +18,28 @@ def main():
     api_key = ''  # enter your own API
     opentripmap_api = OpenTripMapApi(api_key)  # do not change
 
-    city = 'London'  # input('Which town would you like to go to ? ')  # replace by user input variable
+    city = 'London'
+    # city = input('Which town would you like to go to ? ')  # replace by user input variable
 
     coordinates = opentripmap_api.get_coordinates(city)  # do not change
+    if not coordinates:
+        print('Error! Coordinates are missing!')
+        exit()
+
     lat = coordinates['lat']  # do not change
     lon = coordinates['lon']  # do not change
 
-    kinds = 'museums,sport,amusements'  # input('Please choose which type of activity you would like ? ')
+    kinds = 'museums,sport,amusements'
+    # kinds = input('Please choose which type of activity you would like ? ')
     # will need to be changed with user input can take up to 3 separated by a comma but no space
 
-    limit_per_kind = 5
+    limit_per_kind = 5  # do not change
 
     activities = opentripmap_api.get_activities(city, lat, lon, kinds)  # change 'city' with user input variable name
     # and 'kinds' by whatever type the user selected
 
     # sort activities by rate
-    sorted_activities = sorted(activities, key=lambda x: x.get('rate',3), reverse=True)
+    sorted_activities = sorted(activities, key=lambda x: x.get('rate', 3), reverse=True)
 
     # splitting kinds
     split_kinds = kinds.split(',')
@@ -59,7 +65,7 @@ def main():
     pprint(final_results)
 
     # to get activity details
-    activity_choice = 'London Stadium' # input('Do you want more details on any of them? If so type their name: ')
+    activity_choice = 'London Stadium'  # input('Do you want more details on any of them? If so type their name: ')
 
     xid = None
     for item in activities:
