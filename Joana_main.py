@@ -7,17 +7,49 @@ Little explanation before you dive in: I put fixed user choices and commented ou
 (that i used for testing as I went)
 
 """
+def knows_destination():
+    chosen_country = input("Please, enter the name of the country: ")
+
+def tailored_trip():
+    pass
+
+def take_me_anywhere():
+    pass
+
 
 # Won't stay here. This is just a list of the different types of activities the APi would return.
 # To be used in dropdown or tick your choice display.
 kinds_choices = ['historic', 'beaches', 'nature_reserves', 'theatres_and_entertainments',
                  'museums', 'sport', 'amusements']
 
-
+def get_input(prompt):
+    while True:
+        user_input = input(prompt).lower()
+        if user_input in ['y', 'n']:
+            return user_input
+        print("Sorry, that's not a possible option. Please enter 'Y' or 'N'.")
 def main():
+    # probably put all api keys here and all calls to api files
     api_key = ''  # enter your own API
     opentripmap_api = OpenTripMapApi(api_key)  # do not change
 
+    # Welcoming user
+    print("Hello! Welcome to Journey Genie! Let's start prepping your next holiday!")
+    start_date = input("First, please enter the start date for your holiday (YYYY-MM-DD): ")
+    end_date = input("Now, please enter the end date for your holiday (YYYY-MM-DD): ")
+    knows_where = get_input("Do you know which country you'd like to go to? Y/N")
+
+    if knows_where == 'y':
+        knows_destination()
+    elif knows_where == 'n':
+        wants_random = get_input("No worries! We're here to help! Would you like us to make a random guess of a nice holiday place for you? Y/N")
+        if wants_random == 'y':
+            take_me_anywhere()
+        elif wants_random == 'n':
+            print("Ok! Let's tailor a nice holiday for you!")
+            tailored_trip()
+
+    ###################### ACTIVITIES WITH OPENTRIPMAPS ####################################
     city = 'London'
     # city = input('Which town would you like to go to ? ')  # replace by user input variable
 
@@ -80,6 +112,7 @@ def main():
     print(f'Here are the details for {activity_choice}:')
     pprint(details)
 
+    ######################
 
 if __name__ == "__main__":
     main()
