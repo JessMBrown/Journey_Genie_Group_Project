@@ -1,1 +1,0 @@
-weatherApiKey = "fa29e65f1b7e489097b214305240708"
