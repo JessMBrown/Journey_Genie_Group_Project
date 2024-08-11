@@ -42,7 +42,7 @@ class Database:
                 self.connection.close()
                 print("DB connection is closed")
 
-    def fetch_data(self, table_name, columns='*', conditions=None):
+    def fetch_data(self, table_name, columns='*', conditions=None, join=None):
         """Fetching data from any specified table."""
         try:
             # Formulating the query - the same method can handle simple SELECT * queries as well as more complex
@@ -50,6 +50,9 @@ class Database:
             columns_str = ', '.join(columns) if isinstance(columns, list) else columns
             query = f"SELECT {columns_str} FROM {table_name}"  # The columns parameter can be a list of columns
             # or a string '*' to fetch all columns.
+
+            if join:
+                query += f" {join}"  # this will allow us to join the tables when necessary
 
             # Add conditions if provided
             if conditions:
@@ -76,4 +79,3 @@ class Database:
         """Closing the database connection."""
         self.cursor.close()
         self.connection.close()
-
