@@ -32,8 +32,7 @@ class Database:
 
             print("New data added successfully")
 
-        except mysql.connector.Error as err:
-            print(f"Error: {err}")
+        except Exception:
             raise DbConnectionError("Failed to write data to DB")
 
         finally:
@@ -65,9 +64,9 @@ class Database:
 
             return results
 
-        except mysql.connector.Error as err:
-            print(f"Error: {err}")
-            raise DbConnectionError("Failed to fetch data from DB")
+
+        except Exception:
+            raise DbConnectionError("Failed to write data to DB")
 
         finally:
             if self.connection.is_connected():
