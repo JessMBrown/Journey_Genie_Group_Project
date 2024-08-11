@@ -31,7 +31,7 @@ def add_details():
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 
-@app.route('/view', methods=['GET'])
+@app.route('/view/countries', methods=['GET'])
 def get_countries():
     db = Database(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
     try:
@@ -39,6 +39,34 @@ def get_countries():
         columns = ['DISTINCT countries.country_name']
         join = "INNER JOIN cities ON countries.country_code = cities.country_code"
         conditions = request.args.get('conditions')
+
+        data = db.fetch_data(
+            table_name=table_name,
+            columns=columns,
+            join=join,
+            conditions=conditions
+        )
+
+        # Returning the fetched data as JSON
+        return jsonify({'status': 'success', 'data': data}), 200
+
+    except DbConnectionError as e:  # Handle database connection issues
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+    except Exception as e:  # Catch any other issues
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+
+@app.route('/view/cities', methods=['GET'])
+def get_cities():
+    db = Database(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
+    try:
+        table_name = 'cities'
+        columns = ['DISTINCT city_name']
+        join = None
+        # Collecting all conditions and join them with ' AND '
+        conditions_list = request.args.getlist('conditions')
+        conditions = ' AND '.join(conditions_list) if conditions_list else None
 
         data = db.fetch_data(
             table_name=table_name,
