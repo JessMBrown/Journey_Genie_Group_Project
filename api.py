@@ -1,6 +1,6 @@
 import requests
 
-API_TOKEN = "4eb326f67e9461b5cd94edf6692193d3"
+API_TOKEN = "**************************"
 
 
 # Helper function to handle API response
