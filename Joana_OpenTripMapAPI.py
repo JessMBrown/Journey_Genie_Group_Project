@@ -1,8 +1,9 @@
 import requests
+from Config import activities_api_key
 
 class OpenTripMapApi:
     def __init__(self, api_key):
-        self.api_key = api_key
+        self.api_key = activities_api_key
         self.base_url = 'http://api.opentripmap.com/0.1/en'
 # Need the coordinates of a place to run the get_activities method.
 
@@ -22,7 +23,7 @@ class OpenTripMapApi:
 
 
 # This method will return activities depending on the kinds the user will have selected can take up to 3 kinds.
-    def get_activities(self, city, lat, lon, kinds, radius=1000000, limit=50, rate=3):
+    def get_activities(self, city, lat, lon, kinds, radius=80467, limit=50, rate=3):
 
         endpoint = f"{self.base_url}/places/autosuggest"
         params = {
