@@ -47,6 +47,7 @@ def take_me_anywhere():
     find_activities(city_choice)
     # call email
     get_email()
+    #(#  get favourites)
 
 def find_cities(country): # or should it be find countries and cities?
     pass
@@ -125,6 +126,9 @@ def find_activities(city):
     pprint(details)
 def get_email():
     pass
+
+# def save_chosen_suggestions():
+#     pass
 
 def get_input(prompt):
     while True:
