@@ -13,7 +13,7 @@ params = {
     'limit': 50,
     'type': 'popularity',
     'id': hotel_locale,
-    'token': '**************************' #insert API token here
+    'token': '4eb326f67e9461b5cd94edf6692193d3' #insert API token here
 }
 
 response = requests.get(hotels_url, params=params)

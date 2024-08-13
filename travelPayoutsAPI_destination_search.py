@@ -10,7 +10,7 @@ search_payload = {
     'lookFor': 'both',
     'limit': 10,
     'convertCase': 1,
-    'token': '***********************************' #insert API token here
+    'token': '4eb326f67e9461b5cd94edf6692193d3' #insert API token here
 }
 search_response = requests.get(search_url, params=search_payload)
 #testing for successful response
