@@ -1,5 +1,5 @@
-from config_oli import HOST, PASSWORD, USER
-from db_utils_oli import Database, DbConnectionError
+from database.config_oli import HOST, PASSWORD, USER
+from database.db_utils_oli import Database, DbConnectionError
 import re
 
 

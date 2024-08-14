@@ -64,15 +64,14 @@ class Database:
 
             return results
 
-
         except Exception:
-            raise DbConnectionError("Failed to write data to DB")
+            raise DbConnectionError("Failed to fetch data from DB")
 
-        finally:
-            if self.connection.is_connected():
-                self.cursor.close()
-                self.connection.close()
-                print("DB connection is closed")
+        # finally:
+        #     if self.connection.is_connected():
+        #         self.cursor.close()
+        #         self.connection.close()
+        #         print("DB connection is closed")
 
     def close(self):
         """Closing the database connection."""
