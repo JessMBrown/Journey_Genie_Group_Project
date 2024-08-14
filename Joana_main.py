@@ -53,13 +53,13 @@ def take_me_anywhere(): # JOANA
     find_activities(city_choice)
     # call email
     get_email()
-    #(#  get favourites)
+    
 
 def find_cities(country): # or should it be find countries and cities? OLI
     pass
-def find_weather(city, start_date, end_date): JESS
+def find_weather(city, start_date, end_date): #JESS
     pass
-def find_hotels(city, num_adults, num_children): NADIA
+def find_hotels(city, num_adults, num_children): #NADIA
     pass
 def find_activities(city):
     input_check = UserInputCheck()
