@@ -1,5 +1,5 @@
 import requests
-from config import weatherApiKey
+from config import weather_api_key
 
 
 class GetWeatherByLocation:
@@ -12,11 +12,12 @@ class GetWeatherByLocation:
         self.start_date = start_date
         self.end_date = end_date
         self.base_url = "https://api.weatherapi.com/v1"
-        self.api_key = weatherApiKey
+        self.api_key = weather_api_key
 
-    def get_historic_weather_by_location_and_date(self):
+    def get_weather_by_location_and_date(self, date_url):
         # full url is from the base + desired endpoint
-        endpoint = f"{self.base_url}/history.json"
+        url = date_url
+        endpoint = f"{self.base_url}/{url}.json"
         params = {
             'q': self.location,
             'dt': self.start_date,
