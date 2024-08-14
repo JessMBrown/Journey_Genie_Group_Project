@@ -6,7 +6,7 @@ import weatherAPI_search
 from config import activities_api_key, hotels_api_key, weather_api_key
 # from utils import UserInputCheck
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 def knows_destination(start_date, end_date):  # KAREN
@@ -73,11 +73,13 @@ def find_weather(chosen_city, w_start_date, w_end_date):
 
 
 def weather_api_endpoint_calculator(start_date):
-    present_date = str(datetime.now())
+    present_date = str(datetime.today())
     #     if the start_date is more than 300 days from present_date or is less than present_date
-    #     then the endpoint_url = "historic"
-    if start_date < present_date:
-        endpoint_url = "historic"
+    #     then the endpoint_url = "history"
+
+    from_300_days_present_date = str(add_days(300))
+    if start_date > from_300_days_present_date or start_date < present_date:
+        endpoint_url = "history"
         return endpoint_url
     elif start_date > present_date:
         endpoint_url = "future"
@@ -85,6 +87,10 @@ def weather_api_endpoint_calculator(start_date):
     #     if the start_date is +/- 14 days from present_date then cannot get weather due to api limitations
     else:
         print("Cannot get weather for this date")
+
+
+def add_days(number_of_days_to_add, today_date=datetime.today()):
+    return today_date + timedelta(number_of_days_to_add)
 
 
 # def find_hotels(city, num_adults, num_children): NADIA
