@@ -67,6 +67,8 @@ class Database:
         except Exception:
             raise DbConnectionError("Failed to fetch data from DB")
 
+        # the "finally" block has been commented out as it was causing issues with accessing the database in functions
+        # which have been created later
         # finally:
         #     if self.connection.is_connected():
         #         self.cursor.close()
