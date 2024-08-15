@@ -7,6 +7,18 @@ class Location:
         """Initialize the database connection."""
         self.db = Database(host=host, user=user, password=password, db_name=db_name)
 
+    def get_countries(self):
+        try:
+            columns = ['country_name']
+            table_name = 'countries'
+            countries = self.db.fetch_data(table_name=table_name, columns=columns)
+            country_list = [country[0] for country in countries]
+
+            return country_list
+
+        except DbConnectionError as e:
+            print(f"Error fetching countries: {e}")
+
     def get_cities_by_country(self, chosen_country):
         try:
             conditions = f"countries.country_name = '{chosen_country}'"
@@ -16,49 +28,34 @@ class Location:
 
             if cities:
                 print(f"Cities in {chosen_country}:")
+                city_names = [city[0].lower() for city in cities]
                 for city in cities:
                     print(city[0])
-                print("Which of the cities would you like to visit?")
+                while True:
+                    city_choice = input("Which of the cities would you like to visit? ").strip().lower()
+                    if city_choice in city_names:
+                        return city_choice
+                    else:
+                        print(f"Invalid city name.")
             else:
-                print(f"No cities found for {chosen_country}")
-                """
-                print("Enter another country: ")
-                planner.get_cities_by_country(chosen_country) <-- not this bc infinite loop
-                looking for a way to come back to the beginning and repeat the process
-                I thought we might do something like 
-    
-    while True:
-        chosen_country = input("Enter a country name: ")
-        if planner.get_cities_by_country(chosen_country):
-            break  # Exit loop if cities were found
-        else:
-            # Optionally handle user retry logic or just loop again
-            print("Please try another country.")
-                
-                But it would have to be added outside of the class/function so I guess I wanted to ask if 
-                you're all fine with adding this? Or maybe it's already handled within your code. 
-                """
+                print(f"No cities found for {chosen_country}. Please try another country.")
 
         except DbConnectionError as e:
             print(f"Error fetching cities: {e}")
 
-    def get_holiday_type_cities(self, holiday_type):
+    def get_holiday_type_input(self):
         valid_holiday_types = ['history', 'beaches', 'museums', 'mountains', 'theatre',
                                'wine', 'fashion', 'modern', 'tourism', 'shopping']
-
-        """
-        I'm also having issues with displaying the valid holiday types when asking about it as the question is outside
-        of the function / class. Is it added later when used within the wider functions? Do we put the 
-        valid_holiday_types twice to have it within the function for error handing and they for the user display when
-        asking for input? 
-        
         print(f"Valid holiday types to choose from: {', '.join(valid_holiday_types)}")
-        """
+        while True:
+            holiday_type = input("Enter the type of holiday you're interested in: ").strip().lower()
+            if holiday_type in valid_holiday_types:
+                return holiday_type
+            else:
+                print("Invalid holiday type. Please choose a valid option.")
 
-        while holiday_type not in valid_holiday_types:
-            print("Invalid holiday type. Please choose a valid option.")
-            holiday_type = input(f"Enter a valid holiday type ({', '.join(valid_holiday_types)}): ").strip().lower()
-
+    def get_holiday_type_cities(self):
+        holiday_type = self.get_holiday_type_input()
         try:
             conditions = f"cities.keyword = '{holiday_type}'"
             columns = ['cities.city_name', 'countries.country_name']
@@ -78,23 +75,9 @@ class Location:
         except DbConnectionError as e:
             print(f"Error fetching cities for {holiday_type} holidays: {e}")
 
-    def get_holiday_type_countries(self, holiday_type):
-        valid_holiday_types = ['history', 'beaches', 'museums', 'mountains', 'theatre',
-                               'wine', 'fashion', 'modern', 'tourism', 'shopping']
+    def get_holiday_type_countries(self):
 
-        """
-        I'm also having issues with displaying the valid holiday types when asking about it as the question is outside
-        of the function / class. Is it added later when used within the wider functions? Do we put the 
-        valid_holiday_types twice to have it within the function for error handing and they for the user display when
-        asking for input? 
-
-        print(f"Valid holiday types to choose from: {', '.join(valid_holiday_types)}")
-        """
-
-        while holiday_type not in valid_holiday_types:
-            print("Invalid holiday type. Please choose a valid option.")
-            holiday_type = input(f"Enter a valid holiday type ({', '.join(valid_holiday_types)}): ").strip().lower()
-
+        holiday_type = self.get_holiday_type_input()
         try:
             conditions = f"cities.keyword = '{holiday_type}'"
             columns = ['DISTINCT countries.country_name']
@@ -117,18 +100,3 @@ class Location:
     def close(self):
         """Close the database connection."""
         self.db.close()
-
-
-# Create an instance of the Location class
-planner = Location(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
-
-# Example of fetching cities by country
-chosen_country = input("Enter the country you want to visit: ").strip().capitalize()
-planner.get_cities_by_country(chosen_country)
-
-# Example of fetching cities by holiday type
-# holiday_type = input("Enter the type of holiday you're interested in (e.g., beaches, museums): ").strip().lower()
-# planner.get_holiday_type_cities(holiday_type)
-#
-# # Example of fetching countries by holiday type
-# planner.get_holiday_type_countries(holiday_type)

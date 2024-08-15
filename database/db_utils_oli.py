@@ -39,7 +39,7 @@ class Database:
             if self.connection.is_connected():
                 self.cursor.close()
                 self.connection.close()
-                print("DB connection is closed")
+                # print("DB connection is closed")
 
     def fetch_data(self, table_name, columns='*', conditions=None, join=None):
         """Fetching data from any specified table."""
