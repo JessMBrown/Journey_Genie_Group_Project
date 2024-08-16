@@ -4,6 +4,7 @@ from activities.get_activities import get_activities
 from get_location import Location
 from Config import HOST, PASSWORD, USER
 from get_hotels import find_hotels
+from activities.get_activities import get_activities, get_activity_details
 
 planner = Location(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
 
@@ -57,10 +58,13 @@ def take_me_anywhere(planner, start_date, end_date):
     # find_weather(city_choice, start_date, end_date)
 
     # call hotels
-    find_hotels(city_choice, start_date, end_date)
+    find_hotels(city_choice, end_date, start_date)
 
     # # call activities
-    # get_activities(city_choice)
+    final_results = get_activities(city_choice)
+    if final_results:
+        get_activity_details(final_results)
+
     # # call email
     # get_email()
 

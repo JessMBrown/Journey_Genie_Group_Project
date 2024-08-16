@@ -4,71 +4,85 @@ from collections import deque
 from Config import activities_api_key
 from utils import UserInputCheck
 
-
 def get_activities(city):
     input_check = UserInputCheck()
     opentripmap_api = OpenTripMapApi(activities_api_key)
 
-    while True:
-        try:
-            coordinates = opentripmap_api.get_coordinates(city)
-            if not coordinates:
-                raise ValueError('Error! Coordinates are missing!')
+    try:
+        coordinates = opentripmap_api.get_coordinates(city)
+        if not coordinates:
+            raise ValueError('Error! Coordinates are missing!')
 
-            lat = coordinates['lat']
-            lon = coordinates['lon']
+        lat = coordinates['lat']
+        lon = coordinates['lon']
 
-            while True:
-                # user input can take up to 3 separated by a comma but no space
-                kinds_choices = ['historic', 'beaches', 'nature_reserves', 'theatres_and_entertainments',
-                                 'museums', 'sport', 'amusements']
-                kinds = input(
-                    f'Please choose from the following list, which type of activity you would like ?(up to 3 choices) \n{kinds_choices} ')
+        while True:
+            # user input can take up to 3 separated by a comma but no space
+            kinds_choices = ['historic', 'beaches', 'nature_reserves', 'theatres_and_entertainments',
+                             'museums', 'sport', 'amusements']
+            kinds = input(
+                f'Please choose from the following list, which type of activity you would like ?(up to 3 choices) \n{kinds_choices} ')
 
-                kinds = input_check.formatted_kinds_activities(kinds)  # calls method from utils to format the input
-                kinds_list = kinds.split(',')
-                if all(kind in kinds_choices for kind in kinds_list) and len(kinds_list) <= 3:
-                    break
-                else:
-                    print('Invalid choices. Please check your spelling and/or enter 3 or fewer types! ')
+            kinds = input_check.formatted_kinds_activities(kinds)  # calls method from utils to format the input
+            kinds_list = kinds.split(',')
+            if all(kind in kinds_choices for kind in kinds_list) and len(kinds_list) <= 3:
+                break
+            else:
+                print('Invalid choices. Please check your spelling and/or enter 3 or fewer types! ')
 
-            limit_per_kind = 5
+        limit_per_kind = 5
 
-            activities = opentripmap_api.get_activities(city, lat, lon, kinds)
-            if not activities:
-                print(f'Sorry, there are no {kinds_list} in {city}! ')
-                continue
+        activities = opentripmap_api.get_activities(city, lat, lon, kinds)
+        if not activities:
+            print(f'Sorry, there are no {kinds_list} in {city}! ')
+            return []
 
-            # sort activities by rate
-            sorted_activities = sorted(activities, key=lambda x: x.get('rate', 3), reverse=True)
+        # sort activities by rate
+        sorted_activities = sorted(activities, key=lambda x: x.get('rate', 3), reverse=True)
 
-            # splitting kinds
-            split_kinds = kinds.split(',')
+        # splitting kinds
+        split_kinds = kinds.split(',')
 
-            # containers using deque for each kind of split_list
-            kind_deques = {kind: deque(maxlen=limit_per_kind) for kind in split_kinds}
+        # containers using deque for each kind of split_list
+        kind_deques = {kind: deque(maxlen=limit_per_kind) for kind in split_kinds}
 
-            # appending activities to each deque
-            for activity in sorted_activities:
-                activity_kind = activity['kinds']
-                for kind in split_kinds:
-                    if kind in activity_kind.split(','):
-                        kind_deques[kind].append(activity)
-                        break
-
-            # joining deques together
-            results = []
+        # appending activities to each deque
+        for activity in sorted_activities:
+            activity_kind = activity['kinds']
             for kind in split_kinds:
-                results.extend(kind_deques[kind])
+                if kind in activity_kind.split(','):
+                    kind_deques[kind].append(activity)
+                    break
 
-            final_results = [item['name'] for item in results]
-            print(f'Here are the activities available to you in {city}:')
-            pprint(final_results)
+        # joining deques together
+        results = []
+        for kind in split_kinds:
+            results.extend(kind_deques[kind])
 
+        final_results = [item['name'] for item in results]
+        print(f'Here are the activities available to you in {city}:')
+        pprint(final_results)
+
+        return final_results
+
+    except ValueError:
+        print('Wrong input! ')
+
+    except Exception:
+        print('Error')
+
+    # to get activity details
+def get_activity_details(final_results):
+    input_check = UserInputCheck()
+    opentripmap_api = OpenTripMapApi(activities_api_key)
+
+    try:
+        wants_details = input_check.get_input('Do you want more details on any of them? Y/N ')
+        if wants_details == 'n':
+            return 'Great! And now email and favourite stuff!'
+        else:
             while True:
-                # to get activity details
-                activity_choice = input(
-                    'Do you want more details on any of them? If so type their name: ').lower().strip()  # or make a dropdown or a select or click on image/name
+                activity_choice = input('Type the name of the activity: ').lower().strip()
                 final_results_lower = [name.lower() for name in final_results]
                 if activity_choice not in final_results_lower:
                     print('This activity is not in the list of possible activities! ')
@@ -90,11 +104,18 @@ def get_activities(city):
                 print(f'Here are the details for {activity_choice}:')
                 pprint(details)
 
-                break
+                if len(final_results) > 1:
+                    final_results.remove(activity_choice)
+                    other_details = input_check.get_input(f'Would you like details on another activity? {final_results} Y/N ')
 
-            break
+                    if other_details != 'y':
+                        break
+                if not final_results:
+                    break
 
-        except ValueError:
-            print('Wrong input! ')
-        except Exception:
-            print('Error')
+        return 'Great! And now email and favourite stuff!'
+
+    except ValueError:
+        print('Wrong input! ')
+    except Exception:
+        print('Error')

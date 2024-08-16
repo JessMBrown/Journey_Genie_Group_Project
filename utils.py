@@ -28,7 +28,8 @@ def valid_date(prompt):
             if date_obj.date() < datetime.today().date():
                 print("The check-in date must be today or later. Please enter a valid date.")
             else:
-                return date_obj.strftime("%Y-%m-%d")
+                new_format_date = date_obj.strftime("%Y-%m-%d")
+                return new_format_date
         except ValueError:
             print("Invalid date format. Please enter the date in dd-mm-yyyy format.")
 
