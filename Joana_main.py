@@ -1,4 +1,4 @@
-from utils import UserInputCheck
+from utils import UserInputCheck, valid_date
 import random
 from activities.get_activities import get_activities
 from get_location import Location
@@ -78,8 +78,9 @@ def main(): # JOANA
     input_check = UserInputCheck()
     # Welcoming user and getting some basic details
     print("Hello! Welcome to Journey Genie! Let's start prepping your next holiday!")
-    start_date = input("First, please enter the start date for your holiday (YYYY-MM-DD): ")
-    end_date = input("Now, please enter the end date for your holiday (YYYY-MM-DD): ")
+    start_date = valid_date("First, please enter the start date for your holiday (DD-MM-YYYY): ")
+    end_date = valid_date("Now, please enter the end date for your holiday (DD-MM-YYYY): ")
+
     knows_where = input_check.get_input("Do you know which country you'd like to go to? Y/N ")
 
     if knows_where == 'y':
