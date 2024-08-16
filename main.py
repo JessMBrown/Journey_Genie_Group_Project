@@ -2,6 +2,8 @@
 from pprint import pprint
 from collections import deque
 
+import requests.exceptions
+
 import weatherAPI_search
 from config import activities_api_key, hotels_api_key, weather_api_key
 # from utils import UserInputCheck
@@ -62,35 +64,103 @@ def knows_destination(start_date, end_date):  # KAREN
 
 # def find_cities(country): # or should it be find countries and cities? OLI
 #     pass
-def find_weather(chosen_city, w_start_date, w_end_date):
-    location = chosen_city
-    start_date = w_start_date
-    end_date = w_end_date
-    date_url = weather_api_endpoint_calculator(start_date)
-    weather_for_dates = weatherAPI_search.GetWeatherByLocation(location, start_date,
-                                                               end_date).get_weather_by_location_and_date(date_url)
-    print(weather_for_dates)
+def find_weather(chosen_city, start_date, end_date):
+    location = chosen_city  # Done
+    start_date = start_date  # Done
+    end_date = end_date  # Done
+    endpoint_url = weather_api_endpoint_calculator(start_date)  # Done
+    list_of_dates = create_list_of_dates(start_date, end_date)
+    make_weather_api_request(location, start_date, end_date,endpoint_url, list_of_dates)
+    get_minimum_maximum_average_temperature()
+    # extract_min_max_average_weather_for_dates()
 
 
 def weather_api_endpoint_calculator(start_date):
-    present_date = str(datetime.today())
-    #     if the start_date is more than 300 days from present_date or is less than present_date
-    #     then the endpoint_url = "history"
-
+    present_date = str(datetime.today().date())
     from_300_days_present_date = str(add_days(300))
-    if start_date > from_300_days_present_date or start_date < present_date:
+    fourteen_days_in_the_future = str(add_days(14))
+    fourteen_days_in_the_past = str(subtract_days(14))
+    # if str(start_date) >= fourteen_days_in_the_past and str(start_date) < present_date or str(start_date) < fourteen_days_in_the_future and str(start_date) > present_date:
+    # if the start_date is +/- 14 days from present_date then cannot get weather due to api limitations
+    if fourteen_days_in_the_past <= str(start_date) < present_date or fourteen_days_in_the_future > str(
+            start_date) > present_date:
+        print("cannot fetch the weather for these dates")
+        #     if the start_date is more than 300 days from present_date or is less than present_date
+        #     then the endpoint_url = "history"
+    elif str(start_date) > from_300_days_present_date or str(start_date) < present_date:
         endpoint_url = "history"
         return endpoint_url
-    elif start_date > present_date:
+    elif str(start_date) > present_date:
         endpoint_url = "future"
         return endpoint_url
-    #     if the start_date is +/- 14 days from present_date then cannot get weather due to api limitations
+
     else:
         print("Cannot get weather for this date")
 
 
-def add_days(number_of_days_to_add, today_date=datetime.today()):
+def add_days(number_of_days_to_add, today_date=datetime.today().date()):
     return today_date + timedelta(number_of_days_to_add)
+
+
+def subtract_days(number_of_days_to_subtract, today_date=datetime.today().date()):
+    return today_date - timedelta(number_of_days_to_subtract)
+
+
+def weather_request_frequency(endpoint, start_date, end_date):
+    url_endpoint = endpoint
+    history_endpoint = "history"
+    list_of_dates = create_list_of_dates(start_date, end_date)
+    # if url_endpoint = history_endpoint:
+
+    # create and empty list for the dates and their temps
+    date_and_temp_list = []
+    # if the url to be used is /future, get the start_date and end_dates and add each date inbetween and add them
+    # into the dates_list THEN make separate requests per date and add the date + temp into the date_and_temp_list
+
+
+def create_list_of_dates(start_date, end_date):
+    # convert start_date to a datetime.date format (YYYY-MM-DD)
+    list_start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
+    # convert end_date to a datetime.date format (YYYY-MM-DD)
+    list_end_date = datetime.strptime(end_date, "%Y-%m-%d").date()
+    # create an empty list for the dates
+    dates_list = []
+    # set the starting value for the while loop
+    current_date = list_start_date
+    # while loop to iterate over each date between (and including) list_start_date and list_end_dates and append into
+    # the list
+    while current_date <= list_end_date:
+        dates_list.append(current_date.strftime("%Y-%m-%d"))
+        current_date += timedelta(days=1)
+    return dates_list
+
+
+def make_weather_api_request(location, start_date, end_date,endpoint_url, list_of_dates):
+    if endpoint_url == "history":
+        print("history")
+        weather_for_dates = weatherAPI_search.GetWeatherByLocation(location, start_date, end_date).get_weather_by_location_and_date(endpoint_url)
+        return weather_for_dates
+    elif endpoint_url == "future":
+        print("future url ")
+        weather_for_day = []
+        for item in list_of_dates:
+            print(item)
+            try:
+                weather_for_dates = weatherAPI_search.GetWeatherByLocation(location, item, end_date).get_weather_by_location_and_date(endpoint_url)
+                weather_for_day.append(weather_for_dates)
+            except requests.exceptions.RequestException as e:
+                print(f"Api request failed on submit due to  {e}")
+        return weather_for_day
+    else:
+        print("Endpoint has not been assigned correctly")
+
+
+def get_minimum_maximum_average_temperature():
+    pass
+
+
+def extract_min_max_average_weather_for_dates():
+    pass
 
 
 # def find_hotels(city, num_adults, num_children): NADIA

@@ -1,4 +1,6 @@
 import unittest
+
+import main
 from weatherAPI_search import GetWeatherByLocation
 
 
@@ -11,7 +13,7 @@ class TestGetWeatherByLocationFunction(unittest.TestCase):
         self.expected = [{'average_temp': 8.1, 'date': '2023-12-31'}]
         # compare the expected response with the response received from the get_historic_weather_by_location_and_date
         # function using the inherited data from the class GetWeatherByLocation
-        self.assertEqual(self.expected, GetWeatherByLocation.get_historic_weather_by_location_and_date(self.input_data))
+        self.assertEqual(self.expected, GetWeatherByLocation.get_weather_by_location_and_date(self.input_data))
 
     def test_date_valid_2_days_different_year(self):
         self.input_data = GetWeatherByLocation("London", "2023-12-31", "2024-01-01")
