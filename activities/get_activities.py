@@ -2,7 +2,8 @@ from activities.Joana_OpenTripMapAPI import OpenTripMapApi
 from pprint import pprint
 from collections import deque
 from Config import activities_api_key
-from utils import UserInputCheck
+from utils import UserInputCheck, save_favourite_activity
+import emoji
 
 def get_activities(city):
     input_check = UserInputCheck()
@@ -63,7 +64,7 @@ def get_activities(city):
         print(f'Here are the activities available to you in {city}:')
         pprint(final_results)
 
-        return final_results
+        return final_results, results
 
     except ValueError:
         print('Wrong input! ')
@@ -72,20 +73,25 @@ def get_activities(city):
         print('Error')
 
     # to get activity details
-def get_activity_details(final_results):
+def get_activity_details(final_results, results):
     input_check = UserInputCheck()
     opentripmap_api = OpenTripMapApi(activities_api_key)
 
     try:
         wants_details = input_check.get_input('Do you want more details on any of them? Y/N ')
         if wants_details == 'n':
-            return 'Great! And now email and favourite stuff!'
+            wants_save = input_check.get_input('Would you like us to save these activities for you? Y/N ')
+            if wants_save == 'y':
+                print(emoji.emojize('Consider it done!:thumbs_up:'))
+                favourite_activities = final_results
+                return favourite_activities
         else:
-            while True:
+            final_results_lower = [name.lower() for name in final_results]
+            while final_results_lower:
                 activity_choice = input('Type the name of the activity: ').lower().strip()
-                final_results_lower = [name.lower() for name in final_results]
+
                 if activity_choice not in final_results_lower:
-                    print('This activity is not in the list of possible activities! ')
+                    print('This activity is not in the list of possible activities! Please try again ')
                     continue
 
                 xid = None
@@ -93,29 +99,36 @@ def get_activity_details(final_results):
                     if activity_choice == item['name'].lower():
                         xid = item['xid']
                         break
-                else:
-                    print('Error. Activity not found.')
-                    return
+                if xid is None:
+                    print('Activity not found. Try again')
+                    continue
 
                 details = opentripmap_api.get_activity_details(xid)
                 if not details:
                     print("We were not able to retrieve the data for the selected activity! ")
-                    return
+                    continue
+
                 print(f'Here are the details for {activity_choice}:')
                 pprint(details)
 
-                if len(final_results) > 1:
-                    final_results.remove(activity_choice)
-                    other_details = input_check.get_input(f'Would you like details on another activity? {final_results} Y/N ')
+                favourite_activities = {}
+                save_favourite_activity(favourite_activities, xid, activity_choice, input_check)
 
-                    if other_details != 'y':
-                        break
-                if not final_results:
-                    break
+                final_results_lower.remove(activity_choice)
 
-        return 'Great! And now email and favourite stuff!'
+                if final_results_lower:
+                    other_details = input_check.get_input(f'Would you like details on another activity? {final_results_lower} Y/N ')
+                    if other_details != 'Y':
+                        continue
+
+        return favourite_activities
 
     except ValueError:
         print('Wrong input! ')
     except Exception:
         print('Error')
+
+
+# final_results, results = get_activities('edinburgh')
+# if final_results:
+#     print(get_activity_details(final_results, results))

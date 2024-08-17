@@ -33,3 +33,11 @@ def valid_date(prompt):
         except ValueError:
             print("Invalid date format. Please enter the date in dd-mm-yyyy format.")
 
+def save_favourite_activity(favourite_activities, xid, activity_choice, input_check):
+    wants_save = input_check.get_input('Would you like to save this activity in your list of favourites? Y/N ')
+    if wants_save == 'y':
+        favourite_activities[xid] = {
+            'name': activity_choice,
+            'added_on': datetime.now().strftime("%Y-%m-%d")
+        }
+    print('Added!')

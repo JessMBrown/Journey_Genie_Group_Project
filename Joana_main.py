@@ -7,6 +7,7 @@ from get_hotels import find_hotels
 from activities.get_activities import get_activities, get_activity_details
 
 planner = Location(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
+input_check = UserInputCheck()
 
 
 # def knows_destination(): # KAREN
@@ -36,7 +37,7 @@ def take_me_anywhere(planner, start_date, end_date):
     try:
         #  create code to randomly call a country
         country_list = planner.get_countries()
-        random_countries = random.choices(country_list, k=5)
+        random_countries = random.sample(country_list, k=5)
 
         while True:
             good_selection = input(f"Fancy any of these countries? {random_countries} Y/N ").lower().strip()
@@ -57,13 +58,23 @@ def take_me_anywhere(planner, start_date, end_date):
     # # call weather
     # find_weather(city_choice, start_date, end_date)
 
+
     # call hotels
     find_hotels(city_choice, end_date, start_date)
 
+    # Favourites
+    # favourite_hotels = []
+    # favourite_hotels.append({['hotel id': hotel_id, 'hotel name': hotel_name]})
+    # other_favourite_hotels = input_check.get_input('Great choice! We will add this hotel to your list of favourites!'
+    #                       'Would you like to add any other? Y/N ')
+
+
+
     # # call activities
-    final_results = get_activities(city_choice)
+    final_results, results = get_activities(city_choice)
     if final_results:
-        get_activity_details(final_results)
+        print(get_activity_details(final_results, results))
+
 
     # # call email
     # get_email()
