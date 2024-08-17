@@ -121,6 +121,9 @@ def get_activity_details(final_results, results):
                     other_details = input_check.get_input(f'Would you like details on another activity? {final_results_lower} Y/N ')
                     if other_details != 'Y':
                         continue
+                    else:
+                        print('OK! Email stuff now')
+                        break
 
         return favourite_activities
 

@@ -1,37 +1,44 @@
 from utils import UserInputCheck, valid_date
 import random
-from activities.get_activities import get_activities
-from get_location import Location
+from database.get_location import Location
 from Config import HOST, PASSWORD, USER
-from get_hotels import find_hotels
+from hotels.get_hotels import find_hotels
 from activities.get_activities import get_activities, get_activity_details
+from weather.get_weather import find_weather
 
 planner = Location(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
 input_check = UserInputCheck()
 
 
-# def knows_destination(): # KAREN
-#     chosen_country = input("Please, enter the name of the country: ").strip().capitalize()  # modify to make it a fixed list of countries
-#     planner.get_cities_by_country(chosen_country)
-#     #  Call weather
-#     #  call hotels function to get list of hotels
-#     #  call activities function to make suggestions find_activities(city)
-#     #  call email function
-#
-#
-# def tailored_trip(planner): # JOANA
-#     # # city/country function to display countries based on what user is looking for
-#     # country_choice = find_cities(preferences)
-#     # city_choice = find_cities(country_choice)
-#     # # call weather
-#     # find_weather(city_choice, start_date, end_date)
-#     # # call hotels
-#     # find_hotels(city_choice, start_date, end_date, num_adults, num_children)
-#     # # call activities
-#     # get_activities(city_choice)
-#     # # call email
-#     # get_email()
-#     pass
+def knows_destination(planner, start_date, end_date):
+    try:
+        country_list = planner.get_countries()
+        while True:
+            chosen_country = input("Please, enter the name of the country: ").strip().lower()
+            if chosen_country in [country.lower() for country in country_list]:
+                city_choice = planner.get_cities_by_country(chosen_country)
+                break
+            else:
+                print('Invalid answer!')
+
+        end_of_function_planning(city_choice, start_date, end_date)
+
+    except Exception as e:
+        print(f'An error occurred: {e}')
+
+
+def tailored_trip(planner, start_date, end_date):
+    # # city/country function to display countries based on what user is looking for
+    while True:
+        planner.get_holiday_type_input()
+        planner.get_holiday_type_cities()
+        is_interested = input_check.get_input("Does any of these city interest you? Y/N ")
+        if is_interested == 'Y':
+            city_choice = input("Please enter the name")
+
+
+
+    end_of_function_planning(city_choice, start_date, end_date)
 
 def take_me_anywhere(planner, start_date, end_date):
     try:
@@ -53,13 +60,19 @@ def take_me_anywhere(planner, start_date, end_date):
             else:
                 print('Invalid answer! Please type Y or N ')
 
+        end_of_function_planning(city_choice, start_date, end_date)
+
     except Exception as e:
         print(f'An error occurred: {e}')
 
+
+def end_of_function_planning(city_choice, start_date, end_date):
     # # call weather
-    # find_weather(city_choice, start_date, end_date)
+    # avg_weather_in_city_choice = find_weather(city_choice, start_date, end_date)
+    # print(f"The weather last year at the same dates in {city_choice} was an average of {avg_weather_in_city_choice}")
 
     # call hotels
+    print("Now, let's find you a hotel! ")
     find_hotels(city_choice, end_date, start_date)
 
     # # call activities
@@ -72,14 +85,6 @@ def take_me_anywhere(planner, start_date, end_date):
 
 
 
-
-# def find_weather(city, start_date, end_date): #JESS
-#     pass
-#
-# def get_email(): #OLI
-#     pass
-
-
 def main(): # JOANA
     input_check = UserInputCheck()
     # Welcoming user and getting some basic details
@@ -90,16 +95,16 @@ def main(): # JOANA
     knows_where = input_check.get_input("Do you know which country you'd like to go to? Y/N ")
 
     if knows_where == 'y':
-        knows_destination(planner)
+        knows_destination(planner, start_date, end_date)
     elif knows_where == 'n':
         wants_random = input_check.get_input("No worries! We're here to help! Would you like us to make a random guess of a nice holiday place for you? Y/N ")
         if wants_random == 'y':
             take_me_anywhere(planner, start_date, end_date)
         elif wants_random == 'n':
             print("Ok! Let's tailor a holiday for you!")
-            tailored_trip(planner)
+            tailored_trip(planner, start_date, end_date)
 
 
 if __name__ == "__main__":
     main()
-    # pass
+

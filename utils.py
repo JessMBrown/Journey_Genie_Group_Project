@@ -12,6 +12,7 @@ class UserInputCheck:
             if user_input in ['y', 'n']:
                 return user_input
             print("Sorry, that's not a possible option. Please enter 'Y' or 'N'.")
+
     def formatted_kinds_activities(self, kinds):
         kinds = kinds.strip()
         kinds = re.sub(r',+', ',', kinds)
@@ -22,8 +23,8 @@ class UserInputCheck:
         return kinds
 
 def valid_date(prompt):
-    date_str = input(prompt)
     while True:
+        date_str = input(prompt)
         try:
             date_obj = datetime.strptime(date_str, "%d-%m-%Y")
             if date_obj.date() < datetime.today().date():
@@ -34,6 +35,9 @@ def valid_date(prompt):
         except ValueError:
             print("Invalid date format. Please enter the date in dd-mm-yyyy format.")
 
+
+
+# These 2 need to be transformed into class
 def save_favourite_activities(favourite_activities, xid, activity_name, input_check):
     wants_save = input_check.get_input('Would you like to save this activity in your list of favourites? Y/N ')
     if wants_save == 'y':
@@ -43,7 +47,10 @@ def save_favourite_activities(favourite_activities, xid, activity_name, input_ch
             'added_on': datetime.now().strftime("%Y-%m-%d")
         }
         favourite_activities.append(activity)
-    print(emoji.emojize('Consider it done!:thumbs_up:'))
+        print(emoji.emojize('Consider it done!:thumbs_up:'))
+    else:
+        print(emoji.emojize('No problem! :thumbs_up:'))
+
 
 def save_favourite_hotels(favourite_hotels, hotel_id, hotel_name, input_check):
     wants_save = input_check.get_input('Would you like to save this hotel in your list of favourites? Y/N ')
@@ -54,4 +61,6 @@ def save_favourite_hotels(favourite_hotels, hotel_id, hotel_name, input_check):
             'added_on': datetime.now().strftime("%Y-%m-%d")
         }
         favourite_hotels.append(hotel)
-    print(emoji.emojize('Consider it done!:thumbs_up:'))
+        print(emoji.emojize('Consider it done!:thumbs_up:'))
+    else:
+        print(emoji.emojize('No problem! :thumbs_up:'))
