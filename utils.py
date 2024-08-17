@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+import emoji
 
 class UserInputCheck:
     def __init__(self):
@@ -33,11 +34,24 @@ def valid_date(prompt):
         except ValueError:
             print("Invalid date format. Please enter the date in dd-mm-yyyy format.")
 
-def save_favourite_activity(favourite_activities, xid, activity_choice, input_check):
+def save_favourite_activities(favourite_activities, xid, activity_name, input_check):
     wants_save = input_check.get_input('Would you like to save this activity in your list of favourites? Y/N ')
     if wants_save == 'y':
-        favourite_activities[xid] = {
-            'name': activity_choice,
+        activity = {
+            'activity id': xid,
+            'name': activity_name,
             'added_on': datetime.now().strftime("%Y-%m-%d")
         }
-    print('Added!')
+        favourite_activities.append(activity)
+    print(emoji.emojize('Consider it done!:thumbs_up:'))
+
+def save_favourite_hotels(favourite_hotels, hotel_id, hotel_name, input_check):
+    wants_save = input_check.get_input('Would you like to save this hotel in your list of favourites? Y/N ')
+    if wants_save == 'y':
+        hotel = {
+            'hotel id': hotel_id,
+            'name': hotel_name,
+            'added_on': datetime.now().strftime("%Y-%m-%d")
+        }
+        favourite_hotels.append(hotel)
+    print(emoji.emojize('Consider it done!:thumbs_up:'))

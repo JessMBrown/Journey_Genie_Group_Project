@@ -2,7 +2,8 @@ from activities.Joana_OpenTripMapAPI import OpenTripMapApi
 from pprint import pprint
 from collections import deque
 from Config import activities_api_key
-from utils import UserInputCheck, save_favourite_activity
+from utils import UserInputCheck, save_favourite_activities
+from datetime import datetime
 import emoji
 
 def get_activities(city):
@@ -27,16 +28,16 @@ def get_activities(city):
             kinds = input_check.formatted_kinds_activities(kinds)  # calls method from utils to format the input
             kinds_list = kinds.split(',')
             if all(kind in kinds_choices for kind in kinds_list) and len(kinds_list) <= 3:
-                break
+                activities = opentripmap_api.get_activities(city, lat, lon, kinds)
+                if not activities:
+                    print(f'Sorry, there are no {kinds_list} in {city}! ')
+                    continue
+                else:
+                    break
             else:
                 print('Invalid choices. Please check your spelling and/or enter 3 or fewer types! ')
 
         limit_per_kind = 5
-
-        activities = opentripmap_api.get_activities(city, lat, lon, kinds)
-        if not activities:
-            print(f'Sorry, there are no {kinds_list} in {city}! ')
-            return []
 
         # sort activities by rate
         sorted_activities = sorted(activities, key=lambda x: x.get('rate', 3), reverse=True)
@@ -76,16 +77,17 @@ def get_activities(city):
 def get_activity_details(final_results, results):
     input_check = UserInputCheck()
     opentripmap_api = OpenTripMapApi(activities_api_key)
+    favourite_activities = []
 
     try:
         wants_details = input_check.get_input('Do you want more details on any of them? Y/N ')
         if wants_details == 'n':
-            wants_save = input_check.get_input('Would you like us to save these activities for you? Y/N ')
-            if wants_save == 'y':
-                print(emoji.emojize('Consider it done!:thumbs_up:'))
-                favourite_activities = final_results
-                return favourite_activities
-        else:
+            for item in results:
+                xid = item['xid']
+                activity_name = item['name']
+                save_favourite_activities(favourite_activities, xid, activity_name, input_check)
+            return favourite_activities
+        elif wants_details == 'y':
             final_results_lower = [name.lower() for name in final_results]
             while final_results_lower:
                 activity_choice = input('Type the name of the activity: ').lower().strip()
@@ -111,8 +113,7 @@ def get_activity_details(final_results, results):
                 print(f'Here are the details for {activity_choice}:')
                 pprint(details)
 
-                favourite_activities = {}
-                save_favourite_activity(favourite_activities, xid, activity_choice, input_check)
+                save_favourite_activities(favourite_activities, xid, activity_choice, input_check)
 
                 final_results_lower.remove(activity_choice)
 
