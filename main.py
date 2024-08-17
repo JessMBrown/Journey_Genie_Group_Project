@@ -65,12 +65,9 @@ def knows_destination(start_date, end_date):  # KAREN
 # def find_cities(country): # or should it be find countries and cities? OLI
 #     pass
 def find_weather(chosen_city, start_date, end_date):
-    location = chosen_city  # Done
-    start_date = start_date  # Done
-    end_date = end_date  # Done
     endpoint_url = weather_api_endpoint_calculator(start_date)  # Done
     list_of_dates = create_list_of_dates(start_date, end_date)
-    make_weather_api_request(location, start_date, end_date,endpoint_url, list_of_dates)
+    make_weather_api_request(chosen_city, start_date, end_date, endpoint_url, list_of_dates)
     get_minimum_maximum_average_temperature()
     # extract_min_max_average_weather_for_dates()
 
@@ -106,18 +103,6 @@ def subtract_days(number_of_days_to_subtract, today_date=datetime.today().date()
     return today_date - timedelta(number_of_days_to_subtract)
 
 
-def weather_request_frequency(endpoint, start_date, end_date):
-    url_endpoint = endpoint
-    history_endpoint = "history"
-    list_of_dates = create_list_of_dates(start_date, end_date)
-    # if url_endpoint = history_endpoint:
-
-    # create and empty list for the dates and their temps
-    date_and_temp_list = []
-    # if the url to be used is /future, get the start_date and end_dates and add each date inbetween and add them
-    # into the dates_list THEN make separate requests per date and add the date + temp into the date_and_temp_list
-
-
 def create_list_of_dates(start_date, end_date):
     # convert start_date to a datetime.date format (YYYY-MM-DD)
     list_start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
@@ -135,24 +120,51 @@ def create_list_of_dates(start_date, end_date):
     return dates_list
 
 
-def make_weather_api_request(location, start_date, end_date,endpoint_url, list_of_dates):
-    if endpoint_url == "history":
+def make_weather_api_request(location, start_date, end_date, endpoint_url, list_of_dates):
+    # separate the requests into two as the api contracts differ in payload and response
+    # the endpoint for historic weather accepts a start_date and end_date and will give back everthing needed
+    if endpoint_url == "future":
+        print("future url ")
+        # create an empty list for all the dates needed to be requests
+        weather_for_day = []
+        for item in list_of_dates:
+            weather_for_day.append(weatherAPI_search.GetWeatherByLocation(location, item, end_date).get_weather_by_location_and_date(endpoint_url))
+        return weather_for_day
+        # flatten the list of lists so we can return the response and iterate through to get the desired data.
+        # flattened_list = []
+        # for sublist in weather_for_day:
+        #     flattened_list.extend(sublist)
+        # return flattened_list
+    elif endpoint_url == "history":
         print("history")
         weather_for_dates = weatherAPI_search.GetWeatherByLocation(location, start_date, end_date).get_weather_by_location_and_date(endpoint_url)
         return weather_for_dates
-    elif endpoint_url == "future":
-        print("future url ")
-        weather_for_day = []
-        for item in list_of_dates:
-            print(item)
-            try:
-                weather_for_dates = weatherAPI_search.GetWeatherByLocation(location, item, end_date).get_weather_by_location_and_date(endpoint_url)
-                weather_for_day.append(weather_for_dates)
-            except requests.exceptions.RequestException as e:
-                print(f"Api request failed on submit due to  {e}")
-        return weather_for_day
+    # the endpoint the for futures weather accepts one start date only and returns that info, so many requests
+    # are needed for many dates of weather
+
+    # The below was working - trying to get the elif to work by reversing the order
+    # # separate the requests into two as the api contracts differ in payload and response
+    # # the endpoint for historic weather accepts a start_date and end_date and will give back everthing needed
+    # if endpoint_url == "history":
+    #     print("history")
+    #     weather_for_dates = weatherAPI_search.GetWeatherByLocation(location, start_date, end_date).get_weather_by_location_and_date(endpoint_url)
+    #     return weather_for_dates
+    # # the endpoint the for futures weather accepts one start date only and returns that info, so many requests
+    # # are needed for many dates of weather
+    # elif endpoint_url == "future":
+    #     print("future url ")
+    #     # create an empty list for all the dates needed to be requests
+    #     weather_for_day = []
+    #     for item in list_of_dates:
+    #         weather_for_dates = weatherAPI_search.GetWeatherByLocation(location, item, end_date).get_weather_by_location_and_date(endpoint_url)
+    #         weather_for_day.append(weather_for_dates)
+    #     # flatten the list so all can be returned
+    #     flattened_list = []
+    #     for sublist in weather_for_day:
+    #         flattened_list.extend(sublist)
+    #     return flattened_list
     else:
-        print("Endpoint has not been assigned correctly")
+        print("Unable to retrieve the information for dates provided.")
 
 
 def get_minimum_maximum_average_temperature():

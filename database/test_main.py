@@ -26,7 +26,7 @@ class TestFindWeatherFunction(unittest.TestCase):
     def test_weather_future_endpoint_valid(self):
         self.input_weather_data_location = "London"
         self.input_weather_data_start_date = '2024-10-01'
-        self.input_weather_data_end_date = '2024-10-10'
+        self.input_weather_data_end_date = '2024-10-03'
         self.expect = [{'average_temp': 14.5, 'date': '2024-10-01'}]
         self.assertEqual(self.expect, main.find_weather(self.input_weather_data_location,
                                                         self.input_weather_data_start_date,
