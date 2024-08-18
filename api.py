@@ -13,19 +13,18 @@ def checking_api_response_success(response):
 
 
 # API call for the hotel or city search
-def search_hotels_or_cities(query):
+def search_cities(query):
     url = "https://engine.hotellook.com/api/v2/lookup.json"
     search_payload = {
         'query': query,
         'lang': 'en',
-        'lookFor': 'both',
+        'lookFor': 'city',
         'limit': 10,
         'convertCase': 1,
         'token': API_TOKEN
     }
 
     response = requests.get(url, params=search_payload)
-    print("...request successful" if response.status_code == 200 else "")
     return checking_api_response_success(response)
 
 
@@ -62,5 +61,3 @@ def fetch_price(hotel_id=None, check_in=None, check_out=None, rooms=1, adults=2,
 
     response = requests.get(price_url, params=price_payload)
     return checking_api_response_success(response).get('priceAvg', None) if response.status_code == 200 else None
-
-
