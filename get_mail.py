@@ -1,19 +1,16 @@
 from database.config_oli import HOST, PASSWORD, USER
 from database.db_utils_oli import Database, DbConnectionError
+from utils import UserInputCheck
 import re
 
 
 def get_email():
-    # Looping until the user gives a valid 'yes' or 'no' answer
-    while True:
-        wants_email = input("Would you like to receive suggestions via email? (yes/no): ").strip().lower()
+    input_check = UserInputCheck()
 
-        if wants_email in ['yes', 'no']:
-            break  # Valid input received
-        else:
-            print("Invalid input. Please enter 'yes' or 'no'.")
+    # Checking if the user wants to receive email
+    wants_email = input_check.get_input("Would you like to receive suggestions via email? (y/n): ")
 
-    if wants_email == 'yes':
+    if wants_email == 'y':
         # Looping until a valid name is entered
         while True:
             first_name = input("Please enter your first name: ").strip()
@@ -45,8 +42,7 @@ def get_email():
 
 
 def validate_email(email):
-    # Regex to validate email addresses - it's used to validate the email address format. It ensures that the email
-    # contains the '@' symbol and follows the general structure of an email address
+    # Regex to validate email addresses
     email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
     return re.match(email_regex, email) is not None
 

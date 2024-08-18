@@ -44,7 +44,7 @@ class TestLocation(unittest.TestCase):
         """Testing fetching cities by valid country."""
         self.mock_db_instance.fetch_data.return_value = [('Paris',), ('Lyon',), ('Marseille',)]
 
-        with patch('builtins.input', return_value='paris'):
+        with patch('builtins.input', side_effect=['1']):
             city_choice = self.location.get_cities_by_country('France')
             self.assertEqual(city_choice, 'paris')
             self.mock_db_instance.fetch_data.assert_called_once_with(
@@ -68,16 +68,29 @@ class TestLocation(unittest.TestCase):
         )
 
     def test_get_holiday_type_cities_valid(self):
-        """Testing fetching cities for a valid holiday type."""
-        self.mock_db_instance.fetch_data.return_value = [('Paris', 'France'), ('Lyon', 'France')]
+        """Testing fetching cities for valid holiday types."""
+        self.mock_db_instance.fetch_data.return_value = [('Paris', 'France', 'museums'), ('Lyon', 'France', 'museums')]
 
         with patch('builtins.input', return_value='museums'):
             self.location.get_holiday_type_cities()
             self.mock_db_instance.fetch_data.assert_called_once_with(
                 table_name="cities",
-                columns=['cities.city_name', 'countries.country_name'],
+                columns=['cities.city_name', 'countries.country_name', 'cities.keyword'],
                 join="INNER JOIN countries ON cities.country_code = countries.country_code",
-                conditions="cities.keyword = 'museums'"
+                conditions="cities.keyword IN ('museums')"
+            )
+
+    def test_get_holiday_type_cities_multiple_valid(self):
+        """Testing fetching cities for multiple valid holiday types."""
+        self.mock_db_instance.fetch_data.return_value = [('Paris', 'France', 'museums'), ('Nice', 'France', 'beaches')]
+
+        with patch('builtins.input', return_value='museums, beaches'):
+            self.location.get_holiday_type_cities()
+            self.mock_db_instance.fetch_data.assert_called_once_with(
+                table_name="cities",
+                columns=['cities.city_name', 'countries.country_name', 'cities.keyword'],
+                join="INNER JOIN countries ON cities.country_code = countries.country_code",
+                conditions="cities.keyword IN ('museums', 'beaches')"
             )
 
     def test_get_holiday_type_cities_invalid(self):
@@ -88,9 +101,9 @@ class TestLocation(unittest.TestCase):
             self.location.get_holiday_type_cities()
             self.mock_db_instance.fetch_data.assert_called_once_with(
                 table_name="cities",
-                columns=['cities.city_name', 'countries.country_name'],
+                columns=['cities.city_name', 'countries.country_name', 'cities.keyword'],
                 join="INNER JOIN countries ON cities.country_code = countries.country_code",
-                conditions="cities.keyword = 'museums'"
+                conditions="cities.keyword IN ('museums')"
             )
 
     def test_get_holiday_type_countries_valid(self):
@@ -103,7 +116,20 @@ class TestLocation(unittest.TestCase):
                 table_name="countries",
                 columns=['DISTINCT countries.country_name'],
                 join="INNER JOIN cities ON countries.country_code = cities.country_code",
-                conditions="cities.keyword = 'wine'"
+                conditions="cities.keyword IN ('wine')"
+            )
+
+    def test_get_holiday_type_countries_multiple_valid(self):
+        """Testing fetching countries for multiple valid holiday types."""
+        self.mock_db_instance.fetch_data.return_value = [('France',), ('Italy',)]
+
+        with patch('builtins.input', return_value='wine, fashion'):
+            self.location.get_holiday_type_countries()
+            self.mock_db_instance.fetch_data.assert_called_once_with(
+                table_name="countries",
+                columns=['DISTINCT countries.country_name'],
+                join="INNER JOIN cities ON countries.country_code = cities.country_code",
+                conditions="cities.keyword IN ('wine', 'fashion')"
             )
 
     def test_get_holiday_type_countries_invalid(self):
@@ -116,7 +142,7 @@ class TestLocation(unittest.TestCase):
                 table_name="countries",
                 columns=['DISTINCT countries.country_name'],
                 join="INNER JOIN cities ON countries.country_code = cities.country_code",
-                conditions="cities.keyword = 'wine'"
+                conditions="cities.keyword IN ('wine')"
             )
 
 
