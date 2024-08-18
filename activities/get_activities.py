@@ -2,12 +2,13 @@ from activities.Joana_OpenTripMapAPI import OpenTripMapApi
 from pprint import pprint
 from collections import deque
 from Config import activities_api_key
-from utils import UserInputCheck, save_favourite_activities
-from datetime import datetime
-import emoji
+from utils import UserInputCheck, SavingToFavourites
+
+
+favourites_manager = SavingToFavourites()
+input_check = UserInputCheck()
 
 def get_activities(city):
-    input_check = UserInputCheck()
     opentripmap_api = OpenTripMapApi(activities_api_key)
 
     try:
@@ -20,22 +21,44 @@ def get_activities(city):
 
         while True:
             # user input can take up to 3 separated by a comma but no space
-            kinds_choices = ['historic', 'beaches', 'nature_reserves', 'theatres_and_entertainments',
-                             'museums', 'sport', 'amusements']
-            kinds = input(
-                f'Please choose from the following list, which type of activity you would like ?(up to 3 choices) \n{kinds_choices} ')
+            kinds_choices = {
+                'historic': 'historic',
+                'beaches': 'beaches',
+                'nature_reserves': 'nature reserves',
+                'theatres_and_entertainments': 'theatres and entertainments',
+                'museums': 'museums',
+                'sport': 'sport',
+                'amusements': 'amusements'
+            }
 
-            kinds = input_check.formatted_kinds_activities(kinds)  # calls method from utils to format the input
-            kinds_list = kinds.split(',')
-            if all(kind in kinds_choices for kind in kinds_list) and len(kinds_list) <= 3:
-                activities = opentripmap_api.get_activities(city, lat, lon, kinds)
-                if not activities:
-                    print(f'Sorry, there are no {kinds_list} in {city}! ')
-                    continue
-                else:
-                    break
+            for index, display in enumerate(kinds_choices.values(), start=1):
+                print(f'{index}. {display}')
+            kinds = input(
+                f'Please choose from this list, the number.s corresponding to the type of activity you would like ?'
+                f'(up to 3 choices) ').strip().lower()
+
+            kinds_indexes = input_check.formatted_kinds_activities(kinds)
+
+            kinds_list = []
+            for i in kinds_indexes:
+                if i.isdigit():
+                    index = int(i)
+                    if 1 <= index <= len(kinds_choices):
+                        kind_key = list(kinds_choices.keys())[index -1]
+                        kinds_list.append(kind_key)
+
+            if len(kinds_list) == 0 or len(kinds_list) > 3:
+                print('Invalid choices. Please select up to 3 numbers in the list.')
+                continue
+
+            kinds = ','.join(kinds_list)
+
+            activities = opentripmap_api.get_activities(city, lat, lon, kinds)
+            if not activities:
+                print(f'Sorry, there are no {kinds_list} in {city}! ')
+                continue
             else:
-                print('Invalid choices. Please check your spelling and/or enter 3 or fewer types! ')
+                break
 
         limit_per_kind = 5
 
@@ -63,21 +86,31 @@ def get_activities(city):
 
         final_results = [item['name'] for item in results]
         print(f'Here are the activities available to you in {city}:')
-        pprint(final_results)
+
+        for index, item in enumerate(final_results, start=1):
+            print(f"{index}. {item}")
 
         return final_results, results
 
     except ValueError:
         print('Wrong input! ')
 
-    except Exception:
-        print('Error')
+    except Exception as e:
+        print(f'Unexpected error: {e}')
 
+# to extract specific details
+def extract_specific_details(details):
+    extracted_details = {
+        'address': details.get('address', {}),
+        'image': details.get('image', ''),
+        'rate': details.get('rate', ''),
+        'wikipedia': details.get('wikipedia', ''),
+        'wikipedia_extracts': details.get('wikipedia_extracts', {}).get('html', '')
+    }
+    return extracted_details
     # to get activity details
 def get_activity_details(final_results, results):
-    input_check = UserInputCheck()
     opentripmap_api = OpenTripMapApi(activities_api_key)
-    favourite_activities = []
 
     try:
         wants_details = input_check.get_input('Do you want more details on any of them? Y/N ')
@@ -85,52 +118,47 @@ def get_activity_details(final_results, results):
             for item in results:
                 xid = item['xid']
                 activity_name = item['name']
-                save_favourite_activities(favourite_activities, xid, activity_name, input_check)
-            return favourite_activities
+                favourites_manager.save_favourite_activities(xid, activity_name, input_check)
         elif wants_details == 'y':
-            final_results_lower = [name.lower() for name in final_results]
-            while final_results_lower:
-                activity_choice = input('Type the name of the activity: ').lower().strip()
+            while True:
+                try:
+                    activity_choice = int(input('Enter the number corresponding to the activity: '))
 
-                if activity_choice not in final_results_lower:
-                    print('This activity is not in the list of possible activities! Please try again ')
-                    continue
-
-                xid = None
-                for item in results:
-                    if activity_choice == item['name'].lower():
-                        xid = item['xid']
-                        break
-                if xid is None:
-                    print('Activity not found. Try again')
-                    continue
-
-                details = opentripmap_api.get_activity_details(xid)
-                if not details:
-                    print("We were not able to retrieve the data for the selected activity! ")
-                    continue
-
-                print(f'Here are the details for {activity_choice}:')
-                pprint(details)
-
-                save_favourite_activities(favourite_activities, xid, activity_choice, input_check)
-
-                final_results_lower.remove(activity_choice)
-
-                if final_results_lower:
-                    other_details = input_check.get_input(f'Would you like details on another activity? {final_results_lower} Y/N ')
-                    if other_details != 'Y':
+                    if 1 > activity_choice or activity_choice > len(final_results):
+                        print('Invalid number! Please try again ')
                         continue
-                    else:
+
+                    selected_activity = results[activity_choice -1]
+                    xid = selected_activity['xid']
+                    activity_name = selected_activity['name']
+
+                    details = opentripmap_api.get_activity_details(xid)
+                    if not details:
+                        print("We were not able to retrieve the data for the selected activity! ")
+                        continue
+
+                    activity_details = extract_specific_details(details)
+                    print(f'Here are the details for {activity_name}:')
+                    pprint(activity_details)
+
+                    favourites_manager.save_favourite_activities(xid, activity_name, input_check)
+
+                    other_details = input_check.get_input(f'Would you like details on another activity? Y/N ')
+                    if other_details != 'y':
                         print('OK! Email stuff now')
                         break
+                    else:
+                        continue
 
-        return favourite_activities
+                except ValueError:
+                    print('Please enter a valid number.')
+
+            return favourites_manager.get_favourites('activities')
 
     except ValueError:
         print('Wrong input! ')
-    except Exception:
-        print('Error')
+    except Exception as e:
+        print(f'Unexpected error: {e}')
 
 
 # final_results, results = get_activities('edinburgh')

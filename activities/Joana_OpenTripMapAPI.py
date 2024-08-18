@@ -69,3 +69,4 @@ class OpenTripMapApi:
 
         except requests.exceptions.RequestException:
             print('Request failed')
+

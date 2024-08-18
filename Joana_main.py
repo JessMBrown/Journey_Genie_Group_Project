@@ -1,6 +1,7 @@
-from utils import UserInputCheck, valid_date
+from utils import UserInputCheck, valid_date, SavingToFavourites
 import random
 from database.get_location import Location
+from database.get_email import get_email
 from Config import HOST, PASSWORD, USER
 from hotels.get_hotels import find_hotels
 from activities.get_activities import get_activities, get_activity_details
@@ -8,6 +9,7 @@ from weather.get_weather import find_weather
 
 planner = Location(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
 input_check = UserInputCheck()
+favourites_manager = SavingToFavourites()
 
 
 def knows_destination(planner, start_date, end_date):
@@ -27,18 +29,16 @@ def knows_destination(planner, start_date, end_date):
         print(f'An error occurred: {e}')
 
 
-def tailored_trip(planner, start_date, end_date):
-    # # city/country function to display countries based on what user is looking for
-    while True:
-        planner.get_holiday_type_input()
-        planner.get_holiday_type_cities()
-        is_interested = input_check.get_input("Does any of these city interest you? Y/N ")
-        if is_interested == 'Y':
-            city_choice = input("Please enter the name")
-
-
-
-    end_of_function_planning(city_choice, start_date, end_date)
+# def tailored_trip(planner, start_date, end_date):
+#     # # city/country function to display countries based on what user is looking for
+#     while True:
+#         planner.get_holiday_type_input()
+#         planner.get_holiday_type_cities()
+#         is_interested = input_check.get_input("Does any of these city interest you? Y/N ")
+#         if is_interested == 'Y':
+#             city_choice = input("Please enter the name")
+#
+#     end_of_function_planning(city_choice, start_date, end_date)
 
 def take_me_anywhere(planner, start_date, end_date):
     try:
@@ -72,20 +72,24 @@ def end_of_function_planning(city_choice, start_date, end_date):
     # print(f"The weather last year at the same dates in {city_choice} was an average of {avg_weather_in_city_choice}")
 
     # call hotels
-    print("Now, let's find you a hotel! ")
+    print("Great choice! Now, let's find you a hotel! ")
     find_hotels(city_choice, end_date, start_date)
 
     # # call activities
+    print(f"Let's find you some activities in {city_choice}! ")
     final_results, results = get_activities(city_choice)
     if final_results:
         get_activity_details(final_results, results)
 
-    # # call email
-    # get_email()
+    # call email
+    get_email()
+
+    #retrieve list of favourites
+    print(favourites_manager.get_favourites('activities'))
+    print(favourites_manager.get_favourites('hotels'))
 
 
-
-def main(): # JOANA
+def main():
     input_check = UserInputCheck()
     # Welcoming user and getting some basic details
     print("Hello! Welcome to Journey Genie! Let's start prepping your next holiday!")
