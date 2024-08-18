@@ -14,7 +14,7 @@ class GetWeatherByLocation:
         self.base_url = "https://api.weatherapi.com/v1"
         self.api_key = weather_api_key
 
-    def get_weather_by_location_and_date(self, date_url):
+    def get_weather_by_location_and_date(self, date_url="history"):
         # full url is from the base + desired endpoint
         url = date_url
         endpoint = f"{self.base_url}/{url}.json"

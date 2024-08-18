@@ -1,7 +1,6 @@
 import unittest
 from datetime import date
-
-import main
+from weather import get_weather
 
 
 class TestFindWeatherFunction(unittest.TestCase):
@@ -19,7 +18,7 @@ class TestFindWeatherFunction(unittest.TestCase):
                        {'average_temp': 14.8, 'date': '2024-05-08'},
                        {'average_temp': 15.7, 'date': '2024-05-09'},
                        {'average_temp': 15.8, 'date': '2024-05-10'}]
-        self.assertEqual(self.expect, main.find_weather(self.input_weather_data_location,
+        self.assertEqual(self.expect, get_weather.find_weather(self.input_weather_data_location,
                                                         self.input_weather_data_start_date,
                                                         self.input_weather_data_end_date))
 
@@ -28,7 +27,7 @@ class TestFindWeatherFunction(unittest.TestCase):
         self.input_weather_data_start_date = '2024-10-01'
         self.input_weather_data_end_date = '2024-10-03'
         self.expect = [{'average_temp': 14.5, 'date': '2024-10-01'}]
-        self.assertEqual(self.expect, main.find_weather(self.input_weather_data_location,
+        self.assertEqual(self.expect, get_weather.find_weather(self.input_weather_data_location,
                                                         self.input_weather_data_start_date,
                                                         self.input_weather_data_end_date))
 
@@ -38,7 +37,7 @@ class TestAddDaysFunction(unittest.TestCase):
     def test_add_days_valid_1(self):
         self.number_to_add = 1
         self.expected = '2024-08-16'
-        self.assertEqual(self.expected, str(main.add_days(self.number_to_add)))
+        self.assertEqual(self.expected, str(get_weather.add_days(self.number_to_add)))
 
 
 class TestSubtractDaysFunction(unittest.TestCase):

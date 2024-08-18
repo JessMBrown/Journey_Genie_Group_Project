@@ -1,10 +1,9 @@
-# from Joana_OpenTripMapAPI import OpenTripMapApi
 from pprint import pprint
 from collections import deque
 
 import requests.exceptions
 
-import weatherAPI_search
+import weather_api_search
 from config import activities_api_key, hotels_api_key, weather_api_key
 # from utils import UserInputCheck
 import random
@@ -65,11 +64,11 @@ def knows_destination(start_date, end_date):  # KAREN
 # def find_cities(country): # or should it be find countries and cities? OLI
 #     pass
 def find_weather(chosen_city, start_date, end_date):
-    endpoint_url = weather_api_endpoint_calculator(start_date)  # Done
+    endpoint_url = weather_api_endpoint_calculator(start_date)
     list_of_dates = create_list_of_dates(start_date, end_date)
-    make_weather_api_request(chosen_city, start_date, end_date, endpoint_url, list_of_dates)
-    get_minimum_maximum_average_temperature()
-    # extract_min_max_average_weather_for_dates()
+    weather_for_dates = make_weather_api_request(chosen_city, start_date, end_date, endpoint_url, list_of_dates)
+    get_minimum_maximum_average_temperature(chosen_city, weather_for_dates, endpoint_url)
+    return weather_for_dates
 
 
 def weather_api_endpoint_calculator(start_date):
@@ -77,13 +76,14 @@ def weather_api_endpoint_calculator(start_date):
     from_300_days_present_date = str(add_days(300))
     fourteen_days_in_the_future = str(add_days(14))
     fourteen_days_in_the_past = str(subtract_days(14))
-    # if str(start_date) >= fourteen_days_in_the_past and str(start_date) < present_date or str(start_date) < fourteen_days_in_the_future and str(start_date) > present_date:
     # if the start_date is +/- 14 days from present_date then cannot get weather due to api limitations
     if fourteen_days_in_the_past <= str(start_date) < present_date or fourteen_days_in_the_future > str(
             start_date) > present_date:
-        print("cannot fetch the weather for these dates")
+        print("Sorry, cannot fetch the weather for these dates")
         #     if the start_date is more than 300 days from present_date or is less than present_date
-        #     then the endpoint_url = "history"
+        #     then the endpoint_url = "history" - reasoning, the API only returns weather predictions
+        #     300 days from todays date, so if the dates requested are more than the APIs limits for
+        #     predictions use the data from the historic data
     elif str(start_date) > from_300_days_present_date or str(start_date) < present_date:
         endpoint_url = "history"
         return endpoint_url
@@ -122,57 +122,70 @@ def create_list_of_dates(start_date, end_date):
 
 def make_weather_api_request(location, start_date, end_date, endpoint_url, list_of_dates):
     # separate the requests into two as the api contracts differ in payload and response
-    # the endpoint for historic weather accepts a start_date and end_date and will give back everthing needed
-    if endpoint_url == "future":
-        print("future url ")
-        # create an empty list for all the dates needed to be requests
-        weather_for_day = []
-        for item in list_of_dates:
-            weather_for_day.append(weatherAPI_search.GetWeatherByLocation(location, item, end_date).get_weather_by_location_and_date(endpoint_url))
-        return weather_for_day
-        # flatten the list of lists so we can return the response and iterate through to get the desired data.
-        # flattened_list = []
-        # for sublist in weather_for_day:
-        #     flattened_list.extend(sublist)
-        # return flattened_list
-    elif endpoint_url == "history":
-        print("history")
-        weather_for_dates = weatherAPI_search.GetWeatherByLocation(location, start_date, end_date).get_weather_by_location_and_date(endpoint_url)
+    # the endpoint for historic weather accepts a start_date and end_date and will give back everything needed
+    if endpoint_url == "history":
+        weather_for_dates = weather_api_search.GetWeatherByLocation(location, start_date,
+                                                                    end_date).get_weather_by_location_and_date(
+            endpoint_url)
         return weather_for_dates
     # the endpoint the for futures weather accepts one start date only and returns that info, so many requests
     # are needed for many dates of weather
-
-    # The below was working - trying to get the elif to work by reversing the order
-    # # separate the requests into two as the api contracts differ in payload and response
-    # # the endpoint for historic weather accepts a start_date and end_date and will give back everthing needed
-    # if endpoint_url == "history":
-    #     print("history")
-    #     weather_for_dates = weatherAPI_search.GetWeatherByLocation(location, start_date, end_date).get_weather_by_location_and_date(endpoint_url)
-    #     return weather_for_dates
-    # # the endpoint the for futures weather accepts one start date only and returns that info, so many requests
-    # # are needed for many dates of weather
-    # elif endpoint_url == "future":
-    #     print("future url ")
-    #     # create an empty list for all the dates needed to be requests
-    #     weather_for_day = []
-    #     for item in list_of_dates:
-    #         weather_for_dates = weatherAPI_search.GetWeatherByLocation(location, item, end_date).get_weather_by_location_and_date(endpoint_url)
-    #         weather_for_day.append(weather_for_dates)
-    #     # flatten the list so all can be returned
-    #     flattened_list = []
-    #     for sublist in weather_for_day:
-    #         flattened_list.extend(sublist)
-    #     return flattened_list
+    elif endpoint_url == "future":
+        # create an empty list for all the dates needed to be requests
+        weather_for_day = []
+        # loop through list of individual dates to be searched for and append each response to list
+        for item in list_of_dates:
+            weather_for_dates = weather_api_search.GetWeatherByLocation(location, item,
+                                                                        end_date).get_weather_by_location_and_date(
+                endpoint_url)
+            weather_for_day.append(weather_for_dates)
+        # flatten the list so all list items can be searched
+        flattened_list = []
+        for sublist in weather_for_day:
+            flattened_list.extend(sublist)
+        return flattened_list
     else:
-        print("Unable to retrieve the information for dates provided.")
+        print("Sorry, we are unable to retrieve the information for dates provided.")
 
 
-def get_minimum_maximum_average_temperature():
-    pass
+def get_minimum_maximum_average_temperature(chosen_city, weather_for_dates, endpoint):
+    # list with dates and temps
+    # extract all temps
+    average_temps = [weather_for_dates]
+    print(weather_for_dates)
+    find_min_val_from_dict(average_temps)
+    find_max_val_from_dict(average_temps)
+    string_list = {'average_temp': 14.5, 'date': '2024-10-01'}
+    # {'average_temp': 14.5, 'date': '2024-10-01'}, {'average_temp': 14.5, 'date': '2024-10-01'}
+    result = string_list.get("average_temp")
+    print(result)
+
+    # get the average for all dates
+    avg_temp_for_dates = ''
+    # get the minimum and maximum temps
+    lowest_temp = ''
+    highest_temp = ''
+
+    if endpoint == "history":
+        print(
+            f"The weather last year on the same dates in {chosen_city} was an average of {avg_temp_for_dates} °C, with "
+            f"the lowest being {lowest_temp} and the highest being {highest_temp}")
+    else:
+        print(
+            f"The predicted weather for {chosen_city} on the selected will have an average of {avg_temp_for_dates} °C, with "
+            f"the lowest being {lowest_temp} and the highest being {highest_temp}")
 
 
-def extract_min_max_average_weather_for_dates():
-    pass
+def find_min_val_from_dict(min_val_to_find):
+    val = min_val_to_find
+    # Using list comprehension and .get() method
+    # Get values of particular key in list of dictionaries
+    res = [min_val_to_find.get('average_temp', None) for min_val_to_find in val]
+    print(res)
+
+
+def find_max_val_from_dict(max_val_to_find):
+    return max(max_val_to_find, key=max_val_to_find.get)
 
 
 # def find_hotels(city, num_adults, num_children): NADIA

@@ -1,7 +1,7 @@
 import unittest
 
-import main
-from weatherAPI_search import GetWeatherByLocation
+import get_weather
+from weather_api_search import GetWeatherByLocation
 
 
 class TestGetWeatherByLocationFunction(unittest.TestCase):
@@ -60,6 +60,6 @@ class TestGetWeatherByLocationFunction(unittest.TestCase):
         self.assertEqual(self.expected, GetWeatherByLocation.get_historic_weather_by_location_and_date(self.input_data))
 
 
-# add runner to enable automation of running tests using the 'python3 unit_test_weatherAPI_search.py' command
+# add runner to enable automation of running tests using the 'python3 test_weather_api_search.py' command
 if __name__ == "__main__":
     unittest.main(verbosity=1)
