@@ -1,5 +1,5 @@
 from api import fetch_price, fetch_hotels_in_city, search_cities
-from nadia_utils import get_valid_dates  # Updated import to use the new function
+from nadia_utils import get_valid_dates 
 
 # searching for a city to go to
 def city_search():
