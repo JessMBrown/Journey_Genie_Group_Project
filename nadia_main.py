@@ -12,7 +12,7 @@ def city_search():
             if search.lower() in location['cityName'].lower():
                 city_full_name = f"{location['cityName']}, {location['countryName']}"
                 print(city_full_name)
-                return location  # Return the matched location
+                return location  
 
         # if nothing is found, a prompt for the user to try again
         print(f"No locations found matching the name '{search}'. Try again.")
@@ -33,7 +33,7 @@ def main():
             if adults > 4:
                 print("The maximum number of people allowed within a single booking is 4. Please try again.")
             else:
-                adults_valid = True  # Number of people is valid, proceed
+                adults_valid = True 
 
         rooms_valid = False
         while not rooms_valid:
