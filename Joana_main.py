@@ -1,4 +1,4 @@
-from utils import UserInputCheck, valid_date, SavingToFavourites
+from utils import UserInputCheck, get_valid_dates, SavingToFavourites
 import random
 from database.get_location import Location
 from database.get_email import get_email
@@ -35,7 +35,7 @@ def knows_destination(planner, start_date, end_date):
 #         planner.get_holiday_type_input()
 #         planner.get_holiday_type_cities()
 #         is_interested = input_check.get_input("Does any of these city interest you? Y/N ")
-#         if is_interested == 'Y':
+#         if is_interested == 'y':
 #             city_choice = input("Please enter the name")
 #
 #     end_of_function_planning(city_choice, start_date, end_date)
@@ -73,7 +73,7 @@ def end_of_function_planning(city_choice, start_date, end_date):
 
     # call hotels
     print("Great choice! Now, let's find you a hotel! ")
-    find_hotels(city_choice, end_date, start_date)
+    find_hotels(city_choice, start_date, end_date)
 
     # # call activities
     print(f"Let's find you some activities in {city_choice}! ")
@@ -93,8 +93,7 @@ def main():
     input_check = UserInputCheck()
     # Welcoming user and getting some basic details
     print("Hello! Welcome to Journey Genie! Let's start prepping your next holiday!")
-    start_date = valid_date("First, please enter the start date for your holiday (DD-MM-YYYY): ")
-    end_date = valid_date("Now, please enter the end date for your holiday (DD-MM-YYYY): ")
+    start_date, end_date = get_valid_dates()
 
     knows_where = input_check.get_input("Do you know which country you'd like to go to? Y/N ")
 
