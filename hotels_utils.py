@@ -1,6 +1,4 @@
 from datetime import datetime
-
-
 # function to validate the check-in and check-out dates
 def get_valid_dates():
     while True:
