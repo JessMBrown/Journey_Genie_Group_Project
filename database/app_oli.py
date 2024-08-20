@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
-from db_utils_oli import Database, DbConnectionError
-from config_oli import USER, PASSWORD, HOST
+from database.db_utils_oli import Database, DbConnectionError
+from config import USER, PASSWORD, HOST
 
 app = Flask(__name__)
 
@@ -83,6 +83,7 @@ def get_cities():
 
     except Exception as e:  # Catch any other issues
         return jsonify({'status': 'error', 'message': str(e)}), 500
+
 
 
 if __name__ == '__main__':

@@ -1,5 +1,5 @@
 import unittest
-from weatherAPI_search import GetWeatherByLocation
+from weather_api_search import GetWeatherByLocation
 
 
 class TestGetWeatherByLocationFunction(unittest.TestCase):

@@ -1,11 +1,11 @@
-from utils import UserInputCheck, get_valid_dates, SavingToFavourites
+from utils import UserInputCheck, get_valid_dates, SavingToFavourites, state
 import random
-from database.get_location import Location
-from database.get_email import get_email
-from Config import HOST, PASSWORD, USER
+from location.get_location import Location
+from email.get_email import get_email
+from config import HOST, PASSWORD, USER
 from hotels.get_hotels import find_hotels
 from activities.get_activities import get_activities, get_activity_details
-from weather.get_weather import find_weather
+# from weather.get_weather import find_weather
 
 planner = Location(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
 input_check = UserInputCheck()
@@ -23,7 +23,11 @@ def knows_destination(planner, start_date, end_date):
             else:
                 print('Invalid answer!')
 
+        state.chosen_country = chosen_country
+
         end_of_function_planning(city_choice, start_date, end_date)
+
+        return chosen_country, city_choice
 
     except Exception as e:
         print(f'An error occurred: {e}')
@@ -34,11 +38,14 @@ def knows_destination(planner, start_date, end_date):
 #     while True:
 #         planner.get_holiday_type_input()
 #         planner.get_holiday_type_cities()
-#         is_interested = input_check.get_input("Does any of these city interest you? Y/N ")
-#         if is_interested == 'y':
-#             city_choice = input("Please enter the name")
+#         # is_interested = input_check.get_input("Does any of these city interest you? Y/N ")
+#         # if is_interested == 'y':
+#         #     city_choice = input("Please enter the number corresponding to the city you want to select: ")
+#         break
+#
 #
 #     end_of_function_planning(city_choice, start_date, end_date)
+#     return chosen_country
 
 def take_me_anywhere(planner, start_date, end_date):
     try:
@@ -60,15 +67,21 @@ def take_me_anywhere(planner, start_date, end_date):
             else:
                 print('Invalid answer! Please type Y or N ')
 
+        state.chosen_country = chosen_country
+
         end_of_function_planning(city_choice, start_date, end_date)
+
+        return chosen_country
 
     except Exception as e:
         print(f'An error occurred: {e}')
 
 
+
 def end_of_function_planning(city_choice, start_date, end_date):
     # # call weather
-    # avg_weather_in_city_choice = find_weather(city_choice, start_date, end_date)
+    # avg_weather_in_city_choice = (
+    # find_weather(city_choice, start_date, end_date)
     # print(f"The weather last year at the same dates in {city_choice} was an average of {avg_weather_in_city_choice}")
 
     # call hotels
@@ -79,7 +92,7 @@ def end_of_function_planning(city_choice, start_date, end_date):
     print(f"Let's find you some activities in {city_choice}! ")
     final_results, results = get_activities(city_choice)
     if final_results:
-        get_activity_details(final_results, results)
+        get_activity_details(final_results, results, city_choice)
 
     # call email
     get_email()

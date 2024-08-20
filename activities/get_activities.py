@@ -1,8 +1,8 @@
 from activities.Joana_OpenTripMapAPI import OpenTripMapApi
 from pprint import pprint
 from collections import deque
-from Config import activities_api_key
-from utils import UserInputCheck, SavingToFavourites
+from config import activities_api_key
+from utils import UserInputCheck, SavingToFavourites, state
 
 # assigning classes from utils to variables
 favourites_manager = SavingToFavourites()
@@ -124,9 +124,10 @@ def extract_specific_details(details):
     # to get activity details
 
 
-def get_activity_details(final_results, results):
+def get_activity_details(final_results, results, city_choice):
     # calling API
     opentripmap_api = OpenTripMapApi(activities_api_key)
+    chosen_country = state.chosen_country
 
     try:
         # offering possibility to get details on each activity
@@ -136,7 +137,7 @@ def get_activity_details(final_results, results):
                 xid = item['xid']
                 activity_name = item['name']
                 # calling method from utils to check if user wants to save the activities
-                favourites_manager.save_favourite_activities(xid, activity_name, input_check)
+                favourites_manager.save_favourite_activities(xid, activity_name, city_choice, input_check, chosen_country)
         elif wants_details == 'y':
             while True:
                 try:
@@ -165,14 +166,12 @@ def get_activity_details(final_results, results):
                     pprint(activity_details)
 
                     # offering option to save activity
-                    favourites_manager.save_favourite_activities(xid, activity_name, input_check)
+                    favourites_manager.save_favourite_activities(xid, activity_name, city_choice, input_check, chosen_country)
 
                     # offering possibility to get details on other activities
                     other_details = input_check.get_input(f'Would you like details on another activity? Y/N ')
                     if other_details != 'y':
                         break
-                    else:
-                        continue
 
                 except ValueError:
                     print('Please enter a valid number.')
@@ -187,4 +186,4 @@ def get_activity_details(final_results, results):
 
 # final_results, results = get_activities('edinburgh')
 # if final_results:
-#     print(get_activity_details(final_results, results))
+#     print(get_activity_details(final_results, results, 'edinburgh'))

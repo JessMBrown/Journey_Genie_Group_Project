@@ -1,5 +1,5 @@
 import requests
-from Config import activities_api_key
+from config import activities_api_key
 
 class OpenTripMapApi:
     def __init__(self, api_key):

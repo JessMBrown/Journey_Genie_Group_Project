@@ -72,12 +72,14 @@ class SavingToFavourites:
         self.favourite_hotels = []
         self.favourite_activities = []
 
-    def save_favourites(self, category, id, name, input_check):
+    def save_favourites(self, category, id, name, city_choice, input_check, chosen_country):
         wants_save = input_check.get_input(f'Would you like to save this {category} in your list of favourites? Y/N ')
         if wants_save == 'y':
             item = {
                 f'{category[:-1]} id': id,
                 'name': name,
+                'city': city_choice,
+                'country': chosen_country,
                 'added_on': datetime.now().strftime("%Y-%m-%d")
             }
 
@@ -88,11 +90,13 @@ class SavingToFavourites:
             print(emoji.emojize('Consider it done!:thumbs_up:'))
         else:
             print(emoji.emojize('No problem! :thumbs_up:'))
-    def save_favourite_hotels(self, hotel_id, hotel_name, input_check):
-        self.save_favourites('hotels', hotel_id, hotel_name, input_check)
 
-    def save_favourite_activities(self, xid, activity_name, input_check):
-        self.save_favourites('activities', xid, activity_name, input_check)
+
+    def save_favourite_hotels(self, hotel_id, hotel_name, city_choice, input_check, chosen_country):
+        self.save_favourites('hotels', hotel_id, hotel_name, city_choice, input_check, chosen_country)
+
+    def save_favourite_activities(self, xid, activity_name, city_choice, input_check, chosen_country):
+        self.save_favourites('activities', xid, activity_name, city_choice, input_check, chosen_country)
 
     def get_favourites(self, category):
         if category == 'activities':
@@ -100,3 +104,8 @@ class SavingToFavourites:
         elif category == 'hotels':
             return self.favourite_hotels
 
+class State:
+    def __init__(self):
+        self.chosen_country = None
+
+state = State()
