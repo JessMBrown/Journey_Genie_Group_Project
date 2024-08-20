@@ -145,6 +145,31 @@ class TestLocation(unittest.TestCase):
                 conditions="cities.keyword IN ('wine')"
             )
 
+    def test_get_cities_by_country_invalid_number(self):
+        """Test get_cities_by_country when an invalid number is entered."""
+        self.mock_db_instance.fetch_data.return_value = [('Paris',), ('Lyon',), ('Marseille',)]
+
+        with patch('builtins.input', side_effect=['10', '2']):
+            city_choice = self.location.get_cities_by_country('France')
+            self.assertEqual(city_choice, 'lyon')
+
+    def test_get_holiday_type_cities_empty_input(self):
+        """Test get_holiday_type_cities when no holiday type is provided."""
+        with patch('builtins.input', side_effect=['', 'museums']):
+            self.location.get_holiday_type_cities()
+            self.mock_db_instance.fetch_data.assert_called_once_with(
+                table_name="cities",
+                columns=['cities.city_name', 'countries.country_name', 'cities.keyword'],
+                join="INNER JOIN countries ON cities.country_code = countries.country_code",
+                conditions="cities.keyword IN ('museums')"
+            )
+
+    def test_close(self):
+        """Test closing the database connection."""
+        self.location.close()
+        self.mock_db_instance.close.assert_called_once()
+
+
 
 if __name__ == '__main__':
     unittest.main()

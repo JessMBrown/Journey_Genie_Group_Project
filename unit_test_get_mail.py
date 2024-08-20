@@ -1,13 +1,12 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from get_mail import get_email, validate_email, \
-    store_email_in_database
+from get_mail import get_email, validate_email, store_email_in_database
 from database.db_utils_oli import Database, DbConnectionError
 
 
 class TestEmailFunctions(unittest.TestCase):
 
-    @patch('builtins.input', side_effect=['yes', 'John', 'john@example.com'])
+    @patch('builtins.input', side_effect=['y', 'John', 'john@example.com'])
     @patch('get_mail.store_email_in_database')  # Mocking the database storage function
     def test_get_email_valid_input(self, mock_store_email, mock_input):
         """Testing the get_email function with valid inputs."""
@@ -19,7 +18,7 @@ class TestEmailFunctions(unittest.TestCase):
             'email_address': 'john@example.com'
         })
 
-    @patch('builtins.input', side_effect=['maybe', 'yes', '123', 'John', 'no-at-symbol.com', 'john@example.com'])
+    @patch('builtins.input', side_effect=['maybe', 'y', '123', 'John', 'no-at-symbol.com', 'john@example.com'])
     @patch('get_mail.store_email_in_database')
     def test_get_email_invalid_then_valid_input(self, mock_store_email, mock_input):
         """Testing get_email function with invalid inputs followed by valid ones."""
@@ -31,13 +30,13 @@ class TestEmailFunctions(unittest.TestCase):
             'email_address': 'john@example.com'
         })
 
-    @patch('builtins.input', side_effect=['no'])
+    @patch('builtins.input', side_effect=['n'])
     @patch('get_mail.store_email_in_database')
     def test_get_email_no_option(self, mock_store_email, mock_input):
         """Testing get_email function when user opts out."""
         get_email()
 
-        # Ensuring the database function is never called when user says 'no'
+        # Ensuring the database function is never called when user says 'n'
         mock_store_email.assert_not_called()
 
     def test_validate_email(self):

@@ -6,6 +6,7 @@ class Location:
     def __init__(self, host, user, password, db_name):
         """Initialize the database connection."""
         self.db = Database(host=host, user=user, password=password, db_name=db_name)
+        self.shown_cities = set()
 
     def get_countries(self):
         try:
@@ -27,6 +28,11 @@ class Location:
             cities = self.db.fetch_data(table_name="cities", columns=columns, join=join, conditions=conditions)
 
             if cities:
+                cities = [city for city in cities if city[0] not in self.shown_cities]
+                if not cities:
+                    print(f"All cities for {chosen_country} have been shown.")
+                    return None
+
                 print(f"Cities in {chosen_country}:")
                 city_names = [city[0].lower() for city in cities]
 
@@ -69,22 +75,52 @@ class Location:
     def get_holiday_type_cities(self):
         holiday_types = self.get_holiday_type_input()
 
+        # Resetting shown_cities for each new search
+        self.shown_cities.clear()
+
         try:
             conditions = f"cities.keyword IN ({', '.join(f'\'{ht}\'' for ht in holiday_types)})"
             columns = ['cities.city_name', 'countries.country_name', 'cities.keyword']
             join = "INNER JOIN countries ON cities.country_code = countries.country_code"
 
             cities = self.db.fetch_data(table_name="cities", columns=columns, join=join, conditions=conditions)
+            cities = [city for city in cities if city[0] not in self.shown_cities]
 
             if cities:
                 limited_cities = cities[:5]
                 print(f"Cities for {', '.join(holiday_types)} holidays (showing up to 5 results):")
                 for index, city in enumerate(limited_cities, start=1):
                     print(f"{index}. {city[0]} in {city[1]} for {city[2]}")
+
+                # Adding the displayed cities to the shown_cities set
+                self.shown_cities.update([city[0] for city in limited_cities])
+
+                # Asking if any city interests the user
+                is_interested = input("Does any of these cities interest you? Y/N ").strip().lower()
+                if is_interested == 'y':
+                    while True:
+                        try:
+                            city_choice = int(
+                                input("Please enter the number corresponding to the city you want to select: ").strip())
+                            if 1 <= city_choice <= len(limited_cities):
+                                chosen_city = limited_cities[city_choice - 1][0]
+                                print(f"You have selected: {chosen_city}")
+                                return chosen_city
+                            else:
+                                print("Invalid choice. Please enter a number corresponding to one of the cities.")
+                        except ValueError:
+                            print("Invalid input. Please enter a number.")
+                else:
+                    print("No city selected.")
+                    return None
+
             else:
                 print(f"No cities found for {', '.join(holiday_types)} holidays.")
+                return None
+
         except DbConnectionError as e:
             print(f"Error fetching cities for {', '.join(holiday_types)} holidays: {e}")
+            return None
 
     def get_holiday_type_countries(self):
         holiday_types = self.get_holiday_type_input()
@@ -109,3 +145,12 @@ class Location:
     def close(self):
         """Close the database connection."""
         self.db.close()
+
+
+# places = Location(HOST, USER, PASSWORD, "destinations")
+# # chosen_country = input("What country would you like to go to? ")
+# # places.get_cities_by_country(chosen_country)
+# places.get_holiday_type_cities()
+# places.get_holiday_type_cities()
+# places.get_holiday_type_cities()
+
