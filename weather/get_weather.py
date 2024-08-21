@@ -103,13 +103,13 @@ def get_minimum_maximum_average_temperature(chosen_city, weather_for_dates, endp
         return history
     else:
         future = (
-            f"The predicted weather for {chosen_city} on the selected will have an average of "
+            f"The predicted weather for {chosen_city} on the selected dates will have an average of "
             f"{avg_temp_for_dates} °C, with "
-            f"the lowest being {lowest_temp} and the highest being {highest_temp}")
+            f"the lowest being {lowest_temp} °C and the highest being {highest_temp} °C")
         print(
-            f"The predicted weather for {chosen_city} on the selected will have an average of "
+            f"The predicted weather for {chosen_city} on the selected dates will have an average of "
             f"{avg_temp_for_dates} °C, with "
-            f"the lowest being {lowest_temp} and the highest being {highest_temp}")
+            f"the lowest being {lowest_temp} °C and the highest being {highest_temp} °C")
         return future
 
 
@@ -138,17 +138,3 @@ def return_average_number(avg_val_to_find):
     return round(sum(avg_val_to_find) / len(avg_val_to_find), 1)
 
 
-def main():
-
-    print("Hello! Welcome to Journey Genie! Let's start prepping your next holiday!")
-    start_date = input("First, please enter the start date for your holiday (YYYY-MM-DD): ")
-    end_date = input("Now, please enter the end date for your holiday (YYYY-MM-DD): ")
-    knows_where = input("Do you know which country you'd like to go to? Y/N ")
-
-    if knows_where == 'y':
-        knows_destination(start_date, end_date)
-
-
-if __name__ == "__main__":
-    main()
-# pass
