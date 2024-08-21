@@ -8,7 +8,7 @@ CFG Degree Software and Data engineering G1 summer cohort, group 5 project repos
 - Confirm your email through the email they will send you (check you spam!)
 - You can find your API key in 'My Account/Settings'
 
-# Obtaining an weatherapi API Key
+# Obtaining a weatherapi API Key
 
 Navigate to https://www.weatherapi.com/signup.aspx and create an account.
 1. You'll be presented with / navigate to https://www.weatherapi.com/my/ for the API key.
@@ -29,7 +29,7 @@ Go to `config_oli.py`, replace "Password, please" with your own database passwor
 PASSWORD = "Password, please"
 ```
 
-# Obtaining an API Key
+# Obtaining a travelpayouts API Key
 
 Visit https://www.travelpayouts.com/ and create an account.
 1. Scroll to the bottom and click "I’m here for White Label or API"
