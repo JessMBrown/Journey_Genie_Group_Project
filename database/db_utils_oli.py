@@ -39,7 +39,7 @@ class Database:
             if self.connection.is_connected():
                 self.cursor.close()
                 self.connection.close()
-                print("DB connection is closed")
+                # print("DB connection is closed")
 
     def fetch_data(self, table_name, columns='*', conditions=None, join=None):
         """Fetching data from any specified table."""
@@ -64,15 +64,16 @@ class Database:
 
             return results
 
-
         except Exception:
-            raise DbConnectionError("Failed to write data to DB")
+            raise DbConnectionError("Failed to fetch data from DB")
 
-        finally:
-            if self.connection.is_connected():
-                self.cursor.close()
-                self.connection.close()
-                print("DB connection is closed")
+        # the "finally" block has been commented out as it was causing issues with accessing the database in functions
+        # which have been created later
+        # finally:
+        #     if self.connection.is_connected():
+        #         self.cursor.close()
+        #         self.connection.close()
+        #         print("DB connection is closed")
 
     def close(self):
         """Closing the database connection."""

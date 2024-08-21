@@ -1,6 +1,5 @@
 import unittest
 
-import get_weather
 from weather_api_search import GetWeatherByLocation
 
 
@@ -18,7 +17,7 @@ class TestGetWeatherByLocationFunction(unittest.TestCase):
     def test_date_valid_2_days_different_year(self):
         self.input_data = GetWeatherByLocation("London", "2023-12-31", "2024-01-01")
         self.expected = [{'average_temp': 8.1, 'date': '2023-12-31'}, {'average_temp': 8.3, 'date': '2024-01-01'}]
-        self.assertEqual(self.expected, GetWeatherByLocation.get_historic_weather_by_location_and_date(self.input_data))
+        self.assertEqual(self.expected, GetWeatherByLocation.get_weather_by_location_and_date(self.input_data))
 
     def test_date_valid_14_days(self):
         self.input_data = GetWeatherByLocation("London", "2023-12-31", "2024-01-13")
@@ -29,35 +28,35 @@ class TestGetWeatherByLocationFunction(unittest.TestCase):
                          {'date': '2024-01-08', 'average_temp': 2.4}, {'date': '2024-01-09', 'average_temp': 2.1},
                          {'date': '2024-01-10', 'average_temp': 2.1}, {'date': '2024-01-11', 'average_temp': 3.1},
                          {'date': '2024-01-12', 'average_temp': 5.3}, {'date': '2024-01-13', 'average_temp': 3.1}]
-        self.assertEqual(self.expected, GetWeatherByLocation.get_historic_weather_by_location_and_date(self.input_data))
+        self.assertEqual(self.expected, GetWeatherByLocation.get_weather_by_location_and_date(self.input_data))
 
     def test_location_valid_Manchester(self):
         self.input_data = GetWeatherByLocation("Manchester", "2023-12-31", "2023-12-31")
         self.expected = [{'average_temp': 6.2, 'date': '2023-12-31'}]
-        self.assertEqual(self.expected, GetWeatherByLocation.get_historic_weather_by_location_and_date(self.input_data))
+        self.assertEqual(self.expected, GetWeatherByLocation.get_weather_by_location_and_date(self.input_data))
 
     def test_date_invalid_0_days(self):
         self.input_data = GetWeatherByLocation("Manchester", "", "")
         self.expected = None
-        self.assertEqual(self.expected, GetWeatherByLocation.get_historic_weather_by_location_and_date(self.input_data))
+        self.assertEqual(self.expected, GetWeatherByLocation.get_weather_by_location_and_date(self.input_data))
 
     def test_location_invalid_L_o_n_d_o_n(self):
         self.input_data = GetWeatherByLocation("L-o-n-d-o-n", "2023-01-01", "2023-01-01")
         self.expected = None
-        self.assertEqual(self.expected, GetWeatherByLocation.get_historic_weather_by_location_and_date(self.input_data))
+        self.assertEqual(self.expected, GetWeatherByLocation.get_weather_by_location_and_date(self.input_data))
 
     def test_location_boundary_long_name(self):
         self.input_data = GetWeatherByLocation(
             "Maaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaanchester", "2023-01-01",
             "2023-01-01")
         self.expected = None
-        self.assertEqual(self.expected, GetWeatherByLocation.get_historic_weather_by_location_and_date(
+        self.assertEqual(self.expected, GetWeatherByLocation.get_weather_by_location_and_date(
             self.input_data))
 
     def test_date_boundary_very_old(self):
         self.input_data = GetWeatherByLocation("London", "1000-01-01", "1000-01-01")
         self.expected = None
-        self.assertEqual(self.expected, GetWeatherByLocation.get_historic_weather_by_location_and_date(self.input_data))
+        self.assertEqual(self.expected, GetWeatherByLocation.get_weather_by_location_and_date(self.input_data))
 
 
 # add runner to enable automation of running tests using the 'python3 test_weather_api_search.py' command
