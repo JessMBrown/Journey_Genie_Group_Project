@@ -1,6 +1,8 @@
-import weather_api_search
-from config import activities_api_key, hotels_api_key, weather_api_key
+# import weather.weather_api_search
+from weather.weather_api_search import GetWeatherByLocation
 from datetime import datetime, timedelta
+
+get_weather = GetWeatherByLocation(location=None, start_date=None, end_date=None)
 
 
 def knows_destination(start_date, end_date):
@@ -72,9 +74,8 @@ def make_weather_api_request(location, start_date, end_date, endpoint_url, list_
     # separate the requests into two as the api contracts differ in payload and response
     # the endpoint for historic weather accepts a start_date and end_date and will give back everything needed
     if endpoint_url == "history":
-        weather_for_dates = weather_api_search.GetWeatherByLocation(location, start_date,
-                                                                    end_date).get_weather_by_location_and_date(
-            endpoint_url)
+        weather_for_dates = (GetWeatherByLocation(location, start_date, end_date).get_weather_by_location_and_date
+                             (endpoint_url))
         return weather_for_dates
     # the endpoint the for futures weather accepts one start date only and returns that info, so many requests
     # are needed for many dates of weather
@@ -83,8 +84,7 @@ def make_weather_api_request(location, start_date, end_date, endpoint_url, list_
         weather_for_day = []
         # loop through list of individual dates to be searched for and append each response to list
         for item in list_of_dates:
-            weather_for_dates = weather_api_search.GetWeatherByLocation(location, item,
-                                                                        end_date).get_weather_by_location_and_date(
+            weather_for_dates = GetWeatherByLocation(location, item, end_date).get_weather_by_location_and_date(
                 endpoint_url)
             weather_for_day.append(weather_for_dates)
         # flatten the list so all list items can be searched

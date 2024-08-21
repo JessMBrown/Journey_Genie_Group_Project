@@ -17,12 +17,13 @@ class UserInputCheck:
     def formatted_kinds_activities(self, kinds):
         kinds = kinds.strip()
         kinds = re.sub(r',+', ',', kinds)
-        kinds = re.sub(r'\s*,\s*',',', kinds)
+        kinds = re.sub(r'\s*,\s*', ',', kinds)
         kinds = re.sub(r'\s+', ',', kinds)
         kinds = re.sub(r'[-_+=!?/|;:#*~]', '', kinds)
         kinds = kinds.strip(',')
 
         return kinds
+
 
 def get_valid_dates():
     while True:
@@ -41,7 +42,6 @@ def get_valid_dates():
 
             start_date_str = input("When would you like your holiday to start? (dd-mm-yyyy): ")
             start_date = datetime.strptime(start_date_str, "%d-%m-%Y").date()
-
 
             # making sure user does not write a date in the past
             if start_date < today:
@@ -67,6 +67,7 @@ def get_valid_dates():
         except ValueError:
             print("Invalid date format. Please enter the date in dd-mm-yyyy format.")
 
+
 class SavingToFavourites:
     def __init__(self):
         self.favourite_hotels = []
@@ -91,7 +92,6 @@ class SavingToFavourites:
         else:
             print(emoji.emojize('No problem! :thumbs_up:'))
 
-
     def save_favourite_hotels(self, hotel_id, hotel_name, city_choice, input_check, chosen_country):
         self.save_favourites('hotels', hotel_id, hotel_name, city_choice, input_check, chosen_country)
 
@@ -104,8 +104,10 @@ class SavingToFavourites:
         elif category == 'hotels':
             return self.favourite_hotels
 
+
 class State:
     def __init__(self):
         self.chosen_country = None
+
 
 state = State()

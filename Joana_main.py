@@ -1,11 +1,11 @@
 from utils import UserInputCheck, get_valid_dates, SavingToFavourites, state
 import random
 from location.get_location import Location
-from email.get_email import get_email
+from userEmail.get_email import get_email
 from config import HOST, PASSWORD, USER
 from hotels.get_hotels import find_hotels
 from activities.get_activities import get_activities, get_activity_details
-# from weather.get_weather import find_weather
+from weather.get_weather import find_weather
 
 planner = Location(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
 input_check = UserInputCheck()
@@ -77,7 +77,6 @@ def take_me_anywhere(planner, start_date, end_date):
         print(f'An error occurred: {e}')
 
 
-
 def end_of_function_planning(city_choice, start_date, end_date):
     # # call weather
     # avg_weather_in_city_choice = (
@@ -94,10 +93,10 @@ def end_of_function_planning(city_choice, start_date, end_date):
     if final_results:
         get_activity_details(final_results, results, city_choice)
 
-    # call email
+    # call userEmail
     get_email()
 
-    #retrieve list of favourites
+    # retrieve list of favourites
     print(favourites_manager.get_favourites('activities'))
     print(favourites_manager.get_favourites('hotels'))
 
@@ -113,14 +112,22 @@ def main():
     if knows_where == 'y':
         knows_destination(planner, start_date, end_date)
     elif knows_where == 'n':
-        wants_random = input_check.get_input("No worries! We're here to help! Would you like us to make a random guess of a nice holiday place for you? Y/N ")
+        wants_random = input_check.get_input(
+            "No worries! We're here to help! Would you like us to make a random guess of a nice holiday place for "
+            "you? Y/N ")
         if wants_random == 'y':
             take_me_anywhere(planner, start_date, end_date)
         elif wants_random == 'n':
             print("Ok! Let's tailor a holiday for you!")
-            tailored_trip(planner, start_date, end_date)
+            # tailored_trip(planner, start_date, end_date)
 
+
+def get_weather(chosen_city, start_date, end_date):
+    find_weather(chosen_city, start_date, end_date)
+
+
+get_weather('London', '2024-05-01', '2024-05-02')
+print(get_weather)
 
 if __name__ == "__main__":
     main()
-

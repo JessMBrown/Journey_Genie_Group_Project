@@ -8,6 +8,7 @@ from utils import UserInputCheck, SavingToFavourites, state
 favourites_manager = SavingToFavourites()
 input_check = UserInputCheck()
 
+
 def get_activities(city):
     # calling API
     opentripmap_api = OpenTripMapApi(activities_api_key)
@@ -51,7 +52,7 @@ def get_activities(city):
                 if i.isdigit():
                     index = int(i)
                     if 1 <= index <= len(kinds_choices):
-                        kind_key = list(kinds_choices.keys())[index -1]
+                        kind_key = list(kinds_choices.keys())[index - 1]
                         kinds_list.append(kind_key)
 
             # checking user did not enter more than 3 options
@@ -110,6 +111,7 @@ def get_activities(city):
     except Exception as e:
         print(f'Unexpected error: {e}')
 
+
 # to extract specific details
 def extract_specific_details(details):
     # declaring what data from API we want to display
@@ -137,7 +139,8 @@ def get_activity_details(final_results, results, city_choice):
                 xid = item['xid']
                 activity_name = item['name']
                 # calling method from utils to check if user wants to save the activities
-                favourites_manager.save_favourite_activities(xid, activity_name, city_choice, input_check, chosen_country)
+                favourites_manager.save_favourite_activities(xid, activity_name, city_choice, input_check,
+                                                             chosen_country)
         elif wants_details == 'y':
             while True:
                 try:
@@ -149,7 +152,7 @@ def get_activity_details(final_results, results, city_choice):
                         continue
 
                     # extracting name and id of the selected activity to use to call api and to display/save activity
-                    selected_activity = results[activity_choice -1]
+                    selected_activity = results[activity_choice - 1]
                     xid = selected_activity['xid']
                     activity_name = selected_activity['name']
 
@@ -166,7 +169,8 @@ def get_activity_details(final_results, results, city_choice):
                     pprint(activity_details)
 
                     # offering option to save activity
-                    favourites_manager.save_favourite_activities(xid, activity_name, city_choice, input_check, chosen_country)
+                    favourites_manager.save_favourite_activities(xid, activity_name, city_choice, input_check,
+                                                                 chosen_country)
 
                     # offering possibility to get details on other activities
                     other_details = input_check.get_input(f'Would you like details on another activity? Y/N ')
@@ -182,7 +186,6 @@ def get_activity_details(final_results, results, city_choice):
         print('Wrong input! ')
     except Exception as e:
         print(f'Unexpected error: {e}')
-
 
 # final_results, results = get_activities('edinburgh')
 # if final_results:

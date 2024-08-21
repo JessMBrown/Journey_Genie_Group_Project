@@ -66,45 +66,45 @@ class Location:
             else:
                 print("Invalid holiday type(s). Please choose from the valid options.")
 
-    def get_holiday_type_cities(self):
-        holiday_types = self.get_holiday_type_input()
+    # def get_holiday_type_cities(self):
+    #     holiday_types = self.get_holiday_type_input()
+    #
+    #     try:
+    #         conditions = f"cities.keyword IN ({', '.join(f'\'{ht}\'' for ht in holiday_types)})"
+    #         columns = ['cities.city_name', 'countries.country_name', 'cities.keyword']
+    #         join = "INNER JOIN countries ON cities.country_code = countries.country_code"
+    #
+    #         cities = self.db.fetch_data(table_name="cities", columns=columns, join=join, conditions=conditions)
+    #
+    #         if cities:
+    #             limited_cities = cities[:5]
+    #             print(f"Cities for {', '.join(holiday_types)} holidays (showing up to 5 results):")
+    #             for index, city in enumerate(limited_cities, start=1):
+    #                 print(f"{index}. {city[0]} in {city[1]} for {city[2]}")
+    #         else:
+    #             print(f"No cities found for {', '.join(holiday_types)} holidays.")
+    #     except DbConnectionError as e:
+    #         print(f"Error fetching cities for {', '.join(holiday_types)} holidays: {e}")
 
-        try:
-            conditions = f"cities.keyword IN ({', '.join(f'\'{ht}\'' for ht in holiday_types)})"
-            columns = ['cities.city_name', 'countries.country_name', 'cities.keyword']
-            join = "INNER JOIN countries ON cities.country_code = countries.country_code"
-
-            cities = self.db.fetch_data(table_name="cities", columns=columns, join=join, conditions=conditions)
-
-            if cities:
-                limited_cities = cities[:5]
-                print(f"Cities for {', '.join(holiday_types)} holidays (showing up to 5 results):")
-                for index, city in enumerate(limited_cities, start=1):
-                    print(f"{index}. {city[0]} in {city[1]} for {city[2]}")
-            else:
-                print(f"No cities found for {', '.join(holiday_types)} holidays.")
-        except DbConnectionError as e:
-            print(f"Error fetching cities for {', '.join(holiday_types)} holidays: {e}")
-
-    def get_holiday_type_countries(self):
-        holiday_types = self.get_holiday_type_input()
-
-        try:
-            conditions = f"cities.keyword IN ({', '.join(f'\'{ht}\'' for ht in holiday_types)})"
-            columns = ['DISTINCT countries.country_name']
-            join = "INNER JOIN cities ON countries.country_code = cities.country_code"
-
-            countries = self.db.fetch_data(table_name="countries", columns=columns, join=join, conditions=conditions)
-
-            if countries:
-                limited_countries = countries[:5]
-                print(f"Countries for {', '.join(holiday_types)} holidays (showing up to 5 results):")
-                for index, country in enumerate(limited_countries, start=1):
-                    print(f"{index}. {country[0]}")
-            else:
-                print(f"No countries found for {', '.join(holiday_types)} holidays.")
-        except DbConnectionError as e:
-            print(f"Error fetching countries for {', '.join(holiday_types)} holidays: {e}")
+    # def get_holiday_type_countries(self):
+    #     holiday_types = self.get_holiday_type_input()
+    #
+    #     try:
+    #         conditions = f"cities.keyword IN ({', '.join(f'\'{ht}\'' for ht in holiday_types)})"
+    #         columns = ['DISTINCT countries.country_name']
+    #         join = "INNER JOIN cities ON countries.country_code = cities.country_code"
+    #
+    #         countries = self.db.fetch_data(table_name="countries", columns=columns, join=join, conditions=conditions)
+    #
+    #         if countries:
+    #             limited_countries = countries[:5]
+    #             print(f"Countries for {', '.join(holiday_types)} holidays (showing up to 5 results):")
+    #             for index, country in enumerate(limited_countries, start=1):
+    #                 print(f"{index}. {country[0]}")
+    #         else:
+    #             print(f"No countries found for {', '.join(holiday_types)} holidays.")
+    #     except DbConnectionError as e:
+    #         print(f"Error fetching countries for {', '.join(holiday_types)} holidays: {e}")
 
     def close(self):
         """Close the database connection."""

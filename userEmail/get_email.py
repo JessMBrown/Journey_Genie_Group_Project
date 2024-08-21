@@ -7,7 +7,7 @@ from utils import UserInputCheck
 def get_email():
     input_check = UserInputCheck()
     # Looping until the user gives a valid 'yes' or 'no' answer
-    wants_email = input_check.get_input("Would you like to receive suggestions via email? (Y/N): ")
+    wants_email = input_check.get_input("Would you like to receive suggestions via userEmail? (Y/N): ")
 
     if wants_email == 'y':
         # Looping until a valid name is entered
@@ -18,13 +18,13 @@ def get_email():
             else:
                 print("Invalid name. Please enter a valid first name (letters only).")
 
-        # Looping until a valid email address is entered
+        # Looping until a valid userEmail address is entered
         while True:
-            email_address = input("Please enter your email address: ").strip()
+            email_address = input("Please enter your userEmail address: ").strip()
             if validate_email(email_address):
-                break  # Valid email received
+                break  # Valid userEmail received
             else:
-                print("Invalid email address. Please enter a valid email.")
+                print("Invalid userEmail address. Please enter a valid userEmail.")
 
         # Prepare the data to store in the database
         user_data = {
@@ -32,17 +32,17 @@ def get_email():
             'email_address': email_address
         }
 
-        # Storing the email in the database
+        # Storing the userEmail in the database
         store_email_in_database(user_data)
 
         print("Email sent successfully!")
     else:
-        print("Okay, no email will be sent.")
+        print("Okay, no userEmail will be sent.")
 
 
 def validate_email(email):
-    # Regex to validate email addresses - it's used to validate the email address format. It ensures that the email
-    # contains the '@' symbol and follows the general structure of an email address
+    # Regex to validate userEmail addresses - it's used to validate the userEmail address format. It ensures that the userEmail
+    # contains the '@' symbol and follows the general structure of an userEmail address
     email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
     return re.match(email_regex, email) is not None
 
@@ -58,4 +58,4 @@ def store_email_in_database(user_data):
             values=(user_data['first_name'], user_data['email_address'])
         )
     except DbConnectionError as e:
-        print(f"Failed to store email in the database: {e}")
+        print(f"Failed to store userEmail in the database: {e}")
