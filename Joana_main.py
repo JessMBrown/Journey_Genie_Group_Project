@@ -1,11 +1,11 @@
 from utils import UserInputCheck, get_valid_dates, SavingToFavourites, state
 import random
 from location.get_location import Location
-from email.get_email import get_email
+from mail.get_email import get_email
 from config import HOST, PASSWORD, USER
-from hotels.get_hotels import find_hotels
+from hotels.get_hotels import get_hotels
 from activities.get_activities import get_activities, get_activity_details
-# from weather.get_weather import find_weather
+from weather.get_weather import find_weather
 
 planner = Location(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
 input_check = UserInputCheck()
@@ -23,8 +23,6 @@ def knows_destination(planner, start_date, end_date):
             else:
                 print('Invalid answer!')
 
-        state.chosen_country = chosen_country
-
         end_of_function_planning(city_choice, start_date, end_date)
 
         return chosen_country, city_choice
@@ -33,19 +31,15 @@ def knows_destination(planner, start_date, end_date):
         print(f'An error occurred: {e}')
 
 
-# def tailored_trip(planner, start_date, end_date):
-#     # # city/country function to display countries based on what user is looking for
-#     while True:
-#         planner.get_holiday_type_input()
-#         planner.get_holiday_type_cities()
-#         # is_interested = input_check.get_input("Does any of these city interest you? Y/N ")
-#         # if is_interested == 'y':
-#         #     city_choice = input("Please enter the number corresponding to the city you want to select: ")
-#         break
-#
-#
-#     end_of_function_planning(city_choice, start_date, end_date)
-#     return chosen_country
+def tailored_trip(planner, start_date, end_date):
+    # # city/country function to display countries based on what user is looking for
+
+    planner.get_holiday_type_input()
+    city_choice, chosen_country = planner.get_holiday_type_cities()
+    state.chosen_country = chosen_country
+
+    end_of_function_planning(city_choice, start_date, end_date)
+    return chosen_country, city_choice
 
 def take_me_anywhere(planner, start_date, end_date):
     try:
@@ -67,11 +61,9 @@ def take_me_anywhere(planner, start_date, end_date):
             else:
                 print('Invalid answer! Please type Y or N ')
 
-        state.chosen_country = chosen_country
-
         end_of_function_planning(city_choice, start_date, end_date)
 
-        return chosen_country
+        return chosen_country, city_choice
 
     except Exception as e:
         print(f'An error occurred: {e}')
@@ -80,13 +72,11 @@ def take_me_anywhere(planner, start_date, end_date):
 
 def end_of_function_planning(city_choice, start_date, end_date):
     # # call weather
-    # avg_weather_in_city_choice = (
-    # find_weather(city_choice, start_date, end_date)
-    # print(f"The weather last year at the same dates in {city_choice} was an average of {avg_weather_in_city_choice}")
+    find_weather(city_choice, start_date, end_date)
 
     # call hotels
-    print("Great choice! Now, let's find you a hotel! ")
-    find_hotels(city_choice, start_date, end_date)
+    print("Looks great! Now, let's find you a hotel! ")
+    get_hotels(city_choice, start_date, end_date)
 
     # # call activities
     print(f"Let's find you some activities in {city_choice}! ")
@@ -94,12 +84,11 @@ def end_of_function_planning(city_choice, start_date, end_date):
     if final_results:
         get_activity_details(final_results, results, city_choice)
 
-    # call email
+    # call mail
     get_email()
 
     #retrieve list of favourites
-    print(favourites_manager.get_favourites('activities'))
-    print(favourites_manager.get_favourites('hotels'))
+    return favourites_manager.get_favourites('activities'), favourites_manager.get_favourites('hotels')
 
 
 def main():
