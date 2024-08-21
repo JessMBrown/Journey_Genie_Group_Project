@@ -5,14 +5,6 @@ from datetime import datetime, timedelta
 get_weather = GetWeatherByLocation(location=None, start_date=None, end_date=None)
 
 
-def knows_destination(start_date, end_date):
-    chosen_country = input("Please, enter the name of the country: ")  # modify to make it a fixed list of countries
-    #  Make a list of cities to chose from
-    chosen_city = "London"
-    #  Call weather
-    find_weather(chosen_city, start_date, end_date)
-
-
 def find_weather(chosen_city, start_date, end_date):
     endpoint_url = weather_api_endpoint_calculator(start_date)
     list_of_dates = create_list_of_dates(start_date, end_date)
