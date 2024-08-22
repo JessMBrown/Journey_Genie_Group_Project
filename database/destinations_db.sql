@@ -67,7 +67,7 @@ VALUES
 ("bo", "Bolivia"),
 ("py", "Paraguay"),
 ("ec", "Ecuador"),
-("cu", "Cuba"),
+("pt", "Portugal"),
 ("do", "Dominican Republic"),
 ("ht", "Haiti"),
 ("jm", "Jamaica"),
@@ -82,7 +82,8 @@ VALUES
 ("bb", "Barbados"),
 ("sg", "Singapore"),
 ("hk", "Hong Kong"),
-("tw", "Taiwan");
+("tw", "Taiwan"),
+("mx", "Mexico");
 
 CREATE TABLE cities (
 id INT NOT NULL Primary Key,
@@ -328,10 +329,10 @@ VALUES
     (123685, "ec", "Guayaquil", "history"),
     (123686, "ec", "Cuenca", "history"),
     (123687, "ec", "Banos", "tourism"),
-    (123688, "cu", "Havana", "history"),
-    (123689, "cu", "Varadero", "beaches"),
-    (123690, "cu", "Santiago de Cuba", "history"),
-    (123691, "cu", "Trinidad", "history"),
+    (123688, "pt", "Porto", "wine"),
+    (123689, "pt", "Lisbon", "history"),
+    (123690, "pt", "Sintra", "mountains"),
+    (123691, "pt", "Aveiro", "history"),
     (123692, "do", "Santo Domingo", "history"),
     (123693, "do", "Punta Cana", "beaches"),
     (123694, "do", "Puerto Plata", "beaches"),
@@ -389,4 +390,7 @@ VALUES
     (123748, "tw", "Taipei", "museums"),
     (123749, "tw", "Kaohsiung", "history"),
     (123750, "tw", "Taichung", "history"),
-    (123751, "tw", "Tainan", "history");
+    (123751, "tw", "Tainan", "history"),
+    (123752, "mx", "Cancun", "beaches"),
+    (123753, "mx", "Mexico City", "museums"),
+    (123754, "mx", "Taxco", "history");

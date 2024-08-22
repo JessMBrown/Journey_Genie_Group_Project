@@ -148,9 +148,13 @@ class Location:
 
 
 # places = Location(HOST, USER, PASSWORD, "destinations")
-# # chosen_country = input("What country would you like to go to? ")
-# # places.get_cities_by_country(chosen_country)
+# chosen_country = input("What country would you like to go to? ")
+# places.get_cities_by_country(chosen_country)
 # places.get_holiday_type_cities()
 # places.get_holiday_type_cities()
 # places.get_holiday_type_cities()
+# chosen_country = input("What country would you like to go to? ")
+# places.get_cities_by_country(chosen_country)
+# chosen_country = input("What country would you like to go to? ")
+# places.get_cities_by_country(chosen_country)
 
