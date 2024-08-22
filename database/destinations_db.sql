@@ -393,3 +393,39 @@ VALUES
     (123750, "tw", "Taichung", "history"),
     (123751, "tw", "Tainan", "history");
 
+CREATE TABLE favourite_hotels (
+fav_hotel_ID INT NOT NULL auto_increment Primary Key,
+hotel_name VARCHAR(50) NOT NULL,
+city_ID INT NOT NULL,
+country_code VARCHAR(5) NOT NULL,
+favourited_date DATE,
+CONSTRAINT fk_country_code
+FOREIGN KEY (country_code)
+REFERENCES countries(country_code),
+FOREIGN KEY (city_ID)
+REFERENCES cities(id));
+
+INSERT INTO favourite_hotels (
+fav_hotel_name, city_ID, country_code, favourited_date)
+VALUES
+("the village hotel", 123466, "gb", '2024-01-01');
+
+
+CREATE TABLE favourite_activities (
+activity_ID INT NOT NULL auto_increment Primary Key,
+city_ID INT NOT NULL,
+country_code VARCHAR(5) NOT NULL,
+kinds VARCHAR(100) NOT NULL,
+x_id VARCHAR(15) NOT NULL,
+rate INT NOT NULL,
+favourited_date DATE,
+CONSTRAINT fk_country_codes
+FOREIGN KEY (country_code)
+REFERENCES countries(country_code),
+FOREIGN KEY (city_ID)
+REFERENCES cities(id));
+
+INSERT INTO favourite_activities (
+city_ID, country_code, kinds, x_id, rate, favourited_date)
+VALUES
+(123464, "gb", "bridges,architecture,interesting_places,other_bridges", "N635975585", 3, '2024-01-01');
