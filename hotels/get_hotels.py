@@ -2,6 +2,10 @@ from hotels.hotels_api import fetch_price, fetch_hotels_with_filters, search_cit
 from utils import UserInputCheck, SavingToFavourites
 import urllib.parse
 
+class CityNotFoundError(Exception):
+    pass
+
+
 favourites_manager = SavingToFavourites()
 input_check = UserInputCheck()
 
@@ -17,7 +21,9 @@ def city_search(city_choice):
                 return location
 
         # if nothing is found, a prompt for the user to try again
-        print(f"No locations found matching the name '{city_choice}'. Try again.")
+
+        raise CityNotFoundError(f"No locations found matching the name '{city_choice}'. Try again.")
+
 
 def get_number_of_people():
     while True:
@@ -113,33 +119,42 @@ def get_hotel_choice(hotel_prices):
             if 1 <= hotel_choice <= len(hotel_prices):
                 chosen_hotel = hotel_prices[hotel_choice - 1]
                 print(f"\nYou selected: {chosen_hotel['hotelName']} - Total Price: {chosen_hotel['price']} GBP")
+                print(chosen_hotel)
                 return chosen_hotel
             else:
                 print("Invalid choice. Try again.")
         except ValueError:
             print("Invalid input. Please enter a valid number.")
 
+
+def save_hotel_to_favourite(results, city_choice, country_choice):
+    hotel_id, hotel_name = results['hotelId'], results['hotelName']
+    # calling method from utils to check if user wants to save the activities
+    favourites_manager.save_favourite_hotels(hotel_id, hotel_name, city_choice, input_check, country_choice)
+
+
+
 def get_hotels(city_choice, start_date, end_date):
     while True:
-        city_choice = city_search(city_choice)
+        chosen_option = city_search(city_choice)
         adults = get_number_of_people()
         rooms = get_number_of_rooms(adults)
         selected_filters = get_selected_filters()
 
-        hotel_prices = find_hotels(city_choice['id'], start_date, end_date, selected_filters, rooms, adults)
+        hotel_prices = find_hotels(chosen_option['id'], start_date, end_date, selected_filters, rooms, adults)
 
         if hotel_prices:
-            hotels_with_links = fetch_hotel_details_with_links(city_choice['id'], start_date, end_date, selected_filters, rooms, adults)
-            display_hotels_with_links(hotel_prices, hotels_with_links, city_choice['cityName'], selected_filters)
+            hotels_with_links = fetch_hotel_details_with_links(chosen_option['id'], start_date, end_date, selected_filters, rooms, adults)
+            display_hotels_with_links(hotel_prices, hotels_with_links, chosen_option['cityName'], selected_filters)
             hotel_selected = get_hotel_choice(hotel_prices)
-            print(hotel_selected)
             if hotel_selected:
                 # call method from utils to save favourites
-                favourites_manager.save_favourite_hotels(hotel_selected['hotelId'], hotel_selected['hotelName'], city_choice['cityName'], input_check, city_choice['countryName'])
+                save_hotel_to_favourite(hotel_selected, chosen_option['cityName'], chosen_option['countryName'])
                 # offering possibility to choose another hotel
                 other_details = input_check.get_input(f'Would you like to select another hotel? Y/N ')
                 if other_details != 'y':
                     break
+            print(favourites_manager.get_favourites('hotels'))
             return favourites_manager.get_favourites('hotels')
         else:
             print("No hotels with valid prices were found. Please try another city or modify your criteria.")

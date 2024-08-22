@@ -41,13 +41,19 @@ def tailored_trip(planner, start_date, end_date):
     return chosen_country, city_choice
 
 def take_me_anywhere(planner, start_date, end_date):
+    city_choice = None
+    random_countries = []
     try:
         #  create code to randomly call a country
         country_list = planner.get_countries()
 
         while True:
-            random_countries = random.sample(country_list, k=5)
-            good_selection = input(f"Fancy any of these countries? {random_countries} Y/N ").lower().strip()
+            if not random_countries:
+                random_countries = random.sample(country_list, k=5)
+
+            # creating a variable to store the sample and format it. In case a wrong input it will be displayed again
+            display_countries = ', '.join(random_countries)
+            good_selection = input(f"Fancy any of these countries? {display_countries} Y/N ").lower().strip()
             if good_selection == 'y':
                 chosen_country = input('Please enter the name of the country: ').strip().lower()
                 if chosen_country in [country.lower() for country in random_countries]:
@@ -56,17 +62,18 @@ def take_me_anywhere(planner, start_date, end_date):
                     break
             elif good_selection == 'n':
                 print('No worries! ')
+                random_countries = []
                 continue
             else:
-                print('Invalid answer! Please type Y or N ')
-
-        end_of_function_planning(city_choice, start_date, end_date)
-
-        return city_choice
+                print(f'Invalid answer! Please try again: ')
 
     except Exception as e:
         print(f'An error occurred: {e}')
 
+    if city_choice:
+        end_of_function_planning(city_choice, start_date, end_date)
+
+    return city_choice
 
 
 def end_of_function_planning(city_choice, start_date, end_date):

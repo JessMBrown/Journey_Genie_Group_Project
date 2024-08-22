@@ -26,6 +26,7 @@ def find_and_display_activities(city):
 
     final_results = process_and_display_activities(activities, city)
     get_activity_details(final_results, activities, city, country_choice)
+    # print(favourites_manager.get_favourites('activities'))
 
 # retrieve the country name for the chosen city
 def get_country_for_city(city):
