@@ -24,7 +24,7 @@ to set up the database
 
 2. Config DB password 
 
-Go to `config_oli.py`, replace "Password, please" with your own database password :
+Go to `config.py`, replace "Password, please" with your own database password :
 ```shell
 PASSWORD = "Password, please"
 ```

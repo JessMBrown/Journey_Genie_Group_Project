@@ -1,4 +1,3 @@
-# import weather.weather_api_search
 from weather.weather_api_search import GetWeatherByLocation
 from datetime import datetime, timedelta
 
@@ -14,22 +13,23 @@ def find_weather(chosen_city, start_date, end_date):
 
 
 def weather_api_endpoint_calculator(start_date):
-    present_date = str(datetime.today().date())
-    from_300_days_present_date = str(add_days(300))
-    fourteen_days_in_the_future = str(add_days(14))
-    fourteen_days_in_the_past = str(subtract_days(14))
+    present_date = datetime.today().date()
+    string_of_present_date = str(present_date)
+    from_300_days_present_date = str(add_days(300, present_date))
+    fourteen_days_in_the_future = str(add_days(14, present_date))
+    fourteen_days_in_the_past = str(subtract_days(14, present_date))
     # if the start_date is +/- 14 days from present_date then cannot get weather due to api limitations
-    if fourteen_days_in_the_past <= str(start_date) < present_date or fourteen_days_in_the_future > str(
-            start_date) > present_date:
+    if fourteen_days_in_the_past <= str(start_date) < string_of_present_date or fourteen_days_in_the_future > str(
+            start_date) > string_of_present_date:
         print("Sorry, cannot fetch the weather for these dates")
         #     if the start_date is more than 300 days from present_date or is less than present_date
         #     then the endpoint_url = "history" - reasoning, the API only returns weather predictions
-        #     300 days from todays date, so if the dates requested are more than the APIs limits for
+        #     300 days from today's date, so if the dates requested are more than the APIs limits for
         #     predictions use the data from the historic data
-    elif str(start_date) > from_300_days_present_date or str(start_date) < present_date:
+    elif str(start_date) > from_300_days_present_date or str(start_date) < string_of_present_date:
         endpoint_url = "history"
         return endpoint_url
-    elif str(start_date) > present_date:
+    elif str(start_date) > string_of_present_date:
         endpoint_url = "future"
         return endpoint_url
 
@@ -37,12 +37,12 @@ def weather_api_endpoint_calculator(start_date):
         print("Cannot get weather for this date")
 
 
-def add_days(number_of_days_to_add, today_date=datetime.today().date()):
-    return today_date + timedelta(number_of_days_to_add)
+def add_days(number_of_days_to_add, date_to_be_added_to):
+    return date_to_be_added_to + timedelta(number_of_days_to_add)
 
 
-def subtract_days(number_of_days_to_subtract, today_date=datetime.today().date()):
-    return today_date - timedelta(number_of_days_to_subtract)
+def subtract_days(number_of_days_to_subtract, date_to_be_subtracted_from):
+    return date_to_be_subtracted_from - timedelta(number_of_days_to_subtract)
 
 
 def create_list_of_dates(start_date, end_date):
@@ -96,10 +96,10 @@ def get_minimum_maximum_average_temperature(chosen_city, weather_for_dates, endp
     if endpoint == "history":
         history = (
             f"The weather last year on the same dates in {chosen_city} was an average of {avg_temp_for_dates} °C, with "
-            f"the lowest being {lowest_temp} and the highest being {highest_temp}")
+            f"the lowest being {lowest_temp} °C and the highest being {highest_temp} °C")
         print(
             f"The weather last year on the same dates in {chosen_city} was an average of {avg_temp_for_dates} °C, with "
-            f"the lowest being {lowest_temp} and the highest being {highest_temp}")
+            f"the lowest being {lowest_temp} °C and the highest being {highest_temp} °C")
         return history
     else:
         future = (
@@ -136,5 +136,3 @@ def find_avg_val_from_dict(avg_val_to_find):
 def return_average_number(avg_val_to_find):
     # round the average to 1 decimal place, seeing the message average of 8.16666666 °C is not as informative as 8.2
     return round(sum(avg_val_to_find) / len(avg_val_to_find), 1)
-
-
