@@ -32,9 +32,7 @@ def knows_destination(planner, start_date, end_date):
 
 
 def tailored_trip(planner, start_date, end_date):
-    # # city/country function to display countries based on what user is looking for
-
-    planner.get_holiday_type_input()
+    # city/country function to display countries based on what user is looking for
     city_choice, chosen_country = planner.get_holiday_type_cities()
 
     end_of_function_planning(city_choice, start_date, end_date)

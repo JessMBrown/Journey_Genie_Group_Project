@@ -1,6 +1,6 @@
 from hotels.hotels_api import fetch_price, fetch_hotels_with_filters, search_cities, fetch_hotel_details_with_links
 from utils import UserInputCheck, SavingToFavourites
-import urllib.parse
+import urllib.parse, emoji
 
 class CityNotFoundError(Exception):
     pass
@@ -60,6 +60,7 @@ def get_selected_filters():
         print(f"{index}. {filter_name.capitalize()}")
 
     selected_filters = input("Enter the numbers corresponding to the filters you'd like to apply (comma-separated): ")
+    print(f'Loading...{emoji.emojize("\u231B")}')
     return [available_filters[int(index) - 1] for index in selected_filters.split(",")]
 
 
@@ -97,6 +98,7 @@ def find_hotels(location_id, start_date, end_date, selected_filters, rooms, adul
 # link for the hotels
 def display_hotels_with_links(hotel_prices, hotels_with_links, city_name, selected_filters):
     print(f"\nHotels in {city_name} with the filters: {(', '.join(selected_filters)).capitalize()} (by price asc):")
+
 
     for index, hotel in enumerate(hotel_prices):
         price_display = f"{hotel['price']} GBP" if isinstance(hotel['price'], (int, float)) else hotel['price']
@@ -154,7 +156,10 @@ def get_hotels(city_choice, start_date, end_date):
                 other_details = input_check.get_input(f'Would you like to select another hotel? Y/N ')
                 if other_details != 'y':
                     break
-            print(favourites_manager.get_favourites('hotels'))
-            return favourites_manager.get_favourites('hotels')
         else:
             print("No hotels with valid prices were found. Please try another city or modify your criteria.")
+
+    saved_favourite_hotels = favourites_manager.get_favourites('hotels')
+    print(saved_favourite_hotels)
+    return saved_favourite_hotels
+
