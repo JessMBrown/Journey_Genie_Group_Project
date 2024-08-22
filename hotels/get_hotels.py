@@ -5,9 +5,8 @@ import urllib.parse
 favourites_manager = SavingToFavourites()
 input_check = UserInputCheck()
 
+
 # searching for a city to go to
-
-
 def city_search(city_choice):
     while True:
         data = search_cities(city_choice)

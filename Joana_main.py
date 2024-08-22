@@ -1,10 +1,10 @@
-from utils import UserInputCheck, get_valid_dates, SavingToFavourites, state
+from utils import UserInputCheck, get_valid_dates, SavingToFavourites
 import random
 from location.get_location import Location
 from mail.get_email import get_email
 from config import HOST, PASSWORD, USER
 from hotels.get_hotels import get_hotels
-from activities.get_activities import get_activities, get_activity_details
+from activities.get_activities import find_and_display_activities
 from weather.get_weather import find_weather
 
 planner = Location(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
@@ -25,7 +25,7 @@ def knows_destination(planner, start_date, end_date):
 
         end_of_function_planning(city_choice, start_date, end_date)
 
-        return chosen_country, city_choice
+        return city_choice
 
     except Exception as e:
         print(f'An error occurred: {e}')
@@ -36,7 +36,6 @@ def tailored_trip(planner, start_date, end_date):
 
     planner.get_holiday_type_input()
     city_choice, chosen_country = planner.get_holiday_type_cities()
-    state.chosen_country = chosen_country
 
     end_of_function_planning(city_choice, start_date, end_date)
     return chosen_country, city_choice
@@ -63,7 +62,7 @@ def take_me_anywhere(planner, start_date, end_date):
 
         end_of_function_planning(city_choice, start_date, end_date)
 
-        return chosen_country, city_choice
+        return city_choice
 
     except Exception as e:
         print(f'An error occurred: {e}')
@@ -80,9 +79,7 @@ def end_of_function_planning(city_choice, start_date, end_date):
 
     # # call activities
     print(f"Let's find you some activities in {city_choice}! ")
-    final_results, results = get_activities(city_choice)
-    if final_results:
-        get_activity_details(final_results, results, city_choice)
+    find_and_display_activities(city_choice)
 
     # call mail
     get_email()

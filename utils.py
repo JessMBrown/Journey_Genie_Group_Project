@@ -73,7 +73,6 @@ class SavingToFavourites:
         self.favourite_activities = []
 
     def save_favourites(self, category, id, name, city_choice, input_check, chosen_country):
-        chosen_country = state.chosen_country
         wants_save = input_check.get_input(f'Would you like to save this {category} in your list of favourites? Y/N ')
         if wants_save == 'y':
             item = {
@@ -105,8 +104,3 @@ class SavingToFavourites:
         elif category == 'hotels':
             return self.favourite_hotels
 
-class State:
-    def __init__(self):
-        self.chosen_country = None
-
-state = State()

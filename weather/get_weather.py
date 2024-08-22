@@ -96,21 +96,21 @@ def get_minimum_maximum_average_temperature(chosen_city, weather_for_dates, endp
 
     if endpoint == "history":
         history = (
-            f"The weather last year on the same dates in {chosen_city} was an average of {avg_temp_for_dates} °C, with "
-            f"the lowest being {lowest_temp} and the highest being {highest_temp}")
+            f"The weather last year on the same dates in {chosen_city} was an average of {avg_temp_for_dates}°C, with "
+            f"the lowest being {lowest_temp}°C and the highest being {highest_temp}°C.")
         print(
-            f"The weather last year on the same dates in {chosen_city} was an average of {avg_temp_for_dates} °C, with "
-            f"the lowest being {lowest_temp} and the highest being {highest_temp}")
+            f"The weather last year on the same dates in {chosen_city} was an average of {avg_temp_for_dates}°C, with "
+            f"the lowest being {lowest_temp}°C and the highest being {highest_temp}°C.")
         return history
     else:
         future = (
-            f"The predicted weather for {chosen_city} on the selected dates will have an average of "
-            f"{avg_temp_for_dates} °C, with "
-            f"the lowest being {lowest_temp} and the highest being {highest_temp}")
+            f"The predicted weather for {chosen_city} on the selected dates will be an average of "
+            f"{avg_temp_for_dates}°C, with "
+            f"the lowest being {lowest_temp}°C and the highest being {highest_temp}°C.")
         print(
-            f"The predicted weather for {chosen_city} on the selected will have an average of "
-            f"{avg_temp_for_dates} °C, with "
-            f"the lowest being {lowest_temp} and the highest being {highest_temp}")
+            f"The predicted weather for {chosen_city} on the selected dates will be an average of "
+            f"{avg_temp_for_dates}°C, with "
+            f"the lowest being {lowest_temp}°C and the highest being {highest_temp}°C.")
         return future
 
 
