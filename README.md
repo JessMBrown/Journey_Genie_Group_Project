@@ -22,6 +22,8 @@ Welcome to Journey Genie, our console-based application that helps you plan your
 📆 Narrow your search with dates, number of people and number of rooms
 
 ⭐ Filter hotels with the option of 10 categories such as stars, family-friendly and hotels with pools
+
+💸 Find out the price of the hotels in ascending order
  
 🔗 Clickable link to help decide the perfect hotel for you
 
