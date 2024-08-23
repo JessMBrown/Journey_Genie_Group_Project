@@ -85,12 +85,13 @@ def get_cities():
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 
+
 @app.route('/view/favourite_hotels/<int:hotel_id>', methods=['GET'])
 def get_favourite_hotels(hotel_id):
     db = Database(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
     try:
         table_name = 'favourite_hotels'
-        columns = ['hotel_name', 'favourited_date']
+        columns = ['hotel_name', 'favourite_date']
         conditions = f' hotel_ID = {hotel_id}'
         join = None
 
@@ -149,9 +150,9 @@ def add_favourite_hotels():
             # Specifying the table name
             table_name='favourite_hotels',
             # Specifying the columns
-            columns=['fav_hotel_name', 'city_ID', 'country_code', 'favourited_date'],
+            columns=['fav_hotel_name', 'city_ID', 'country_code', 'favourite_date'],
             # Passing the values as a tuple
-            values=(adding['fav_hotel_name'], adding['city_ID'], adding['country_code'], adding['favourited_date'])
+            values=(adding['fav_hotel_name'], adding['city_ID'], adding['country_code'], adding['favourite_date'])
         )
 
         return jsonify({'status': 'success', 'data': adding}), 200
@@ -176,9 +177,9 @@ def add_favourite_activities():
         # Calling the add_new_data method
         db.add_new_data(
             table_name='favourite_activities',  # Specifying the table name
-            columns=['city_ID', 'country_code', 'kinds', 'x_id', 'rate', 'favourited_date'],  # Specifying the columns
+            columns=['city_ID', 'country_code', 'kinds', 'x_id', 'rate', 'favourite_date'],  # Specifying the columns
             values=(adding['city_ID'], adding['country_code'], adding['kinds'], adding['x_id'],
-                    adding['rate'],adding['favourited_date'])  # Passing the values as a tuple
+                    adding['rate'],adding['favourite_date'])  # Passing the values as a tuple
         )
 
         return jsonify({'status': 'success', 'data': adding}), 200
@@ -191,6 +192,10 @@ def add_favourite_activities():
 
     except Exception as e:  # to catch any other issues
         return jsonify({'status': 'error', 'message': str(e)}), 500
+
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5001)
 
 
 if __name__ == '__main__':

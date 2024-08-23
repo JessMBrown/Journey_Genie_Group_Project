@@ -81,3 +81,43 @@ def fetch_price(hotel_id=None, check_in=None, check_out=None, rooms=1, adults=2,
     except Exception as e:
         print(f"Exception occurred while fetching price for hotel ID: {hotel_id}: {e}")
         return "Price unavailable"
+<<<<<<< HEAD
+=======
+
+
+# api call to get the hotel link
+def fetch_hotel_details_with_links(location_id, check_in, check_out, adults=2, currency='GBP', language='en_us'):
+    url = "https://engine.hotellook.com/api/v2/static/hotels.json"
+    hotel_details_payload = {
+        'locationId': location_id,
+        'token': hotels_api_key,
+    }
+
+    response = requests.get(url, params=hotel_details_payload)
+    hotels_data = checking_api_response_success(response)
+
+    if hotels_data is None or 'hotels' not in hotels_data:
+        return []
+
+    hotels_with_links = []
+    base_url = "https://search.hotellook.com/hotels"
+
+    for hotel in hotels_data['hotels']:
+        hotel_id = hotel['id']
+        city_id = hotel['cityId']
+        destination = hotel['name']['en'].replace(" ", "+")
+
+        full_link = (
+            f"{base_url}?=1&adults={adults}&checkIn={check_in.strftime('%Y-%m-%d')}"
+            f"&checkOut={check_out.strftime('%Y-%m-%d')}&children=&cityId={city_id}"
+            f"&currency={currency}&destination={destination}&hotelId={hotel_id}&language={language}&marker=support_travelpayouts.com"
+        )
+
+        hotels_with_links.append({
+            'hotelName': hotel['name']['en'],
+            'hotelId': hotel_id,
+            'link': full_link
+        })
+
+    return hotels_with_links
+>>>>>>> joana_branch

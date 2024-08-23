@@ -67,7 +67,7 @@ VALUES
 ("bo", "Bolivia"),
 ("py", "Paraguay"),
 ("ec", "Ecuador"),
-("cu", "Cuba"),
+("pt", "Portugal"),
 ("do", "Dominican Republic"),
 ("ht", "Haiti"),
 ("jm", "Jamaica"),
@@ -82,7 +82,8 @@ VALUES
 ("bb", "Barbados"),
 ("sg", "Singapore"),
 ("hk", "Hong Kong"),
-("tw", "Taiwan");
+("tw", "Taiwan"),
+("mx", "Mexico");
 
 CREATE TABLE cities (
 id INT NOT NULL Primary Key,
@@ -134,7 +135,7 @@ VALUES
     (123491, "nl", "Hague", "history"),
     (123492, "se", "Stockholm", "museums"),
     (123493, "se", "Gothenburg", "museums"),
-    (123494, "se", "Malmö", "history"),
+    (123494, "se", "Malmo", "history"),
     (123495, "se", "Uppsala", "history"),
     (123496, "no", "Oslo", "museums"),
     (123497, "no", "Bergen", "history"),
@@ -283,7 +284,7 @@ VALUES
     (123640, "ci", "Abidjan", "history"),
     (123641, "ci", "Yamoussoukro", "history"),
     (123642, "ci", "San Pedro", "history"),
-    (123643, "ci", "Bouaké", "history"),
+    (123643, "ci", "Bouake", "history"),
     (123644, "zw", "Harare", "history"),
     (123645, "zw", "Bulawayo", "history"),
     (123646, "zw", "Victoria Falls", "tourism"),
@@ -301,15 +302,15 @@ VALUES
     (123658, "br", "Salvador", "history"),
     (123659, "br", "Brasilia", "history"),
     (123660, "ar", "Buenos Aires", "theatre"),
-    (123661, "ar", "Córdoba", "history"),
+    (123661, "ar", "Cordoba", "history"),
     (123662, "ar", "Mendoza", "mountains"),
     (123663, "ar", "Rosario", "history"),
     (123664, "cl", "Santiago", "history"),
-    (123665, "cl", "Valparaíso", "history"),
-    (123666, "cl", "Concepción", "history"),
+    (123665, "cl", "Valparaiso", "history"),
+    (123666, "cl", "Concepcion", "history"),
     (123667, "cl", "La Serena", "history"),
-    (123668, "co", "Bogotá", "museums"),
-    (123669, "co", "Medellín", "history"),
+    (123668, "co", "Bogota", "museums"),
+    (123669, "co", "Medellin", "history"),
     (123670, "co", "Cartagena", "beaches"),
     (123671, "co", "Cali", "history"),
     (123672, "uy", "Montevideo", "beaches"),
@@ -320,24 +321,24 @@ VALUES
     (123677, "bo", "Santa Cruz", "history"),
     (123678, "bo", "Sucre", "history"),
     (123679, "bo", "Cochabamba", "history"),
-    (123680, "py", "Asunción", "history"),
+    (123680, "py", "Asuncion", "history"),
     (123681, "py", "Ciudad del Este", "history"),
-    (123682, "py", "Encarnación", "history"),
-    (123683, "py", "Concepción", "history"),
+    (123682, "py", "Encarnacion", "history"),
+    (123683, "py", "Concepcion", "history"),
     (123684, "ec", "Quito", "history"),
     (123685, "ec", "Guayaquil", "history"),
     (123686, "ec", "Cuenca", "history"),
-    (123687, "ec", "Baños", "tourism"),
-    (123688, "cu", "Havana", "history"),
-    (123689, "cu", "Varadero", "beaches"),
-    (123690, "cu", "Santiago de Cuba", "history"),
-    (123691, "cu", "Trinidad", "history"),
+    (123687, "ec", "Banos", "tourism"),
+    (123688, "pt", "Porto", "wine"),
+    (123689, "pt", "Lisbon", "history"),
+    (123690, "pt", "Sintra", "mountains"),
+    (123691, "pt", "Aveiro", "history"),
     (123692, "do", "Santo Domingo", "history"),
     (123693, "do", "Punta Cana", "beaches"),
     (123694, "do", "Puerto Plata", "beaches"),
     (123695, "do", "Santiago", "history"),
     (123696, "ht", "Port-au-Prince", "history"),
-    (123697, "ht", "Cap-Haïtien", "history"),
+    (123697, "ht", "Cap-Haotien", "history"),
     (123698, "ht", "Jacmel", "history"),
     (123699, "ht", "Les Cayes", "history"),
     (123700, "jm", "Kingston", "history"),
@@ -348,15 +349,13 @@ VALUES
     (123705, "bs", "Freeport", "beaches"),
     (123706, "bs", "Andros Town", "beaches"),
     (123707, "bs", "Eleuthera", "beaches"),
-    (123708, "ag", "St. John's", "beaches"),
     (123709, "ag", "English Harbour", "beaches"),
     (123710, "ag", "Jolly Harbour", "beaches"),
     (123711, "ag", "Falmouth", "beaches"),
     (123712, "lc", "Castries", "beaches"),
     (123713, "lc", "Gros Islet", "beaches"),
-    (123714, "lc", "Soufrière", "beaches"),
+    (123714, "lc", "Soufriere", "beaches"),
     (123715, "lc", "Vieux Fort", "beaches"),
-    (123716, "gd", "St. George's", "beaches"),
     (123717, "gd", "Grand Anse", "beaches"),
     (123718, "gd", "Sauteurs", "beaches"),
     (123719, "gd", "Carriacou", "beaches"),
@@ -391,14 +390,15 @@ VALUES
     (123748, "tw", "Taipei", "museums"),
     (123749, "tw", "Kaohsiung", "history"),
     (123750, "tw", "Taichung", "history"),
+<<<<<<< HEAD
     (123751, "tw", "Tainan", "history");
 
 CREATE TABLE favourite_hotels (
-fav_hotel_ID INT NOT NULL auto_increment Primary Key,
+fav_hotel_ID INT NOT NULL Primary Key,
 hotel_name VARCHAR(50) NOT NULL,
 city_ID INT NOT NULL,
 country_code VARCHAR(5) NOT NULL,
-favourited_date DATE,
+favourite_date DATE,
 CONSTRAINT fk_country_code
 FOREIGN KEY (country_code)
 REFERENCES countries(country_code),
@@ -406,19 +406,17 @@ FOREIGN KEY (city_ID)
 REFERENCES cities(id));
 
 INSERT INTO favourite_hotels (
-fav_hotel_name, city_ID, country_code, favourited_date)
+fav_hotel_ID, hotel_name, city_ID, country_code, favourited_date)
 VALUES
-("the village hotel", 123466, "gb", '2024-01-01');
+("89176", "Shangri-La Toronto", '123460', "ca", '2024-08-23');
 
 
 CREATE TABLE favourite_activities (
-activity_ID INT NOT NULL auto_increment Primary Key,
+activity_ID VARCHAR(10) NOT NULL Primary Key,
+activity_name VARCHAR(50) NOT NULL,
 city_ID INT NOT NULL,
 country_code VARCHAR(5) NOT NULL,
-kinds VARCHAR(100) NOT NULL,
-x_id VARCHAR(15) NOT NULL,
-rate INT NOT NULL,
-favourited_date DATE,
+favourite_date DATE,
 CONSTRAINT fk_country_codes
 FOREIGN KEY (country_code)
 REFERENCES countries(country_code),
@@ -426,6 +424,6 @@ FOREIGN KEY (city_ID)
 REFERENCES cities(id));
 
 INSERT INTO favourite_activities (
-city_ID, country_code, kinds, x_id, rate, favourited_date)
+activity_ID, activity_name, city_ID, country_code, favourited_date)
 VALUES
-(123464, "gb", "bridges,architecture,interesting_places,other_bridges", "N635975585", 3, '2024-01-01');
+('Q60749334', "LEGOLAND Discovery Centre Toronto", '123460', "ca", '2024-08-23');

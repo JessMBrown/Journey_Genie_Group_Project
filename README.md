@@ -7,11 +7,17 @@ CFG Degree Software and Data engineering G1 summer cohort, group 5 project repos
 - Enter your personal information
 - Confirm your email through the email they will send you (check you spam!)
 - You can find your API key in 'My Account/Settings'
+- Add it to the config.py file on the line 'activities_api_key'
 
+<<<<<<< HEAD
 # Obtaining a weatherapi API Key
+=======
+# Obtaining the weather API Key
+>>>>>>> joana_branch
 
-Navigate to https://www.weatherapi.com/signup.aspx and create an account.
+Navigate to [the weatherapi website](https://www.weatherapi.com/signup.aspx) and create an account.
 1. You'll be presented with / navigate to https://www.weatherapi.com/my/ for the API key.
+<<<<<<< HEAD
 2. For the Swagger navigate to https://app.swaggerhub.com/apis-docs/WeatherAPI.com/WeatherAPI/1.0.2, scroll down and select the 'Authorize' button and enter your API key to start using it
 
 
@@ -47,3 +53,8 @@ PASSWORD = "<your_local_db_password>"
 USER = "<your_local_db_user_name>"
 ```
 
+=======
+2. For the Swagger navigate to https://app.swaggerhub.com/apis-docs/WeatherAPI.com/WeatherAPI/1.0.2, 
+scroll down and select the 'Authorize' button and enter your API key to start using it
+3. Add it to the config.py file on the line 'weather_api_key'
+>>>>>>> joana_branch
