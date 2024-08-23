@@ -1,5 +1,5 @@
 import requests
-from config import hotels_api_key
+from config_joana import hotels_api_key
 
 
 # function to handle api response
@@ -9,7 +9,6 @@ def checking_api_response_success(response):
     else:
         print(f"...request failed with status code: {response.status_code}")
         return None
-
 
 # api call for the city search
 def search_cities(query):
@@ -26,7 +25,6 @@ def search_cities(query):
     # request to search for cities
     response = requests.get(url, params=search_payload)
     return checking_api_response_success(response)
-
 
 # api call to fetch hotels with selected filters
 def fetch_hotels_with_filters(location_id, check_in, check_out, selected_filters):
@@ -88,7 +86,6 @@ def fetch_hotels_with_filters(location_id, check_in, check_out, selected_filters
 
     return filtered_hotels
 
-
 # api call for the price of hotels
 def fetch_price(hotel_id=None, check_in=None, check_out=None, rooms=1, adults=2, currency='GBP'):
     price_url = "https://engine.hotellook.com/api/v2/cache.json"
@@ -114,8 +111,6 @@ def fetch_price(hotel_id=None, check_in=None, check_out=None, rooms=1, adults=2,
     except Exception as e:
         print(f"Exception occurred while fetching price for hotel ID: {hotel_id}: {e}")
         return "Price unavailable"
-<<<<<<< HEAD
-=======
 
 
 # api call to get the hotel link
@@ -153,4 +148,3 @@ def fetch_hotel_details_with_links(location_id, check_in, check_out, adults=2, c
         })
 
     return hotels_with_links
->>>>>>> joana_branch

@@ -93,7 +93,7 @@ to set up the database
   ```
 ---
 <a name="putting-the-tokens-in-the-configpy"></a>
-### 5. Putting the tokens in the Config.py
+### 5. Putting the tokens in the config.py
 - Enter all the necessary API keys in the right places
 
 ---

@@ -2,7 +2,7 @@ from hotels.hotels_api import fetch_price, fetch_hotels_with_filters, search_cit
 from utils import UserInputCheck
 import urllib.parse, emoji
 from mail_and_favourites.get_favourites import SavingToFavourites
-from config import HOST, PASSWORD, USER
+from config_joana import HOST, PASSWORD, USER
 from location.get_location import Location
 
 class CityNotFoundError(Exception):

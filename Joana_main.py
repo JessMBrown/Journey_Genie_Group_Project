@@ -3,7 +3,7 @@ import random
 from mail_and_favourites.get_favourites import SavingToFavourites, store_favourites_in_database
 from location.get_location import Location
 from mail_and_favourites.get_email import get_email
-from config import HOST, PASSWORD, USER
+from config_joana import HOST, PASSWORD, USER
 from hotels.get_hotels import get_hotels
 from activities.get_activities import find_and_display_activities
 from weather.get_weather import find_weather

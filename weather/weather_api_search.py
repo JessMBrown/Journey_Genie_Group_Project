@@ -1,5 +1,5 @@
 import requests
-from config import weather_api_key
+from config_joana import weather_api_key
 
 
 class GetWeatherByLocation:
@@ -47,8 +47,4 @@ class GetWeatherByLocation:
         except requests.exceptions.Timeout as timedOutError:
             print("Timeout Error: ", timedOutError)
         except requests.exceptions.RequestException as err:
-<<<<<<< HEAD
             print("Request failed due to ", err)
-=======
-            print("Request failed due to ", err)
->>>>>>> joana_branch

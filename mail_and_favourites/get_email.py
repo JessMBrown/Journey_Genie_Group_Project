@@ -1,4 +1,4 @@
-from config import HOST, PASSWORD, USER
+from config_joana import HOST, PASSWORD, USER
 from db_utils_oli import Database, DbConnectionError
 import re
 from utils import UserInputCheck
