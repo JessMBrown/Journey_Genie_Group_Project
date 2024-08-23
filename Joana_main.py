@@ -1,17 +1,11 @@
-from utils import UserInputCheck, get_valid_dates, SavingToFavourites, fetch_and_display_summary
+from utils import UserInputCheck, get_valid_dates, fetch_and_display_summary
 import random
+from mail_and_favourites.get_favourites import SavingToFavourites, store_favourites_in_database
 from location.get_location import Location
-<<<<<<< HEAD
-from userEmail.get_email import get_email
-from config import HOST, PASSWORD, USER
-from hotels.get_hotels import find_hotels
-from activities.get_activities import get_activities, get_activity_details
-=======
-from mail.get_email import get_email
+from mail_and_favourites.get_email import get_email
 from config import HOST, PASSWORD, USER
 from hotels.get_hotels import get_hotels
 from activities.get_activities import find_and_display_activities
->>>>>>> joana_branch
 from weather.get_weather import find_weather
 
 planner = Location(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
@@ -80,9 +74,10 @@ def take_me_anywhere(planner, start_date, end_date):
 
     return city_choice
 
+
 def end_of_function_planning(city_choice, start_date, end_date):
     # # call weather
-    # find_weather(city_choice, start_date, end_date)
+    find_weather(city_choice, start_date, end_date)
 
     # call hotels
     print("Looks great! Now, let's find you a hotel! ")
@@ -92,23 +87,16 @@ def end_of_function_planning(city_choice, start_date, end_date):
     print(f"Let's find you some activities in {city_choice}! ")
     saved_activities = find_and_display_activities(city_choice)
 
-<<<<<<< HEAD
-    # call userEmail
-    get_email()
-
-    # retrieve list of favourites
-    print(favourites_manager.get_favourites('activities'))
-    print(favourites_manager.get_favourites('hotels'))
-=======
-    # call mail
+    # call mail and send favourites to db
     get_email()
 
     #display end summary
     fetch_and_display_summary(start_date, end_date, saved_hotels, saved_activities)
+    print(saved_hotels)
+    print(saved_activities)
 
-    #retrieve list of favourites
-    return saved_hotels, saved_activities
->>>>>>> joana_branch
+    # store_favourites_in_database(saved_hotels, 'favourite_hotels')
+    # store_favourites_in_database(saved_activities, 'favourite_activities')
 
 
 def main():
@@ -122,25 +110,15 @@ def main():
     if knows_where == 'y':
         knows_destination(planner, start_date, end_date)
     elif knows_where == 'n':
-        wants_random = input_check.get_input(
-            "No worries! We're here to help! Would you like us to make a random guess of a nice holiday place for "
-            "you? Y/N ")
+        wants_random = input_check.get_input("No worries! We're here to help! Would you like us to make a random guess of a nice holiday place for you? Y/N ")
         if wants_random == 'y':
             take_me_anywhere(planner, start_date, end_date)
         elif wants_random == 'n':
             print("Ok! Let's tailor a holiday for you!")
-            # tailored_trip(planner, start_date, end_date)
+            tailored_trip(planner, start_date, end_date)
 
 
-<<<<<<< HEAD
-def get_weather(chosen_city, start_date, end_date):
-    find_weather(chosen_city, start_date, end_date)
-
-
-get_weather('London', '2024-05-01', '2024-05-02')
-print(get_weather)
-=======
->>>>>>> joana_branch
 
 if __name__ == "__main__":
     main()
+

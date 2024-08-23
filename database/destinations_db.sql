@@ -390,15 +390,18 @@ VALUES
     (123748, "tw", "Taipei", "museums"),
     (123749, "tw", "Kaohsiung", "history"),
     (123750, "tw", "Taichung", "history"),
-<<<<<<< HEAD
-    (123751, "tw", "Tainan", "history");
+    (123751, "tw", "Tainan", "history"),
+    (123752, "mx", "Cancun", "beaches"),
+    (123753, "mx", "Mexico City", "museums"),
+    (123754, "mx", "Taxco", "history");
+
 
 CREATE TABLE favourite_hotels (
 fav_hotel_ID INT NOT NULL Primary Key,
 hotel_name VARCHAR(50) NOT NULL,
 city_ID INT NOT NULL,
 country_code VARCHAR(5) NOT NULL,
-favourite_date DATE,
+favourited_date DATE,
 CONSTRAINT fk_country_code
 FOREIGN KEY (country_code)
 REFERENCES countries(country_code),
@@ -416,7 +419,7 @@ activity_ID VARCHAR(10) NOT NULL Primary Key,
 activity_name VARCHAR(50) NOT NULL,
 city_ID INT NOT NULL,
 country_code VARCHAR(5) NOT NULL,
-favourite_date DATE,
+favourited_date DATE,
 CONSTRAINT fk_country_codes
 FOREIGN KEY (country_code)
 REFERENCES countries(country_code),

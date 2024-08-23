@@ -30,28 +30,61 @@ def search_cities(query):
 
 # api call to fetch hotels with selected filters
 def fetch_hotels_with_filters(location_id, check_in, check_out, selected_filters):
+    and_logic_filters = {"center", "luxury", "business", "romantic", "family", "pets", "pool"}
+    or_logic_filters = {"3-stars", "4-stars", "5-stars"}
     url = "https://yasen.hotellook.com/tp/public/widget_location_dump.json"
     hotel_search_payload = {
         'id': location_id,
         'token': hotels_api_key,
         'check_in': check_in.strftime("%Y-%m-%d"),
         'check_out': check_out.strftime("%Y-%m-%d"),
-        'currency': 'usd',
+        'currency': 'gbp',
         'language': 'en',
         'limit': 200
     }
 
+    # separate the filters into the and/or groups
+    and_filters = [f for f in selected_filters if f in and_logic_filters]
+    or_filters = [f for f in selected_filters if f in or_logic_filters]
+
     filtered_hotels = []
-    for filter_type in selected_filters:
+
+    # applying the or
+    or_filter_results = []
+    if or_filters:
+        for filter_type in or_filters:
+            hotel_search_payload['type'] = filter_type
+            response = requests.get(url, params=hotel_search_payload)
+            if response.status_code == 200:
+                hotels = checking_api_response_success(response).get(filter_type, [])
+                # Add hotels to the OR results list, avoiding duplicates
+                for hotel in hotels:
+                    if hotel not in or_filter_results:
+                        or_filter_results.append(hotel)
+            else:
+                print(f"Failed to retrieve hotels for filter: {filter_type}")
+
+        # use the or results if available
+        filtered_hotels = or_filter_results
+    else:
+        # if no or filters, then and
+        filtered_hotels = []
+
+    # now applying the and filters after gathering the or criteria also
+    for filter_type in and_filters:
         hotel_search_payload['type'] = filter_type
         response = requests.get(url, params=hotel_search_payload)
-        hotels = checking_api_response_success(response).get(filter_type, [])
-
-        # add hotels to list only if they meet all filters
-        if not filtered_hotels:
-            filtered_hotels = hotels
+        if response.status_code == 200:
+            hotels = checking_api_response_success(response).get(filter_type, [])
+            # keep the hotels that meet all the 'and' criteria
+            # intersect the 'or' ones with the now 'and' ones
+            if filtered_hotels:
+                filtered_hotels = [hotel for hotel in filtered_hotels if hotel in hotels]
+            else:
+            #if no 'or', then list starts with the first and filter
+                filtered_hotels = hotels
         else:
-            filtered_hotels = [hotel for hotel in filtered_hotels if hotel in hotels]
+            print(f"Failed to retrieve hotels for filter: {filter_type}")
 
     return filtered_hotels
 
