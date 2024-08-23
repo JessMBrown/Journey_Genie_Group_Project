@@ -3,7 +3,7 @@
 
 ---
 ### Your travel wish is our command 🪄
-<a href="#introduction">Introduction</a> | <a href="#getting-started">Getting Started</a> | <a href="#closing">Closing</a> | <a href="#contributors">Contributors</a>
+<a href="#introduction">Introduction</a> | <a href="#main-components">Main Components</a> | <a href="#closing">Closing</a> | <a href="#contributors">Contributors</a>
 ## Introduction
 
 <p>
@@ -12,7 +12,7 @@ Welcome to Journey Genie, our console-based application that helps you plan your
 </p>
 
 ---
-<u>**Main Components:**</u>
+<u><a name="main-components"></a>**Main Components:**</u>
 
 🔍 Search for a country/city you're thinking of or, if not sure, activate our *Take me anywhere* option
 
