@@ -85,20 +85,20 @@ def get_cities():
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 
-@app.route('/view/favourite_hotels', methods=['GET'])
-def get_favourite_hotels():
+@app.route('/view/favourite_hotels/<int:hotel_id>', methods=['GET'])
+def get_favourite_hotels(hotel_id):
     db = Database(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
     try:
         table_name = 'favourite_hotels'
-        columns = ['favourite_hotels.hotel_name']
+        columns = ['hotel_name', 'favourited_date']
+        conditions = f' hotel_ID = {hotel_id}'
         join = None
-        conditions = request.args.get('hotel_ID = ')
 
         data = db.fetch_data(
             table_name=table_name,
             columns=columns,
-            join=join,
-            conditions=conditions
+            conditions=conditions,
+            join=join
         )
 
         # Returning the fetched data as JSON
@@ -111,20 +111,20 @@ def get_favourite_hotels():
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 
-@app.route('/view/favourite_activities', methods=['GET'])
-def get_favourite_activities():
+@app.route('/view/favourite_activities/<int:activity_id>', methods=['GET'])
+def get_favourite_activities(activity_id):
     db = Database(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
     try:
         table_name = 'favourite_activities'
-        columns = ['favourite_activities.kinds']
+        columns = ['kinds']
         join = None
-        conditions = request.args.get('activity_ID = ')
+        conditions = f' activity_ID = {activity_id}'
 
         data = db.fetch_data(
             table_name=table_name,
             columns=columns,
-            join=join,
-            conditions=conditions
+            conditions=conditions,
+            join=join
         )
 
         # Returning the fetched data as JSON
@@ -137,7 +137,7 @@ def get_favourite_activities():
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 
-@app.route('/add_favourite_hotels', methods=['POST'])
+@app.route('/add/favourite_hotels', methods=['POST'])
 def add_favourite_hotels():
     db = Database(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
     try:
@@ -146,9 +146,12 @@ def add_favourite_hotels():
 
         # Calling the add_new_data method
         db.add_new_data(
-            table_name='favourite_hotels',  # Specifying the table name
-            columns=['fav_hotel_name', 'city_ID', 'country_code', 'favourited_date'],  # Specifying the columns
-            values=(adding['fav_hotel_name'], adding['city_ID'], adding['country_code'],adding['favourited_date'])  # Passing the values as a tuple
+            # Specifying the table name
+            table_name='favourite_hotels',
+            # Specifying the columns
+            columns=['fav_hotel_name', 'city_ID', 'country_code', 'favourited_date'],
+            # Passing the values as a tuple
+            values=(adding['fav_hotel_name'], adding['city_ID'], adding['country_code'], adding['favourited_date'])
         )
 
         return jsonify({'status': 'success', 'data': adding}), 200
@@ -163,7 +166,7 @@ def add_favourite_hotels():
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 
-@app.route('/add_favourite_activities', methods=['POST'])
+@app.route('/add/favourite_activities', methods=['POST'])
 def add_favourite_activities():
     db = Database(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
     try:

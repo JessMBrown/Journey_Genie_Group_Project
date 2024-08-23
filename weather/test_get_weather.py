@@ -25,8 +25,9 @@ class TestFindWeatherFunction(unittest.TestCase):
     def test_weather_future_endpoint_valid(self):
         self.input_weather_data_location = "London"
         self.input_weather_data_start_date = datetime.strptime('2024-10-01', "%Y-%m-%d").date()
-        self.input_weather_data_end_date = datetime.strptime('2024-10-01', "%Y-%m-%d").date()
-        self.expect = [{'average_temp': 14.5, 'date': '2024-10-01'}]
+        self.input_weather_data_end_date = datetime.strptime('2024-10-03', "%Y-%m-%d").date()
+        self.expect = [{'average_temp': 14.5, 'date': '2024-10-01'}, {'average_temp': 13.9, 'date': '2024-10-02'},
+                       {'average_temp': 13.9, 'date': '2024-10-03'}]
         self.assertEqual(self.expect, weather.get_weather.find_weather(self.input_weather_data_location,
                                                                        self.input_weather_data_start_date,
                                                                        self.input_weather_data_end_date))
@@ -123,7 +124,7 @@ class TestGetMinMaxAvgTempFunction(unittest.TestCase):
                          'with the lowest being 4.5°C and the highest being 14.5°C')
         self.assertEqual(self.expected,
                          weather.get_weather.get_minimum_maximum_average_temperature(self.city, self.list_for_max_val,
-                                                                             self.endpoint))
+                                                                                     self.endpoint))
 
     def test_get_min_max_avg_valid_london_14_5_4_5_5_5future(self):
         self.city = 'London'
@@ -135,7 +136,7 @@ class TestGetMinMaxAvgTempFunction(unittest.TestCase):
                          'with the lowest being 4.5°C and the highest being 14.5°C')
         self.assertEqual(self.expected,
                          weather.get_weather.get_minimum_maximum_average_temperature(self.city, self.list_for_max_val,
-                                                                             self.endpoint))
+                                                                                     self.endpoint))
 
 
 class TestFindMinValFromDictFunction(unittest.TestCase):
