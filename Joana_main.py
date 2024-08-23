@@ -89,15 +89,14 @@ def end_of_function_planning(city_choice, start_date, end_date):
 
     # call mail and send favourites to db
     get_email()
-    store_favourites_in_database(saved_hotels, 'favourite_hotels')
-    store_favourites_in_database(saved_activities, 'favourite_activities')
 
     #display end summary
     fetch_and_display_summary(start_date, end_date, saved_hotels, saved_activities)
     print(saved_hotels)
     print(saved_activities)
 
-
+    # store_favourites_in_database(saved_hotels, 'favourite_hotels')
+    # store_favourites_in_database(saved_activities, 'favourite_activities')
 
 
 def main():
