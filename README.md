@@ -3,7 +3,7 @@
 
 ---
 ### Your travel wish is our command 🪄
-<a href="#introduction">Introduction</a> | <a href="#main-components">Main Components</a> | <a href="#clone-the-repository">Clone the repository</a> | <a href="#install-dependencies">Install Dependencies</a> | <a href="#obtain-the-3-api-tokens">Obtain the 3 API Tokens</a> | <a href="#database-setup">Database Setup</a> | <a href="#putting-the-tokens-in-the-configpy">Putting the tokens in the Config.py</a> | <a href="#run-the-code">Run the code</a> | <a href="#contributors">Closing</a> | <a href="#contributors">Contributors</a>
+<a href="#introduction">Introduction</a> | <a href="#getting-started">Getting Started</a> | <a href="#closing">Closing</a> | <a href="#contributors">Contributors</a>
 ## Introduction
 
 <p>
