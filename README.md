@@ -3,7 +3,9 @@
 
 ---
 ### Your travel wish is our command 🪄
-<a href="#introduction">Introduction</a> | <a href="#main-components">Main Components</a> | <a href="#closing">Closing</a> | <a href="#contributors">Contributors</a>
+<a href="#introduction">Introduction</a> | <a href="#main-components">Main Components</a> | <a href="#clone-the-repository">Clone the Repository</a> | <a href="#install-dependencies">Install Dependencies</a> | <a href="#obtain-the-3-api-tokens">Obtain the 3 API Tokens</a> | <a href="#database-setup">Database Setup</a> | <a href="#putting-the-tokens-in-the-configpy">Putting the tokens in the Config.py</a> | <a href="#run-the-code">Run the Code</a> | <a href="#closing">Closing</a> | <a href="#contributors">Contributors</a> | <a href="#development-stack">Development Stack</a> |
+<a href="#license">License</a>  
+
 ## Introduction
 
 <p>
@@ -33,6 +35,7 @@ Welcome to Journey Genie, our console-based application that helps you plan your
 ---
 ## Getting Started
 
+<u><a name="clone-the-repository"></a>
 ### 1. Clone the repository
 
 In your terminal, open the working directory where you'd like to clone the project
@@ -44,6 +47,7 @@ git clone git@github.com:JessMBrown/CFG_Summer2024_Degree_Group_Project_G5.git
 ```
 
 ---
+<a name="install-dependencies"></a>
 ### 2. Install Dependencies
 
 In order for the code to run smoothly, the necessary packages need to be installed. To do this, run the following command in your terminal to install the required packages:
@@ -52,6 +56,7 @@ pip install -r requirements.txt
 ```
 
 ---
+<a name="obtain-the-3-api-tokens"></a>
 ### 3. Obtain the 3 API Tokens
 
 ***a)*** **TravelPayouts Hotels Data API**
@@ -75,6 +80,7 @@ pip install -r requirements.txt
 - You can find your API key in 'My Account/Settings'
 
 ---
+<a name="database-setup"></a>
 ### 4. Database Setup
 - Go to `database/destinations_db.sql` as well as `database/customer_details_db.sql` and run the scripts in MySQL workbench
 to set up the database 
@@ -83,10 +89,12 @@ to set up the database
   PASSWORD = "Password, please"
   ```
 ---
+<a name="putting-the-tokens-in-the-configpy"></a>
 ### 5. Putting the tokens in the Config.py
 - Enter all the necessary API keys in the right places
 
 ---
+<a name="run-the-code"></a>
 ### 6. Run the code
 - Make sure you are in the *main* directory and run the following command:
 
@@ -104,12 +112,52 @@ Thank you for using Journey Genie! We're so glad you did. And a special thanks t
 ## Contributors
 
 [Jessica Brown](https://github.com/JessMBrown) 
-| Karen Gonzalez Reginato
 | [Joana Grafton](https://github.com/JoanaGraft)
 | [Oliwia Polakiewicz](https://github.com/oli-pol)
 | [Nadia Rehman](https://github.com/nadiaRehman149)
+| Karen Gonzalez Reginato
+
+---
+<a name="development-stack"></a>**Development Stack**
+
+[<img height="32" width="32" alt="Python Logo" src="https://cdn.worldvectorlogo.com/logos/python-5.svg"/>]()
+[<img height="32" width="32" alt="MySQL" src="https://cdn.worldvectorlogo.com/logos/mysql-2.svg"/>]()
+[<img height="32" width="32" alt="PyCharm" src="https://cdn.worldvectorlogo.com/logos/pycharm.svg"/>]()
+[<img height="32" width="32" alt="Jira" src="https://cdn.worldvectorlogo.com/logos/jira-1.svg"/>]()
+[<img height="32" width="32" alt="Slack" src="https://cdn.worldvectorlogo.com/logos/slack-new-logo.svg"/>]()
+[<img height="32" width="32" alt="Google Meet" src="https://cdn.worldvectorlogo.com/logos/google-meet-icon-2020-.svg"/>]()
+
+---
+<a name="license"></a>
+## License
+
+This project is licensed under the [MIT License.](https://github.com/milliedavidson/CFGProject/blob/main/LICENSE)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+---
+
+```text
+Copyright 2023 ChapterOne
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software 
+and associated documentation files (the “Software”), to deal in the Software without
+restriction, including without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or
+substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
+
+--- 
 
 <div align="right">
-<a href="#top">↑</a>
+<a href="#top">Back to Top ↑</a>
 </div>
-
