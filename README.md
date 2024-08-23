@@ -139,7 +139,7 @@ This project is licensed under the [MIT License.](https://github.com/milliedavid
 ---
 
 ```text
-Copyright 2023 ChapterOne
+Copyright 2024 Journey Genie
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software 
 and associated documentation files (the “Software”), to deal in the Software without
