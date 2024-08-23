@@ -1,7 +1,8 @@
-from utils import UserInputCheck, get_valid_dates, SavingToFavourites, fetch_and_display_summary
+from utils import UserInputCheck, get_valid_dates, fetch_and_display_summary
 import random
+from mail_and_favourites.get_favourites import SavingToFavourites, store_favourites_in_database
 from location.get_location import Location
-from mail.get_email import get_email
+from mail_and_favourites.get_email import get_email
 from config import HOST, PASSWORD, USER
 from hotels.get_hotels import get_hotels
 from activities.get_activities import find_and_display_activities
@@ -76,7 +77,7 @@ def take_me_anywhere(planner, start_date, end_date):
 
 def end_of_function_planning(city_choice, start_date, end_date):
     # # call weather
-    # find_weather(city_choice, start_date, end_date)
+    find_weather(city_choice, start_date, end_date)
 
     # call hotels
     print("Looks great! Now, let's find you a hotel! ")
@@ -86,14 +87,17 @@ def end_of_function_planning(city_choice, start_date, end_date):
     print(f"Let's find you some activities in {city_choice}! ")
     saved_activities = find_and_display_activities(city_choice)
 
-    # call mail
+    # call mail and send favourites to db
     get_email()
+    store_favourites_in_database(saved_hotels, 'favourite_hotels')
+    store_favourites_in_database(saved_activities, 'favourite_activities')
 
     #display end summary
     fetch_and_display_summary(start_date, end_date, saved_hotels, saved_activities)
+    print(saved_hotels)
+    print(saved_activities)
 
-    #retrieve list of favourites
-    return saved_hotels, saved_activities
+
 
 
 def main():

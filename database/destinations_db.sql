@@ -394,3 +394,39 @@ VALUES
     (123752, "mx", "Cancun", "beaches"),
     (123753, "mx", "Mexico City", "museums"),
     (123754, "mx", "Taxco", "history");
+    
+   
+CREATE TABLE favourite_hotels (
+fav_hotel_ID INT NOT NULL Primary Key,
+hotel_name VARCHAR(50) NOT NULL,
+city_ID INT NOT NULL,
+country_code VARCHAR(5) NOT NULL,
+favourited_date DATE,
+CONSTRAINT fk_country_code
+FOREIGN KEY (country_code)
+REFERENCES countries(country_code),
+FOREIGN KEY (city_ID)
+REFERENCES cities(id));
+
+INSERT INTO favourite_hotels (
+fav_hotel_ID, hotel_name, city_ID, country_code, favourited_date)
+VALUES
+("89176", "Shangri-La Toronto", '123460', "ca", '2024-08-23');
+
+
+CREATE TABLE favourite_activities (
+activity_ID VARCHAR(10) NOT NULL Primary Key,
+activity_name VARCHAR(50) NOT NULL,
+city_ID INT NOT NULL,
+country_code VARCHAR(5) NOT NULL,
+favourited_date DATE,
+CONSTRAINT fk_country_codes
+FOREIGN KEY (country_code)
+REFERENCES countries(country_code),
+FOREIGN KEY (city_ID)
+REFERENCES cities(id));
+
+INSERT INTO favourite_activities (
+activity_ID, activity_name, city_ID, country_code, favourited_date)
+VALUES
+('Q60749334', "LEGOLAND Discovery Centre Toronto", '123460', "ca", '2024-08-23');

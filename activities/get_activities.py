@@ -2,12 +2,16 @@ from activities.Joana_OpenTripMapAPI import OpenTripMapApi
 from pprint import pprint
 from collections import deque
 from config import activities_api_key
-from utils import UserInputCheck, SavingToFavourites
+from location.get_location import Location
+from utils import UserInputCheck
+from mail_and_favourites.get_favourites import SavingToFavourites
 from hotels.get_hotels import city_search
+from config import HOST, PASSWORD, USER
 
 # assigning classes from utils to variables
 favourites_manager = SavingToFavourites()
 input_check = UserInputCheck()
+location_manager = Location(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
 
 # main function
 def find_and_display_activities(city):
@@ -24,8 +28,11 @@ def find_and_display_activities(city):
     if not activities:
         return
 
+    city_id = get_cityID_for_city_in_country(city, country_choice)
+    country_code = extract_country_code_from_activities(activities)
     final_results = process_and_display_activities(activities, city)
-    get_activity_details(final_results, activities, city, country_choice)
+
+    get_activity_details(final_results, activities, city, city_id, country_choice, country_code)
     saved_activities = favourites_manager.get_favourites('activities')
     return saved_activities
 
@@ -34,6 +41,15 @@ def get_country_for_city(city):
     # calling function in get hotels to retrieve the country name to be used in the save_favourites
     location_info = city_search(city)
     return location_info.get('countryName')
+
+# retrieve the country name for the chosen city
+def get_cityID_for_city_in_country(city_choice, chosen_country):
+    try:
+        city_id = location_manager.get_city_id(chosen_city=city_choice, chosen_country=chosen_country)
+        return str(city_id)
+
+    except Exception as e:
+        print(f'An error occurred: {e}')
 
 def get_city_coordinates(city):
     # calling API
@@ -95,6 +111,14 @@ def fetch_activities(city, coordinates, kinds):
 
     return activities
 
+# function to extract the country_code
+def extract_country_code_from_activities(activities):
+    if activities:
+        address = activities[0].get('address', {})
+        return address.get('country_code', 'Unknown')
+    return 'Unknown'
+
+
 def process_and_display_activities(activities, city):
     # allowing 5 possibilities per type of activity as some have thousands
     limit_per_kind = 5
@@ -129,7 +153,7 @@ def process_and_display_activities(activities, city):
     return final_results
 
 # to extract specific details
-def get_activity_details(final_results, results, city_choice, country_choice):
+def get_activity_details(final_results, results, city_choice, city_id, country_choice, country_code):
     # calling API
     opentripmap_api = OpenTripMapApi(activities_api_key)
 
@@ -143,7 +167,7 @@ def get_activity_details(final_results, results, city_choice, country_choice):
 
             # extracting name and id of the selected activity to use to call api and to display/save activity
             selected_activity = results[activity_choice - 1]
-            display_activity_details(selected_activity, city_choice, country_choice)
+            display_activity_details(selected_activity, city_choice, city_id, country_choice)
 
         except ValueError:
             print('Please enter a valid number.')
@@ -157,7 +181,7 @@ def get_activity_details(final_results, results, city_choice, country_choice):
     return favourites_manager.get_favourites('activities')
 
 
-def display_activity_details(selected_activity, city_choice, country_choice):
+def display_activity_details(selected_activity, city_choice, city_id, country_choice):
         # calling API function
         opentripmap_api = OpenTripMapApi(activities_api_key)
         details = opentripmap_api.get_activity_details(selected_activity['xid'])
@@ -172,11 +196,14 @@ def display_activity_details(selected_activity, city_choice, country_choice):
         print(f'Here are the details for {selected_activity['name']}:')
         pprint(activity_details)
 
+        #extracting country_code from details to use in save_favourite
+        address = details.get('address', {})
+        country_code = address.get('country_code', 'Unknown')
         # offering option to save activity
-        favourites_manager.save_favourite_activities(selected_activity['xid'], selected_activity['name'], city_choice,
-                                                     input_check, country_choice)
+        favourites_manager.save_favourite_activities(selected_activity['xid'], selected_activity['name'], city_choice, city_id,
+                                                     input_check, country_choice, country_code)
 
-
+        return details
 
 def extract_specific_details(details):
     # declaring what data from API we want to display
@@ -188,12 +215,12 @@ def extract_specific_details(details):
         'wikipedia_extracts': details.get('wikipedia_extracts', {}).get('html', '')
     }
 
-def save_activity_to_favourite(results, city_choice, country_choice):
+def save_activity_to_favourite(results, city_choice, country_choice, city_id, country_code):
     for item in results:
         xid = item['xid']
         activity_name = item['name']
         # calling method from utils to check if user wants to save the activities
-        favourites_manager.save_favourite_activities(xid, activity_name, city_choice, input_check, country_choice)
+        favourites_manager.save_favourite_activities(xid, activity_name, city_choice, city_id, input_check, country_choice, country_code)
 
 
 # find_and_display_activities('edinburgh')

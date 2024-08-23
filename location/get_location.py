@@ -1,5 +1,4 @@
-from config import HOST, PASSWORD, USER
-from database.db_utils_oli import Database, DbConnectionError
+from db_utils_oli import Database, DbConnectionError
 from utils import UserInputCheck
 
 input_check = UserInputCheck()
@@ -58,6 +57,22 @@ class Location:
 
         except DbConnectionError as e:
             print(f"Error fetching cities: {e}")
+
+    def get_city_id(self, chosen_city, chosen_country):
+        try:
+            conditions = (f"cities.city_name = '{chosen_city}' AND "
+                          f"countries.country_name = '{chosen_country}'")
+            columns = ['cities.id']
+            join = "INNER JOIN countries ON cities.country_code = countries.country_code"
+            cities = self.db.fetch_data(table_name="cities", columns=columns, join=join, conditions=conditions)
+            if cities:
+                return cities[0][0]
+            else:
+                print('No matching city found.')
+
+        except Exception as e:
+            print(f'An error occurred: {e}')
+            return None
 
     def get_holiday_type_input(self):
         valid_holiday_types = ['history', 'beaches', 'museums', 'mountains', 'theatre',
@@ -148,11 +163,3 @@ class Location:
     def close(self):
         """Close the database connection."""
         self.db.close()
-
-
-# places = Location(HOST, USER, PASSWORD, "destinations")
-# # chosen_country = input("What country would you like to go to? ")
-# # places.get_cities_by_country(chosen_country)
-# places.get_holiday_type_cities()
-# places.get_holiday_type_cities()
-# places.get_holiday_type_cities()

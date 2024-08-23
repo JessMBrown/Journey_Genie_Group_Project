@@ -67,43 +67,6 @@ def get_valid_dates():
         except ValueError:
             print("Invalid date format. Please enter the date in dd-mm-yyyy format.")
 
-class SavingToFavourites:
-    def __init__(self):
-        self.favourite_hotels = []
-        self.favourite_activities = []
-
-    def save_favourites(self, category, id, name, city_choice, input_check, chosen_country):
-        wants_save = input_check.get_input(f'Would you like to save this {category} in your list of favourites? Y/N ')
-        if wants_save == 'y':
-            item = {
-                f'{category[:-1]} id': id,
-                'name': name,
-                'city': city_choice,
-                'country': chosen_country,
-                'added_on': datetime.now().strftime("%Y-%m-%d")
-            }
-
-            if category == 'activities':
-                self.favourite_activities.append(item)
-            elif category == 'hotels':
-                self.favourite_hotels.append(item)
-            print(emoji.emojize('Consider it done!:thumbs_up:'))
-        else:
-            print(emoji.emojize('No problem! :thumbs_up:'))
-
-
-    def save_favourite_hotels(self, hotel_id, hotel_name, city_choice, input_check, chosen_country):
-        self.save_favourites('hotels', hotel_id, hotel_name, city_choice, input_check, chosen_country)
-
-    def save_favourite_activities(self, xid, activity_name, city_choice, input_check, chosen_country):
-        self.save_favourites('activities', xid, activity_name, city_choice, input_check, chosen_country)
-
-    def get_favourites(self, category):
-        if category == 'activities':
-            return self.favourite_activities
-        elif category == 'hotels':
-            return self.favourite_hotels
-
 
 def fetch_and_display_summary(start_date, end_date, saved_hotels, saved_activities):
     favourite_hotels = []
@@ -121,9 +84,9 @@ def fetch_and_display_summary(start_date, end_date, saved_hotels, saved_activiti
     location_str = ', '.join(f'{city}, {country}' for city, country in zip(cities, countries))
 
 
-    summary = (f"For your holiday in {location_str} from the {start_date} to {end_date},\n you have selected "
-            f"{', '.join(favourite_hotels)}. \nYou also selected {', '.join(favourite_activities)}. "
-            f"\nThis will be sent to your email if you required it")
+    summary = (f"For your holiday in {location_str} from the {start_date} to {end_date},\nyou have selected "
+            f"the hotel(s): {', '.join(favourite_hotels)}. \nYou also selected the activity(ies): {', '.join(favourite_activities)}. "
+            f"\nThis will be sent to your email if you required it!")
 
     print(summary)
     return summary
