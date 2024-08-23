@@ -104,3 +104,26 @@ class SavingToFavourites:
         elif category == 'hotels':
             return self.favourite_hotels
 
+
+def fetch_and_display_summary(start_date, end_date, saved_hotels, saved_activities):
+    favourite_hotels = []
+    favourite_activities= []
+    cities = []
+    countries = []
+    for hotel in saved_hotels:
+        favourite_hotels.append(hotel['name'])
+        cities.append(hotel['city'])
+        countries.append(hotel['country'])
+
+    for activity in saved_activities:
+        favourite_activities.append(activity['name'])
+
+    location_str = ', '.join(f'{city}, {country}' for city, country in zip(cities, countries))
+
+
+    summary = (f"For your holiday in {location_str} from the {start_date} to {end_date},\n you have selected "
+            f"{', '.join(favourite_hotels)}. \nYou also selected {', '.join(favourite_activities)}. "
+            f"\nThis will be sent to your email if you required it")
+
+    print(summary)
+    return summary

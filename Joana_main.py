@@ -1,4 +1,4 @@
-from utils import UserInputCheck, get_valid_dates, SavingToFavourites
+from utils import UserInputCheck, get_valid_dates, SavingToFavourites, fetch_and_display_summary
 import random
 from location.get_location import Location
 from mail.get_email import get_email
@@ -21,7 +21,7 @@ def knows_destination(planner, start_date, end_date):
                 city_choice = planner.get_cities_by_country(chosen_country)
                 break
             else:
-                print('Invalid answer!')
+                print('This country is not part of our holiday destinations! Please try again!')
 
         end_of_function_planning(city_choice, start_date, end_date)
 
@@ -76,21 +76,24 @@ def take_me_anywhere(planner, start_date, end_date):
 
 def end_of_function_planning(city_choice, start_date, end_date):
     # # call weather
-    find_weather(city_choice, start_date, end_date)
+    # find_weather(city_choice, start_date, end_date)
 
     # call hotels
     print("Looks great! Now, let's find you a hotel! ")
-    get_hotels(city_choice, start_date, end_date)
+    saved_hotels = get_hotels(city_choice, start_date, end_date)
 
     # # call activities
     print(f"Let's find you some activities in {city_choice}! ")
-    find_and_display_activities(city_choice)
+    saved_activities = find_and_display_activities(city_choice)
 
     # call mail
     get_email()
 
+    #display end summary
+    fetch_and_display_summary(start_date, end_date, saved_hotels, saved_activities)
+
     #retrieve list of favourites
-    return favourites_manager.get_favourites('activities'), favourites_manager.get_favourites('hotels')
+    return saved_hotels, saved_activities
 
 
 def main():
@@ -110,6 +113,7 @@ def main():
         elif wants_random == 'n':
             print("Ok! Let's tailor a holiday for you!")
             tailored_trip(planner, start_date, end_date)
+
 
 
 if __name__ == "__main__":

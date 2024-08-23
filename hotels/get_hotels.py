@@ -121,7 +121,6 @@ def get_hotel_choice(hotel_prices):
             if 1 <= hotel_choice <= len(hotel_prices):
                 chosen_hotel = hotel_prices[hotel_choice - 1]
                 print(f"\nYou selected: {chosen_hotel['hotelName']} - Total Price: {chosen_hotel['price']} GBP")
-                print(chosen_hotel)
                 return chosen_hotel
             else:
                 print("Invalid choice. Try again.")
@@ -148,18 +147,22 @@ def get_hotels(city_choice, start_date, end_date):
         if hotel_prices:
             hotels_with_links = fetch_hotel_details_with_links(chosen_option['id'], start_date, end_date, selected_filters, rooms, adults)
             display_hotels_with_links(hotel_prices, hotels_with_links, chosen_option['cityName'], selected_filters)
-            hotel_selected = get_hotel_choice(hotel_prices)
-            if hotel_selected:
-                # call method from utils to save favourites
-                save_hotel_to_favourite(hotel_selected, chosen_option['cityName'], chosen_option['countryName'])
-                # offering possibility to choose another hotel
-                other_details = input_check.get_input(f'Would you like to select another hotel? Y/N ')
-                if other_details != 'y':
-                    break
+            while True:
+                hotel_selected = get_hotel_choice(hotel_prices)
+                if hotel_selected:
+                    # call method from utils to save favourites
+                    save_hotel_to_favourite(hotel_selected, chosen_option['cityName'], chosen_option['countryName'])
+                    # offering possibility to choose another hotel
+                    other_details = input_check.get_input(f'Would you like to select another hotel? Y/N ')
+                    if other_details != 'y':
+                        saved_hotels = favourites_manager.get_favourites('hotels')
+                        return saved_hotels
+                else:
+                    print('No hotel was selected. Please try again!')
         else:
             print("No hotels with valid prices were found. Please try another city or modify your criteria.")
+            break
 
-    saved_favourite_hotels = favourites_manager.get_favourites('hotels')
-    print(saved_favourite_hotels)
-    return saved_favourite_hotels
+    saved_hotels = favourites_manager.get_favourites('hotels')
+    return saved_hotels
 

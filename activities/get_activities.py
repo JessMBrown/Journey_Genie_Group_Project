@@ -26,7 +26,8 @@ def find_and_display_activities(city):
 
     final_results = process_and_display_activities(activities, city)
     get_activity_details(final_results, activities, city, country_choice)
-    # print(favourites_manager.get_favourites('activities'))
+    saved_activities = favourites_manager.get_favourites('activities')
+    return saved_activities
 
 # retrieve the country name for the chosen city
 def get_country_for_city(city):
@@ -133,29 +134,25 @@ def get_activity_details(final_results, results, city_choice, country_choice):
     opentripmap_api = OpenTripMapApi(activities_api_key)
 
     while True:
-        # offering possibility to get details on each activity
-        wants_details = input_check.get_input('Do you want more details on any of them? Y/N ')
-        if wants_details == 'n':
-            save_activity_to_favourite(results, city_choice, country_choice)
+        try:
+            activity_choice = int(input("Please, enter the number corresponding to the activity you'd like more details on: "))
+            # checking if user input is a possible number in the list of activities
+            if 1 > activity_choice or activity_choice > len(final_results):
+                print('Invalid number! Please try again ')
+                continue
+
+            # extracting name and id of the selected activity to use to call api and to display/save activity
+            selected_activity = results[activity_choice - 1]
+            display_activity_details(selected_activity, city_choice, country_choice)
+
+        except ValueError:
+            print('Please enter a valid number.')
+            continue
+
+        # offering possibility to get details on other activities
+        other_details = input_check.get_input(f'Would you like details on another activity? Y/N ')
+        if other_details != 'y':
             break
-        elif wants_details == 'y':
-            try:
-                activity_choice = int(input('Enter the number corresponding to the activity: '))
-                # checking if user input is a possible number in the list of activities
-                if 1 > activity_choice or activity_choice > len(final_results):
-                    print('Invalid number! Please try again ')
-                    continue
-
-                # extracting name and id of the selected activity to use to call api and to display/save activity
-                selected_activity = results[activity_choice - 1]
-                display_activity_details(selected_activity, city_choice, country_choice)
-            except ValueError:
-                print('Please enter a valid number.')
-
-            # offering possibility to get details on other activities
-            other_details = input_check.get_input(f'Would you like details on another activity? Y/N ')
-            if other_details != 'y':
-                break
 
     return favourites_manager.get_favourites('activities')
 
