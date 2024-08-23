@@ -177,9 +177,8 @@ def add_favourite_activities():
         # Calling the add_new_data method
         db.add_new_data(
             table_name='favourite_activities',  # Specifying the table name
-            columns=['city_ID', 'country_code', 'kinds', 'x_id', 'rate', 'favourite_date'],  # Specifying the columns
-            values=(adding['city_ID'], adding['country_code'], adding['kinds'], adding['x_id'],
-                    adding['rate'],adding['favourite_date'])  # Passing the values as a tuple
+            columns=['city_ID', 'country_code', 'favourite_date'],  # Specifying the columns
+            values=(adding['city_ID'], adding['country_code'], adding['favourite_date'])  # Passing the values as a tuple
         )
 
         return jsonify({'status': 'success', 'data': adding}), 200
