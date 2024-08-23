@@ -15,7 +15,7 @@ Welcome to Journey Genie, our console-based application that helps you plan your
 </p>
 
 ---
-<u><a name="main-components"></a>**Main Components:**</u>
+<a name="main-components"></a>**Main Features:**
 
 🔍 Search for a country/city you're thinking of or, if not sure, activate our *Take me anywhere* option
 
