@@ -156,7 +156,7 @@ def get_hotels(city_choice, start_date, end_date):
         hotel_prices = find_hotels(chosen_option['id'], start_date, end_date, selected_filters, rooms, adults)
 
         if hotel_prices:
-            hotels_with_links = fetch_hotel_details_with_links(chosen_option['id'], start_date, end_date, selected_filters, rooms, adults)
+            hotels_with_links = fetch_hotel_details_with_links(chosen_option['id'], start_date, end_date, adults)
             display_hotels_with_links(hotel_prices, hotels_with_links, chosen_option['cityName'], selected_filters)
             while True:
                 hotel_selected = get_hotel_choice(hotel_prices)
