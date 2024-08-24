@@ -1,6 +1,6 @@
 from utils import UserInputCheck, get_valid_dates, fetch_and_display_summary
 import random
-# from mail_and_favourites.get_favourites import SavingToFavourites, store_favourites_in_database -- REMOVE AFTER SEEING WHAT OLI DID FOR FAVOURITES
+from mail_and_favourites.get_favourites import SavingToFavourites
 from location.get_location import Location
 from mail_and_favourites.get_email import get_email
 from config import HOST, PASSWORD, USER
@@ -11,7 +11,7 @@ from weather.get_weather import find_weather
 # Creating instances for classes for handling user input, location and favourites
 planner = Location(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
 input_check = UserInputCheck()
-# favourites_manager = SavingToFavourites() -- REMOVE AFTER SEEING WHAT OLI DID FOR FAVOURITES
+favourites_manager = SavingToFavourites()
 
 # Function to handle the case when the user knows which country he wants to go to
 def knows_destination(planner, start_date, end_date):
@@ -105,9 +105,11 @@ def plan_trip_details(city_choice, start_date, end_date):
 
     # display end summary of the choices the user has made
     fetch_and_display_summary(start_date, end_date, saved_hotels, saved_activities)
+    print(saved_hotels)
+    print(saved_activities)
 
-    # store_favourites_in_database(saved_hotels, 'favourite_hotels') -- REMOVE AFTER SEEING WHAT OLI DID FOR FAVOURITES
-    # store_favourites_in_database(saved_activities, 'favourite_activities') -- REMOVE AFTER SEEING WHAT OLI DID FOR FAVOURITES
+    # favourites_manager.store_favourites_in_database(saved_hotels, 'favourite_hotels')
+    # favourites_manager.store_favourites_in_database(saved_activities, 'favourite_activities')
 
 
 def main():

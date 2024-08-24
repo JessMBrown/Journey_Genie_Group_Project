@@ -96,7 +96,7 @@ class Location:
         self.shown_cities.clear()
 
         try:
-            conditions = f"cities.keyword IN ({', '.join(f'\'{ht}\'' for ht in holiday_types)})"
+            conditions = "cities.keyword IN ({})".format(', '.join("'{}'".format(ht) for ht in holiday_types))
             columns = ['cities.city_name', 'countries.country_name', 'cities.keyword']
             join = "INNER JOIN countries ON cities.country_code = countries.country_code"
 

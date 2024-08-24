@@ -61,9 +61,21 @@ def get_selected_filters():
     for index, filter_name in enumerate(available_filters, 1):
         print(f"{index}. {filter_name.capitalize()}")
 
-    selected_filters = input("Enter the numbers corresponding to the filters you'd like to apply (comma-separated): ")
-    print(f'Loading...{emoji.emojize("\u231B")}')
-    return [available_filters[int(index) - 1] for index in selected_filters.split(",")]
+    while True:
+        selected_filters_input = input("Enter the numbers corresponding to the filters you'd like to apply (comma-separated): ")
+        selected_filters_indexes = selected_filters_input.split(',')
+        try:
+            selected_filters = [available_filters[int(index) - 1] for index in selected_filters_indexes]
+            if all(1 <= int(index) <= len(available_filters) for index in selected_filters_indexes):
+                break
+            else:
+                print("Some selected filters are invalid. Please try again.")
+
+        except (ValueError, IndexError):
+            print("Invalid input. Please enter numbers separated by a comma.")
+
+    print('Loading...'.format(emoji.emojize("\u231B")))
+    return selected_filters
 
 
 def find_hotels(location_id, start_date, end_date, selected_filters, rooms, adults):
