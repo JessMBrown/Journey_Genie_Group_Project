@@ -1,13 +1,13 @@
 import re
 from datetime import datetime
-import emoji
 
-
+# class to handle user input for various possibilities
 class UserInputCheck:
     def __init__(self):
         pass
 
     def get_input(self, prompt):
+        # prompts user until correct value input
         while True:
             user_input = input(prompt).lower().strip()
             if user_input in ['y', 'n']:
@@ -15,14 +15,10 @@ class UserInputCheck:
             print("Sorry, that's not a possible option. Please enter 'Y' or 'N'.")
 
     def formatted_kinds_activities(self, kinds):
-        kinds = kinds.strip()
-        kinds = re.sub(r',+', ',', kinds)
-        kinds = re.sub(r'\s*,\s*',',', kinds)
-        kinds = re.sub(r'\s+', ',', kinds)
+        # clean and format user input for kinds to match API input requirements
+        kinds = re.sub(r'\s+', ',', kinds.srtip())
         kinds = re.sub(r'[-_+=!?/|;:#*~]', '', kinds)
-        kinds = kinds.strip(',')
-
-        return kinds
+        return kinds.strip(',')
 
 
 def get_valid_dates():
@@ -70,24 +66,25 @@ def get_valid_dates():
 
 
 def fetch_and_display_summary(start_date, end_date, saved_hotels, saved_activities):
-    favourite_hotels = []
-    favourite_activities= []
-    cities = []
-    countries = []
-    for hotel in saved_hotels:
-        favourite_hotels.append(hotel['name'])
-        cities.append(hotel['city'])
-        countries.append(hotel['country'])
+    # avoid duplicates with set
+    locations = set()
 
-    for activity in saved_activities:
-        favourite_activities.append(activity['name'])
+    # list comprehension to make a list of the hotels and activities the user has selected if any
+    favourite_hotels = [hotel['name'] for hotel in saved_hotels] if saved_hotels else ['None']
+    favourite_activities= [activity['name'] for activity in saved_activities] if saved_activities else ['None']
 
-    location_str = ', '.join(f'{city}, {country}' for city, country in zip(cities, countries))
+    # used to add city/country pairs
+    if saved_hotels:
+        locations = {(hotel['city'], hotel['country']) for hotel in saved_hotels}
+
+    # formating it into a string separated by comma or display 'None' if empty list
+    location_str = ', '.join(f'{city}, {country}' for city, country in locations) if locations else 'None'
 
 
-    summary = (f"For your holiday in {location_str} from the {start_date} to {end_date},\nyou have selected "
-            f"the hotel(s): {', '.join(favourite_hotels)}. \nYou also selected the activity(ies): {', '.join(favourite_activities)}. "
-            f"\nThis will be sent to your email if you required it!")
+    summary = (f"For your holiday in {location_str} from the {start_date} to {end_date},\n"
+               f"here are the hotels you selected:  {', '.join(favourite_hotels)}. \n"
+               f"Here are the activities you selected: {', '.join(favourite_activities)}.\n"
+               f"This will be sent to your email if you required it!")
 
     print(summary)
-    return summary
+    return
