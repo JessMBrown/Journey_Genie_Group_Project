@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from db_utils_oli import Database, DbConnectionError
-from config_joana import USER, PASSWORD, HOST
+from config import USER, PASSWORD, HOST
 
 app = Flask(__name__)
 

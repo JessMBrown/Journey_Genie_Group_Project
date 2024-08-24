@@ -2,7 +2,7 @@ from hotels.hotels_api import fetch_price, fetch_hotels_with_filters, search_cit
 from utils import UserInputCheck
 import urllib.parse, emoji
 from mail_and_favourites.get_favourites import SavingToFavourites
-from config_joana import HOST, PASSWORD, USER
+from config import HOST, PASSWORD, USER
 from location.get_location import Location
 
 class CityNotFoundError(Exception):
@@ -130,7 +130,7 @@ def get_hotel_choice(hotel_prices):
             print("Invalid input. Please enter a valid number.")
 
 # retrieve the country name for the chosen city
-def get_cityID_for_city_in_country(city_choice, country_choice):
+def get_city_id_for_city_in_country(city_choice, country_choice):
     try:
         city_id = location_manager.get_city_id(chosen_city=city_choice, chosen_country=country_choice)
         return str(city_id)

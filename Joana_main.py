@@ -3,7 +3,7 @@ import random
 from mail_and_favourites.get_favourites import SavingToFavourites, store_favourites_in_database
 from location.get_location import Location
 from mail_and_favourites.get_email import get_email
-from config_joana import HOST, PASSWORD, USER
+from config import HOST, PASSWORD, USER
 from hotels.get_hotels import get_hotels
 from activities.get_activities import find_and_display_activities
 from weather.get_weather import find_weather
@@ -38,6 +38,7 @@ def tailored_trip(planner, start_date, end_date):
 
     end_of_function_planning(city_choice, start_date, end_date)
     return chosen_country, city_choice
+
 
 def take_me_anywhere(planner, start_date, end_date):
     city_choice = None
@@ -90,7 +91,7 @@ def end_of_function_planning(city_choice, start_date, end_date):
     # call mail and send favourites to db
     get_email()
 
-    #display end summary
+    # display end summary
     fetch_and_display_summary(start_date, end_date, saved_hotels, saved_activities)
     print(saved_hotels)
     print(saved_activities)
@@ -110,7 +111,9 @@ def main():
     if knows_where == 'y':
         knows_destination(planner, start_date, end_date)
     elif knows_where == 'n':
-        wants_random = input_check.get_input("No worries! We're here to help! Would you like us to make a random guess of a nice holiday place for you? Y/N ")
+        wants_random = input_check.get_input(
+            "No worries! We're here to help! Would you like us to make a random guess of a nice holiday place for "
+            "you? Y/N ")
         if wants_random == 'y':
             take_me_anywhere(planner, start_date, end_date)
         elif wants_random == 'n':
@@ -118,7 +121,5 @@ def main():
             tailored_trip(planner, start_date, end_date)
 
 
-
 if __name__ == "__main__":
     main()
-

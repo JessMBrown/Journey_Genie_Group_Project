@@ -1,12 +1,12 @@
 from activities.Joana_OpenTripMapAPI import OpenTripMapApi
 from pprint import pprint
 from collections import deque
-from config_joana import activities_api_key
+from config import activities_api_key
 from location.get_location import Location
 from utils import UserInputCheck
 from mail_and_favourites.get_favourites import SavingToFavourites
 from hotels.get_hotels import city_search
-from config_joana import HOST, PASSWORD, USER
+from config import HOST, PASSWORD, USER
 
 # assigning classes from utils to variables
 favourites_manager = SavingToFavourites()

@@ -121,7 +121,7 @@ class TestGetMinMaxAvgTempFunction(unittest.TestCase):
                                  {'average_temp': 5.5, 'date': '2024-10-03'}]
         self.endpoint = 'history'
         self.expected = ('The weather last year on the same dates in London was an average of 8.2°C, '
-                         'with the lowest being 4.5°C and the highest being 14.5°C')
+                         'with the lowest being 4.5°C and the highest being 14.5°C.')
         self.assertEqual(self.expected,
                          weather.get_weather.get_minimum_maximum_average_temperature(self.city, self.list_for_max_val,
                                                                                      self.endpoint))
@@ -132,8 +132,8 @@ class TestGetMinMaxAvgTempFunction(unittest.TestCase):
                                  {'average_temp': 4.5, 'date': '2024-10-02'},
                                  {'average_temp': 5.5, 'date': '2024-10-03'}]
         self.endpoint = 'future'
-        self.expected = ('The predicted weather for London on the selected dates will have an average of 8.2°C, '
-                         'with the lowest being 4.5°C and the highest being 14.5°C')
+        self.expected = ('The predicted weather for London on the selected dates will be an average of 8.2°C, '
+                         'with the lowest being 4.5°C and the highest being 14.5°C.')
         self.assertEqual(self.expected,
                          weather.get_weather.get_minimum_maximum_average_temperature(self.city, self.list_for_max_val,
                                                                                      self.endpoint))
@@ -175,3 +175,7 @@ class TestReturnAverageFunction(unittest.TestCase):
         self.values_for_average_calc = [14.5, 4.5, 5.5]
         self.expected = 8.2
         self.assertEqual(self.expected, weather.get_weather.return_average_number(self.values_for_average_calc))
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=1)
