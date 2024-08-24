@@ -103,4 +103,3 @@ class SavingToFavourites:
 if __name__ == "__main__":
     input_check = UserInputCheck()
     fav_manager = SavingToFavourites()
-
