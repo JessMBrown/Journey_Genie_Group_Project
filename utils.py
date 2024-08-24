@@ -16,7 +16,7 @@ class UserInputCheck:
 
     def formatted_kinds_activities(self, kinds):
         # clean and format user input for kinds to match API input requirements
-        kinds = re.sub(r'\s+', ',', kinds.srtip())
+        kinds = re.sub(r'\s+', ',', kinds.strip())
         kinds = re.sub(r'[-_+=!?/|;:#*~]', '', kinds)
         return kinds.strip(',')
 

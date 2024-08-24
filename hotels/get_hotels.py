@@ -172,7 +172,7 @@ def get_hotels(city_choice, start_date, end_date):
                     print('No hotel was selected. Please try again!')
         else:
             print("No hotels with valid prices were found. Please try another city or modify your criteria.")
-            break
+            continue
 
     saved_hotels = favourites_manager.get_favourites('hotels')
     return saved_hotels

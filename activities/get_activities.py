@@ -13,6 +13,11 @@ favourites_manager = SavingToFavourites()
 input_check = UserInputCheck()
 location_manager = Location(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
 
+# custom error to handle activities
+class NoActivitiesFoundError(Exception):
+    pass
+
+
 # main function
 def find_and_display_activities(city):
     country_choice = get_country_for_city(city)
@@ -20,7 +25,7 @@ def find_and_display_activities(city):
     if not coordinates:
         return
 
-    kinds = get_user_selected_kinds()
+    kinds = get_user_selected_kinds(city, coordinates)
     if not kinds:
         return
 
@@ -60,7 +65,7 @@ def get_city_coordinates(city):
     return coordinates
 
 
-def get_user_selected_kinds():
+def get_user_selected_kinds(city, coordinates):
     # creating dictionary to be able to have a displayable name and the name in a format the API requires
     kinds_choices = {
         'historic': 'historic',
@@ -72,33 +77,42 @@ def get_user_selected_kinds():
         'amusements': 'amusements'
     }
 
-    # assigning numbers in front of each value to handle user input better
-    for index, display in enumerate(kinds_choices.values(), start=1):
-        print(f'{index}. {display}')
-    # getting user input
-    kinds = input(
-        f'Please choose from this list, the number.s corresponding to the type of activity you would like ?'
-        f'(up to 3 choices) ').strip().lower()
+    while True:
 
-    # running input through method in utils to check format
-    kinds_indexes = input_check.formatted_kinds_activities(kinds)
+        # assigning numbers in front of each value to handle user input better
+        for index, display in enumerate(kinds_choices.values(), start=1):
+            print(f'{index}. {display}')
 
-    # creating a list of input data and turning it back from numbers to words
-    kinds_list = []
-    for i in kinds_indexes:
-        if i.isdigit():
-            index = int(i)
-            if 1 <= index <= len(kinds_choices):
-                kind_key = list(kinds_choices.keys())[index -1]
-                kinds_list.append(kind_key)
+        # getting user input
+        kinds = input(
+            f'Please choose from this list, the number.s corresponding to the type of activity you would like ?'
+            f'(up to 3 choices) ').strip().lower()
 
-    # checking user did not enter more than 3 options
-    if len(kinds_list) == 0 or len(kinds_list) > 3:
-        print('Invalid choices. Please select up to 3 numbers in the list.')
-        return None
+        # running input through method in utils to check format
+        kinds_indexes = input_check.formatted_kinds_activities(kinds)
 
-    # making sure words a separated by commas while returning them
-    return ','.join(kinds_list)
+        # creating a list of input data and turning it back from numbers to words
+        kinds_list = []
+        for i in kinds_indexes:
+            if i.isdigit():
+                index = int(i)
+                if 1 <= index <= len(kinds_choices):
+                    kind_key = list(kinds_choices.keys())[index -1]
+                    kinds_list.append(kind_key)
+
+        # checking user did not enter more than 3 options
+        if len(kinds_list) == 0 or len(kinds_list) > 3:
+            print('Invalid choices. Please select up to 3 numbers in the list.')
+            continue
+
+        kinds_str = ','.join(kinds_list)
+
+        try:
+            activities = fetch_activities(city, coordinates, kinds_str)
+            return kinds_str
+        except NoActivitiesFoundError:
+            print("Couldn't find any activities. Please select another option")
+
 
 def fetch_activities(city, coordinates, kinds):
     # calling API function to get data and throwing error if no data
@@ -107,7 +121,7 @@ def fetch_activities(city, coordinates, kinds):
     activities = opentripmap_api.get_activities(city, lat, lon, kinds)
 
     if not activities:
-        print(f'Sorry, there are no {kinds} in {city}! ')
+        raise NoActivitiesFoundError(f'Sorry, there are no {kinds} in {city}! ')
 
     return activities
 
