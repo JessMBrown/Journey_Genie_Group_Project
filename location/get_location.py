@@ -1,5 +1,6 @@
-from db_utils_oli import Database, DbConnectionError
+from database.db_utils import Database, DbConnectionError
 from utils import UserInputCheck
+from config import HOST, PASSWORD, USER
 
 input_check = UserInputCheck()
 
@@ -34,7 +35,7 @@ class Location:
                     print(f"All cities for {chosen_country} have been shown.")
                     return None
 
-                print(f"Cities in {chosen_country}:")
+                print(f"\nCities in {chosen_country}:")
                 city_names = [city[0].lower() for city in cities]
 
                 # Displaying cities with a number in front of them
@@ -44,7 +45,7 @@ class Location:
                 while True:
                     try:
                         # Getting the user's choice by number
-                        city_choice = int(input("Which of the cities would you like to visit? ").strip())
+                        city_choice = int(input("\nWhich of the cities would you like to visit? ").strip())
                         if 1 <= city_choice <= len(cities):
                             chosen_city = cities[city_choice - 1][0].lower()
                             return chosen_city
@@ -105,7 +106,7 @@ class Location:
 
             if cities:
                 limited_cities = cities[:5]
-                print(f"Cities for {', '.join(holiday_types)} holidays (showing up to 5 results):")
+                print(f"\nCities for {', '.join(holiday_types)} holidays (showing up to 5 results):")
                 for index, city in enumerate(limited_cities, start=1):
                     print(f"{index}. {city[0]} in {city[1]} for {city[2]}")
 
@@ -113,7 +114,7 @@ class Location:
                 self.shown_cities.update([city[0] for city in limited_cities])
 
                 # Asking if any city interests the user
-                is_interested = input_check.get_input("Does any of these cities interest you? Y/N ")
+                is_interested = input_check.get_input("\nDoes any of these cities interest you? Y/N ")
                 if is_interested == 'y':
                     while True:
                         try:

@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from db_utils_oli import Database, DbConnectionError
+from database.db_utils import Database, DbConnectionError
 from config import USER, PASSWORD, HOST
 
 app = Flask(__name__)

@@ -1,12 +1,11 @@
-from activities.Joana_OpenTripMapAPI import OpenTripMapApi
+from activities.activities_api import OpenTripMapApi
 from pprint import pprint
 from collections import deque
-from config import activities_api_key
+from config import activities_api_key, HOST, PASSWORD, USER
 from location.get_location import Location
 from utils import UserInputCheck
 from mail_and_favourites.get_favourites import SavingToFavourites
 from hotels.get_hotels import city_search
-from config import HOST, PASSWORD, USER
 
 # assigning classes from utils to variables
 favourites_manager = SavingToFavourites()
@@ -37,7 +36,7 @@ def find_and_display_activities(city):
     country_code = extract_country_code_from_activities(activities)
     final_results = process_and_display_activities(activities, city)
 
-    get_activity_details(final_results, activities, city, city_id, country_choice, country_code)
+    get_activity_details(final_results, activities, city, city_id, country_choice)
     saved_activities = favourites_manager.get_favourites('activities')
     return saved_activities
 
@@ -85,7 +84,7 @@ def get_user_selected_kinds(city, coordinates):
 
         # getting user input
         kinds = input(
-            f'Please choose from this list, the number.s corresponding to the type of activity you would like ?'
+            f'\nPlease choose from this list, the number(s) corresponding to the type of activity you would like ?'
             f'(up to 3 choices) ').strip().lower()
 
         # running input through method in utils to check format
@@ -111,7 +110,7 @@ def get_user_selected_kinds(city, coordinates):
             activities = fetch_activities(city, coordinates, kinds_str)
             return kinds_str
         except NoActivitiesFoundError:
-            print("Couldn't find any activities. Please select another option")
+            print("\nCouldn't find any activities. Please select another option")
 
 
 def fetch_activities(city, coordinates, kinds):
@@ -159,7 +158,7 @@ def process_and_display_activities(activities, city):
 
     # creating a list of activities and adding a number in front
     final_results = [item['name'] for item in results]
-    print(f'Here are the activities available to you in {city}:')
+    print(f'\nHere are the activities available to you in {city}:')
 
     for index, item in enumerate(final_results, start=1):
         print(f"{index}. {item}")
@@ -167,13 +166,13 @@ def process_and_display_activities(activities, city):
     return final_results
 
 # to extract specific details
-def get_activity_details(final_results, results, city_choice, city_id, country_choice, country_code):
+def get_activity_details(final_results, results, city_choice, city_id, country_choice):
     # calling API
     opentripmap_api = OpenTripMapApi(activities_api_key)
 
     while True:
         try:
-            activity_choice = int(input("Please, enter the number corresponding to the activity you'd like more details on: "))
+            activity_choice = int(input("\nPlease, enter the number corresponding to the activity you'd like more details on: "))
             # checking if user input is a possible number in the list of activities
             if 1 > activity_choice or activity_choice > len(final_results):
                 print('Invalid number! Please try again ')
@@ -188,7 +187,7 @@ def get_activity_details(final_results, results, city_choice, city_id, country_c
             continue
 
         # offering possibility to get details on other activities
-        other_details = input_check.get_input(f'Would you like details on another activity? Y/N ')
+        other_details = input_check.get_input(f'\nWould you like details on another activity? Y/N ')
         if other_details != 'y':
             break
 
@@ -196,28 +195,29 @@ def get_activity_details(final_results, results, city_choice, city_id, country_c
 
 
 def display_activity_details(selected_activity, city_choice, city_id, country_choice):
-        # calling API function
-        opentripmap_api = OpenTripMapApi(activities_api_key)
-        details = opentripmap_api.get_activity_details(selected_activity['xid'])
+    # calling API function
+    opentripmap_api = OpenTripMapApi(activities_api_key)
+    details = opentripmap_api.get_activity_details(selected_activity['xid'])
 
-        # if error loops back to offer to select another activity
-        if not details:
-            print("We were not able to retrieve the data for the selected activity! ")
-            return
+    # if error loops back to offer to select another activity
+    if not details:
+        print("We were not able to retrieve the data for the selected activity! ")
+        return
 
-        # calling function above to retrieve format for data to be displayed and displaying it
-        activity_details = extract_specific_details(details)
-        print(f'Here are the details for {selected_activity['name']}:')
-        pprint(activity_details)
+    # calling function above to retrieve format for data to be displayed and displaying it
+    activity_details = extract_specific_details(details)
+    print(f'Here are the details for {selected_activity['name']}:')
+    pprint(activity_details)
 
-        #extracting country_code from details to use in save_favourite
-        address = details.get('address', {})
-        country_code = address.get('country_code', 'Unknown')
-        # offering option to save activity
-        favourites_manager.save_favourite_activities(selected_activity['xid'], selected_activity['name'], city_choice, city_id,
-                                                     input_check, country_choice, country_code)
+    # extracting country_code from details to use in save_favourite
+    address = details.get('address', {})
+    country_code = address.get('country_code', 'Unknown')
+    # offering option to save activity
+    favourites_manager.save_favourite_activities(selected_activity['xid'], selected_activity['name'], city_choice,
+                                                 city_id,
+                                                 input_check, country_choice, country_code)
 
-        return details
+    return details
 
 def extract_specific_details(details):
     # declaring what data from API we want to display

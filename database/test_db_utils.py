@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from db_utils_oli import Database, DbConnectionError
+from db_utils import Database, DbConnectionError
 
 
 class TestDatabase(unittest.TestCase):

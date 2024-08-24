@@ -30,7 +30,7 @@ class Database:
             self.cursor.execute(query, values)
             self.connection.commit()
 
-            print("New data added successfully")
+            # print("New data added successfully")
 
         except Exception:
             raise DbConnectionError("Failed to write data to DB")
