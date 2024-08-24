@@ -1,4 +1,4 @@
-from weather_api_search import GetWeatherByLocation
+from weather.weather_api_search import GetWeatherByLocation
 from datetime import datetime, timedelta
 import emoji
 

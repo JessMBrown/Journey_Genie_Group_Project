@@ -1,4 +1,4 @@
-from hotels_api import fetch_price, fetch_hotels_with_filters, search_cities, fetch_hotel_details_with_links
+from hotels.hotels_api import fetch_price, fetch_hotels_with_filters, search_cities, fetch_hotel_details_with_links
 from utils import UserInputCheck
 import urllib.parse, emoji
 from mail_and_favourites.get_favourites import SavingToFavourites

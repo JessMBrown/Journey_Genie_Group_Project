@@ -1,4 +1,4 @@
-from activities_api import OpenTripMapApi
+from activities.activities_api import OpenTripMapApi
 from pprint import pprint
 from collections import deque
 from config import activities_api_key, HOST, PASSWORD, USER

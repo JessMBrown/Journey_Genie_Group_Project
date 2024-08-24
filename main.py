@@ -14,6 +14,7 @@ planner = Location(host=HOST, user=USER, password=PASSWORD, db_name='destination
 input_check = UserInputCheck()
 favourites_manager = SavingToFavourites()
 
+
 # Function to handle the case when the user knows which country he wants to go to
 def knows_destination(planner, start_date, end_date):
     try:
@@ -39,6 +40,7 @@ def knows_destination(planner, start_date, end_date):
     except Exception as e:
         print(f'An error occurred: {e}')
 
+
 # function to tailor a trip based on user preferences
 def tailored_trip(planner, start_date, end_date):
     # city/country function to display countries by filters
@@ -47,6 +49,7 @@ def tailored_trip(planner, start_date, end_date):
     # call function that handles the rest of the logic which is the same for each of the 3 options
     plan_trip_details(city_choice, start_date, end_date, chosen_country)
     return chosen_country, city_choice
+
 
 def take_me_anywhere(planner, start_date, end_date):
     city_choice = None
@@ -88,18 +91,21 @@ def take_me_anywhere(planner, start_date, end_date):
 
     return city_choice, chosen_country
 
+
 def fetch_and_display_summary(start_date, end_date, saved_hotels, saved_activities, city_choice, chosen_country):
     # list comprehension to make a list of the hotels and activities the user has selected if any
     favourite_hotels = [hotel['name'] for hotel in saved_hotels] if saved_hotels else ['None']
-    favourite_activities= [activity['name'] for activity in saved_activities] if saved_activities else ['None']
+    favourite_activities = [activity['name'] for activity in saved_activities] if saved_activities else ['None']
 
-    summary = (f"\nYour holiday in {city_choice.capitalize()}, {chosen_country.capitalize()} from the {start_date} to {end_date}:\n"
+    summary = (f"\nYour holiday in {city_choice.capitalize()}, {chosen_country.capitalize()} from the {start_date} "
+               f"to {end_date}:\n"
                f"Here are the hotels you selected:  {', '.join(favourite_hotels)}. \n"
                f"Here are the activities you selected: {', '.join(favourite_activities)}.\n"
                f"This will be sent to your email if you required it!")
 
     print(summary)
     return
+
 
 # function to continue the end of the logic for each option
 def plan_trip_details(city_choice, start_date, end_date, chosen_country):
@@ -112,7 +118,6 @@ def plan_trip_details(city_choice, start_date, end_date, chosen_country):
     print("Looks great! Now, let's find you a hotel \U0001F3E8")
     saved_hotels = get_hotels(city_choice, start_date, end_date)
     print("")
-
 
     # call get_activities to get a selection of activities by filter
     print(f"Let's find you some activities in {city_choice}! \U0001fa84 ")
@@ -128,11 +133,11 @@ def plan_trip_details(city_choice, start_date, end_date, chosen_country):
     favourites_manager.store_all_favourites_in_database()
 
 
-
 def main():
     # Welcoming user and getting some basic details
     sparkle = emoji.emojize(":sparkles:")
-    print(f"Hello! Welcome to {sparkle}Journey Genie{sparkle}!\nLet's start prepping your next holiday {emoji.emojize(":beach_with_umbrella:")}")
+    print(f"Hello! Welcome to {sparkle}Journey Genie{sparkle}!\nLet's start prepping your next holiday"
+          f" {emoji.emojize(":beach_with_umbrella:")}")
     start_date, end_date = get_valid_dates()
 
     knows_where = input_check.get_input("Do you know which country you'd like to go to? Y/N ")
@@ -140,16 +145,17 @@ def main():
     if knows_where == 'y':
         knows_destination(planner, start_date, end_date)
     elif knows_where == 'n':
-        wants_random = input_check.get_input("No worries! We're here to help! Would you like us to make a random guess \U0001F52E of a nice holiday place for you? Y/N ")
+        wants_random = input_check.get_input("No worries! We're here to help! Would you like us to make a random guess"
+                                             " \U0001F52E of a nice holiday place for you? Y/N ")
         if wants_random == 'y':
             take_me_anywhere(planner, start_date, end_date)
         elif wants_random == 'n':
             print("\nOk! Let's tailor a holiday for you!")
             tailored_trip(planner, start_date, end_date)
 
-    print("The Journey Genie has done his magic! \U0001F4AB Now back to the lamp sipping cocktails \U0001F379 until you need him again!")
+    print("\nThe Journey Genie has done his magic! \U0001F4AB Now back to the lamp sipping cocktails \U0001F379 "
+          "until you need him again!")
 
 
 if __name__ == "__main__":
     main()
-
