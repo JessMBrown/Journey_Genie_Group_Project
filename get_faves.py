@@ -21,11 +21,33 @@ class SavingToFavourites:
         self.favourite_hotels = []
         self.favourite_activities = []
 
-    def save_favourite_activities(self, xid, activity_name, city_choice, city_id, input_check, chosen_country, country_code):
-        self.save_favourites('activities', xid, activity_name, city_choice, city_id, input_check, chosen_country, country_code)
+    def save_favourite_activities(self, activities, input_check):
+        """Accepts a list of activity dictionaries and saves each one."""
+        for activity in activities:
+            self.save_favourites(
+                category='activities',
+                id=activity['activity id'],
+                name=activity['name'],
+                city_choice=activity['city'],
+                city_id=activity['city_ID'],
+                input_check=input_check,
+                chosen_country=activity['country'],
+                country_code=activity['country_code']
+            )
 
-    def save_favourite_hotels(self, hotel_id, hotel_name, city_choice, city_id, input_check, chosen_country, country_code):
-        self.save_favourites('hotels', hotel_id, hotel_name, city_choice, city_id, input_check, chosen_country, country_code)
+    def save_favourite_hotels(self, hotels, input_check):
+        """Accepts a list of hotel dictionaries and saves each one."""
+        for hotel in hotels:
+            self.save_favourites(
+                category='hotels',
+                id=hotel['hotel id'],
+                name=hotel['name'],
+                city_choice=hotel['city'],
+                city_id=hotel['city_ID'],
+                input_check=input_check,
+                chosen_country=hotel['country'],
+                country_code=hotel['country_code']
+            )
 
     def get_favourites(self, category):
         if category == 'activities':
@@ -82,7 +104,7 @@ class SavingToFavourites:
         self.store_data_in_database(table_name, columns, values)
 
     def store_data_in_database(self, table_name, columns, values):
-        db = Database(host=HOST, user=USER, password=PASSWORD, db_name='destinations')  # Ensure db_name is correct
+        db = Database(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
 
         try:
             db.add_new_data(
@@ -96,7 +118,6 @@ class SavingToFavourites:
             print(f"An unexpected error occurred: {e}")
 
 
-# Example usage (make sure to replace with your actual flow)
 if __name__ == "__main__":
     input_check = UserInputCheck()
     fav_manager = SavingToFavourites()
@@ -105,4 +126,22 @@ if __name__ == "__main__":
 # fav_manager.save_favourite_hotels(284601, 'Ateneo Puerta del Sol', 'Madrid', '123484', input_check, 'Spain', 'es')
 
 # Example of saving a favourite activity
-# fav_manager.save_favourite_activities('N6220668933', 'Campo dos Mártires da Pátria', 'Lisbon', '123689', input_check, 'Portugal', 'pt')
+# fav_manager.save_favourite_activities('N6220668933', 'Campo dos Mártires da Pátria', 'Lisbon', '123689', input_check,
+# 'Portugal', 'pt')
+
+# hotels = [
+#     {'hotel id': 331978, 'name': 'Four Seasons Hotel Ritz Lisbon', 'city': 'Lisbon', 'city_ID': '123689',
+#      'country': 'Portugal', 'country_code': 'pt', 'added_on': '2024-08-24'},
+#     {'hotel id': 7955, 'name': 'Olissippo Lapa Palace – The Leading Hotels of the World', 'city': 'Lisbon',
+#      'city_ID': '123689', 'country': 'Portugal', 'country_code': 'pt', 'added_on': '2024-08-24'}
+# ]
+#
+# fav_manager.save_favourite_hotels(hotels, input_check)
+
+activities = [
+        {'activity id': 'd112233', 'name': 'City Tour', 'city': 'Lisbon', 'city_ID': '123689', 'country': 'Portugal', 'country_code': 'pt', 'added_on': '2024-08-24'},
+        {'activity id': '44f5566', 'name': 'River Cruise', 'city': 'Lisbon', 'city_ID': '123689', 'country': 'Portugal', 'country_code': 'pt', 'added_on': '2024-08-24'}
+    ]
+
+# Call the function to save multiple activities
+fav_manager.save_favourite_activities(activities, input_check)
