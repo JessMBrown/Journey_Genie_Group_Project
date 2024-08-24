@@ -2,7 +2,6 @@ from database.config_oli import HOST, PASSWORD, USER
 from database.db_utils_oli import Database, DbConnectionError
 import emoji
 from datetime import datetime
-import re
 
 class UserInputCheck:
     def __init__(self):
