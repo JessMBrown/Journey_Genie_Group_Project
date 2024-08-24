@@ -364,7 +364,8 @@ VALUES
     (123754, "mx", "Taxco", "history");
 
 CREATE TABLE favourite_hotels (
-fav_hotel_ID INT NOT NULL Primary Key,
+hotel_id INT NOT NULL auto_increment Primary Key,
+fav_hotel_ID INT NOT NULL,
 hotel_name VARCHAR(100) NOT NULL,
 city_ID INT NOT NULL,
 country_code VARCHAR(5) NOT NULL,
@@ -376,13 +377,14 @@ FOREIGN KEY (city_ID)
 REFERENCES cities(id));
 
 INSERT INTO favourite_hotels (
-fav_hotel_ID, hotel_name, city_ID, country_code, favourite_date)
+hotel_id, fav_hotel_ID, hotel_name, city_ID, country_code, favourite_date)
 VALUES
-("89176", "Shangri-La Toronto", '123460', "ca", '2024-08-23');
+("1", "89176", "Shangri-La Toronto", '123460', "ca", '2024-08-23');
 
 CREATE TABLE favourite_activities (
-activity_ID VARCHAR(50) NOT NULL Primary Key,
-activity_name VARCHAR(50) NOT NULL,
+act_id INT NOT NULL auto_increment Primary Key,
+activity_ID VARCHAR(50) NOT NULL,
+activity_name VARCHAR(100) NOT NULL,
 city_ID INT NOT NULL,
 country_code VARCHAR(5) NOT NULL,
 favourite_date DATE,
@@ -393,6 +395,6 @@ FOREIGN KEY (city_ID)
 REFERENCES cities(id));
 
 INSERT INTO favourite_activities (
-activity_ID, activity_name, city_ID, country_code, favourite_date)
+act_id, activity_ID, activity_name, city_ID, country_code, favourite_date)
 VALUES
-('Q60749334', "LEGOLAND Discovery Centre Toronto", '123460', "ca", '2024-08-23');
+("1", 'Q60749334', "LEGOLAND Discovery Centre Toronto", '123460', "ca", '2024-08-23');
