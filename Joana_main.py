@@ -89,11 +89,13 @@ def take_me_anywhere(planner, start_date, end_date):
 # function to continue the end of the logic for each option
 def plan_trip_details(city_choice, start_date, end_date):
     # call get_weather to get weather prediction displayed
+
     find_weather(city_choice, start_date, end_date)
 
     # call get_hotels to get a selection of hotels by filter
     print("Looks great! Now, let's find you a hotel! ")
     saved_hotels = get_hotels(city_choice, start_date, end_date)
+
 
     # call get_activities to get a selection of activities by filter
     print(f"Let's find you some activities in {city_choice}! ")
@@ -107,8 +109,8 @@ def plan_trip_details(city_choice, start_date, end_date):
     print(saved_hotels)
     print(saved_activities)
 
-    # favourites_manager.store_favourites_in_database(saved_hotels, 'favourite_hotels')
-    # favourites_manager.store_favourites_in_database(saved_activities, 'favourite_activities')
+    favourites_manager.store_all_favourites_in_database()
+
 
 
 def main():

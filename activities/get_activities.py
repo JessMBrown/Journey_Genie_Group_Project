@@ -37,7 +37,7 @@ def find_and_display_activities(city):
     country_code = extract_country_code_from_activities(activities)
     final_results = process_and_display_activities(activities, city)
 
-    get_activity_details(final_results, activities, city, city_id, country_choice, country_code)
+    get_activity_details(final_results, activities, city, city_id, country_choice)
     saved_activities = favourites_manager.get_favourites('activities')
     return saved_activities
 
@@ -167,7 +167,7 @@ def process_and_display_activities(activities, city):
     return final_results
 
 # to extract specific details
-def get_activity_details(final_results, results, city_choice, city_id, country_choice, country_code):
+def get_activity_details(final_results, results, city_choice, city_id, country_choice):
     # calling API
     opentripmap_api = OpenTripMapApi(activities_api_key)
 

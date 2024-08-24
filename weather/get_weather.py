@@ -23,7 +23,7 @@ def weather_api_endpoint_calculator(start_date):
         print("Sorry, cannot fetch the weather for these dates")
         #     if the start_date is more than 300 days from present_date or is less than present_date
         #     then the endpoint_url = "history" - reasoning, the API only returns weather predictions
-        #     300 days from todays date, so if the dates requested are more than the APIs limits for
+        #     300 days from today's date, so if the dates requested are more than the APIs limits for
         #     predictions use the data from the historic data
     elif str(start_date) > from_300_days_present_date or str(start_date) < present_date:
         endpoint_url = "history"

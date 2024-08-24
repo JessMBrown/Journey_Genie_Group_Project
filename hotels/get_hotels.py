@@ -74,7 +74,7 @@ def get_selected_filters():
         except (ValueError, IndexError):
             print("Invalid input. Please enter numbers separated by a comma.")
 
-    print('Loading...'.format(emoji.emojize("\u231B")))
+    print(f'Loading...{emoji.emojize("\u231B")}')
     return selected_filters
 
 

@@ -23,6 +23,7 @@ class SavingToFavourites:
         elif category == 'hotels':
             return self.favourite_hotels
 
+
     def save_favourites(self, category, id, name, city_choice, city_id, input_check, chosen_country, country_code):
         wants_save = input_check.get_input(f'Would you like to save this {category} in your list of favourites? Y/N ')
         if wants_save.lower() == 'y':
@@ -55,6 +56,7 @@ class SavingToFavourites:
             print(emoji.emojize('No problem! :thumbs_up:'))
 
     def store_favourites_in_database(self, user_data, table_name):
+        print(f"Storing data in table {table_name}: {user_data}")
         if table_name == 'favourite_hotels':
             columns = ['fav_hotel_ID', 'hotel_name', 'city_ID', 'country_code', 'favourite_date']
             values = (
@@ -85,3 +87,18 @@ class SavingToFavourites:
             print(f"Failed to store data in the database: {e}")
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
+
+    def store_all_favourites_in_database(self):
+        # Store all hotels
+        for hotel in self.favourite_hotels:
+            try:
+                self.store_favourites_in_database(hotel, 'favourite_hotels')
+            except Exception as e:
+                print(f"Failed to store hotel in the database: {e}")
+
+        # Store all activities
+        for activity in self.favourite_activities:
+            try:
+                self.store_favourites_in_database(activity, 'favourite_activities')
+            except Exception as e:
+                print(f"Failed to store activity in the database: {e}")
