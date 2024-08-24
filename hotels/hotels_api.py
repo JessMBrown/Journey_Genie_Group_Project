@@ -1,5 +1,5 @@
 import requests
-from config_joana import hotels_api_key
+from config import hotels_api_key
 
 
 # function to handle api response

@@ -63,28 +63,3 @@ def get_valid_dates():
 
         except ValueError:
             print("Invalid date format. Please enter the date in dd-mm-yyyy format.")
-
-
-def fetch_and_display_summary(start_date, end_date, saved_hotels, saved_activities):
-    # avoid duplicates with set
-    locations = set()
-
-    # list comprehension to make a list of the hotels and activities the user has selected if any
-    favourite_hotels = [hotel['name'] for hotel in saved_hotels] if saved_hotels else ['None']
-    favourite_activities= [activity['name'] for activity in saved_activities] if saved_activities else ['None']
-
-    # used to add city/country pairs
-    if saved_hotels:
-        locations = {(hotel['city'], hotel['country']) for hotel in saved_hotels}
-
-    # formating it into a string separated by comma or display 'None' if empty list
-    location_str = ', '.join(f'{city}, {country}' for city, country in locations) if locations else 'None'
-
-
-    summary = (f"For your holiday in {location_str} from the {start_date} to {end_date},\n"
-               f"here are the hotels you selected:  {', '.join(favourite_hotels)}. \n"
-               f"Here are the activities you selected: {', '.join(favourite_activities)}.\n"
-               f"This will be sent to your email if you required it!")
-
-    print(summary)
-    return

@@ -2,7 +2,7 @@ from hotels.hotels_api import fetch_price, fetch_hotels_with_filters, search_cit
 from utils import UserInputCheck
 import urllib.parse, emoji
 from mail_and_favourites.get_favourites import SavingToFavourites
-from config_joana import HOST, PASSWORD, USER
+from config import HOST, PASSWORD, USER
 from location.get_location import Location
 
 class CityNotFoundError(Exception):
@@ -62,7 +62,7 @@ def get_selected_filters():
         print(f"{index}. {filter_name.capitalize()}")
 
     while True:
-        selected_filters_input = input("Enter the numbers corresponding to the filters you'd like to apply (comma-separated): ")
+        selected_filters_input = input("\nEnter the numbers corresponding to the filters you'd like to apply (comma-separated): ")
         selected_filters_indexes = selected_filters_input.split(',')
         try:
             selected_filters = [available_filters[int(index) - 1] for index in selected_filters_indexes]
@@ -74,7 +74,7 @@ def get_selected_filters():
         except (ValueError, IndexError):
             print("Invalid input. Please enter numbers separated by a comma.")
 
-    print('Loading...'.format(emoji.emojize("\u231B")))
+    print('Loading...\U0000231B')
     return selected_filters
 
 
@@ -176,7 +176,7 @@ def get_hotels(city_choice, start_date, end_date):
                     # call method from get_favourites to save favourites
                     save_hotel_to_favourite(hotel_selected, chosen_option['cityName'], city_id, country_choice, country_code)
                     # offering possibility to choose another hotel
-                    other_details = input_check.get_input(f'Would you like to select another hotel? Y/N ')
+                    other_details = input_check.get_input(f'\nWould you like to select another hotel? Y/N ')
                     if other_details != 'y':
                         saved_hotels = favourites_manager.get_favourites('hotels')
                         return saved_hotels
