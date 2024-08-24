@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import MagicMock, patch
 from get_location import Location
-from database.db_utils_oli import DbConnectionError
+from database.db_utils import DbConnectionError
 
 
 class TestLocation(unittest.TestCase):

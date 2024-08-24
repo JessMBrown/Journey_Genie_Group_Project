@@ -1,5 +1,5 @@
 import unittest
-import weather.get_weather
+import get_weather
 from datetime import date, datetime
 
 

@@ -1,5 +1,5 @@
 from config import HOST, PASSWORD, USER
-from db_utils_oli import Database, DbConnectionError
+from database.db_utils import Database, DbConnectionError
 import re
 from utils import UserInputCheck
 
@@ -18,13 +18,13 @@ def get_email():
             else:
                 print("Invalid name. Please enter a valid first name (letters only).")
 
-        # Looping until a valid mail_and_favourites address is entered
+        # Looping until a valid email address is entered
         while True:
             email_address = input("Please enter your email address: ").strip()
             if validate_email(email_address):
-                break  # Valid mail_and_favourites received
+                break  # Valid email received
             else:
-                print("Invalid mail_and_favourites address. Please enter a valid email.")
+                print("Invalid email address. Please enter a valid email.")
 
         # Prepare the data to store in the database
         user_data = {
@@ -32,7 +32,7 @@ def get_email():
             'email_address': email_address
         }
 
-        # Storing the mail_and_favourites in the database
+        # Storing the email in the database
         store_email_in_database(user_data)
 
         print("Email sent successfully!")
@@ -41,7 +41,8 @@ def get_email():
 
 
 def validate_email(email):
-    # Regex to validate mail_and_favourites addresses - it's used to validate the mail_and_favourites address format. It ensures that the mail_and_favourites
+    # Regex to validate email addresses - it's used to validate the mail_and_favourites address format.
+    # It ensures that the mail_and_favourites
     # contains the '@' symbol and follows the general structure of an mail_and_favourites address
     email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
     return re.match(email_regex, email) is not None

@@ -8,7 +8,6 @@ from hotels.get_hotels import get_hotels
 from activities.get_activities import find_and_display_activities
 from weather.get_weather import find_weather
 import emoji
-import os
 
 # Creating instances for classes for handling user input, location and favourites
 planner = Location(host=HOST, user=USER, password=PASSWORD, db_name='destinations')

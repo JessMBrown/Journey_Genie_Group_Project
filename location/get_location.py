@@ -1,5 +1,6 @@
-from db_utils_oli import Database, DbConnectionError
+from database.db_utils import Database, DbConnectionError
 from utils import UserInputCheck
+from config import HOST, PASSWORD, USER
 
 input_check = UserInputCheck()
 

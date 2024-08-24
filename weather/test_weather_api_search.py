@@ -1,5 +1,4 @@
 import unittest
-
 from weather_api_search import GetWeatherByLocation
 
 

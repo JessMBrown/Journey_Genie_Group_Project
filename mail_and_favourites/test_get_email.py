@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from get_mail import get_email, validate_email, store_email_in_database
-from database.db_utils_oli import Database, DbConnectionError
+from get_email import get_email, validate_email, store_email_in_database
+from database.db_utils import Database, DbConnectionError
 
 
 class TestEmailFunctions(unittest.TestCase):

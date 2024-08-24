@@ -39,7 +39,6 @@ def get_valid_dates():
             start_date_str = input("When would you like your holiday to start? (dd-mm-yyyy): ")
             start_date = datetime.strptime(start_date_str, "%d-%m-%Y").date()
 
-
             # making sure user does not write a date in the past
             if start_date < today:
                 print("The check-in date must be today or later. Please enter a valid date.")
@@ -48,7 +47,8 @@ def get_valid_dates():
             # making sure check in date is within the max
             if start_date > max_start_date:
                 print(
-                    "The check-in date cannot be later than one year and one month from today. Please enter a valid date.")
+                    "The check-in date cannot be later than one year and one month from today. "
+                    "Please enter a valid date.")
                 continue
 
             end_date_str = input("When would you like your holiday to end? (dd-mm-yyyy): ")

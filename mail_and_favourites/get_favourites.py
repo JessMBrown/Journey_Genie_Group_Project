@@ -1,5 +1,5 @@
 from config import HOST, PASSWORD, USER
-from db_utils_oli import Database, DbConnectionError
+from database.db_utils import Database, DbConnectionError
 import emoji
 from utils import UserInputCheck
 from datetime import datetime
@@ -11,11 +11,15 @@ class SavingToFavourites:
         self.favourite_hotels = []
         self.favourite_activities = []
 
-    def save_favourite_activities(self, xid, activity_name, city_choice, city_id, input_check, chosen_country, country_code):
-        self.save_favourites('activities', xid, activity_name, city_choice, city_id, input_check, chosen_country, country_code)
+    def save_favourite_activities(self, xid, activity_name, city_choice, city_id, input_check, chosen_country,
+                                  country_code):
+        self.save_favourites('activities', xid, activity_name, city_choice, city_id, input_check,
+                             chosen_country, country_code)
 
-    def save_favourite_hotels(self, hotel_id, hotel_name, city_choice, city_id, input_check, chosen_country, country_code):
-        self.save_favourites('hotels', hotel_id, hotel_name, city_choice, city_id, input_check, chosen_country, country_code)
+    def save_favourite_hotels(self, hotel_id, hotel_name, city_choice, city_id, input_check, chosen_country,
+                              country_code):
+        self.save_favourites('hotels', hotel_id, hotel_name, city_choice, city_id, input_check,
+                             chosen_country, country_code)
 
     def get_favourites(self, category):
         if category == 'activities':
@@ -23,9 +27,9 @@ class SavingToFavourites:
         elif category == 'hotels':
             return self.favourite_hotels
 
-
     def save_favourites(self, category, id, name, city_choice, city_id, input_check, chosen_country, country_code):
-        wants_save = input_check.get_input(f'\nWould you like to save this {category} in your list of favourites? \u2764\ufe0f Y/N ')
+        wants_save = input_check.get_input(f'\nWould you like to save this {category} in your list of favourites?'
+                                           f' \u2764\ufe0f Y/N ')
         if wants_save.lower() == 'y':
             item = {
                 f'{category[:-1]} id': id,
@@ -37,7 +41,7 @@ class SavingToFavourites:
                 'added_on': datetime.now().strftime("%Y-%m-%d")
             }
 
-            # Add to appropriate list
+            # Adding to appropriate list
             if category == 'activities':
                 self.favourite_activities.append(item)
                 table_name = 'favourite_activities'
@@ -45,9 +49,9 @@ class SavingToFavourites:
                 self.favourite_hotels.append(item)
                 table_name = 'favourite_hotels'
 
-            # Attempt to store in the database
+            # Attempting to store in the database
             try:
-                self.store_favourites_in_database(item, table_name)  # Corrected to self.store_favourites_in_database
+                self.store_favourites_in_database(item, table_name)
                 print(emoji.emojize('Consider it done!:thumbs_up:'))
 
             except Exception as e:
@@ -74,7 +78,7 @@ class SavingToFavourites:
         self.store_data_in_database(table_name, columns, values)
 
     def store_data_in_database(self, table_name, columns, values):
-        db = Database(host=HOST, user=USER, password=PASSWORD, db_name='destinations')  # Ensure db_name is correct
+        db = Database(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
 
         try:
             db.add_new_data(
