@@ -1,4 +1,4 @@
-from config_joana import HOST, PASSWORD, USER
+from config import HOST, PASSWORD, USER
 from db_utils_oli import Database, DbConnectionError
 import emoji
 from utils import UserInputCheck
@@ -25,7 +25,7 @@ class SavingToFavourites:
 
 
     def save_favourites(self, category, id, name, city_choice, city_id, input_check, chosen_country, country_code):
-        wants_save = input_check.get_input(f'Would you like to save this {category} in your list of favourites? Y/N ')
+        wants_save = input_check.get_input(f'\nWould you like to save this {category} in your list of favourites? \u2764\ufe0f Y/N ')
         if wants_save.lower() == 'y':
             item = {
                 f'{category[:-1]} id': id,
@@ -56,7 +56,6 @@ class SavingToFavourites:
             print(emoji.emojize('No problem! :thumbs_up:'))
 
     def store_favourites_in_database(self, user_data, table_name):
-        print(f"Storing data in table {table_name}: {user_data}")
         if table_name == 'favourite_hotels':
             columns = ['fav_hotel_ID', 'hotel_name', 'city_ID', 'country_code', 'favourite_date']
             values = (

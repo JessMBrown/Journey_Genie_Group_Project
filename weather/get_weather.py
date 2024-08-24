@@ -1,5 +1,6 @@
 from weather.weather_api_search import GetWeatherByLocation
 from datetime import datetime, timedelta
+import emoji
 
 get_weather = GetWeatherByLocation(location=None, start_date=None, end_date=None)
 
@@ -92,21 +93,22 @@ def get_minimum_maximum_average_temperature(chosen_city, weather_for_dates, endp
     highest_temp = find_max_val_from_dict(weather_for_dates)
     avg_temp_for_dates = find_avg_val_from_dict(weather_for_dates)
 
+
     if endpoint == "history":
         history = (
-            f"The weather last year on the same dates in {chosen_city} was an average of {avg_temp_for_dates}°C, with "
+            f"The weather \U0001F308 last year on the same dates in {chosen_city} was an average of {avg_temp_for_dates}°C, with "
             f"the lowest being {lowest_temp}°C and the highest being {highest_temp}°C.")
         print(
-            f"The weather last year on the same dates in {chosen_city} was an average of {avg_temp_for_dates}°C, with "
+            f" The weather \U0001F308 last year on the same dates in {chosen_city} was an average of {avg_temp_for_dates}°C, with "
             f"the lowest being {lowest_temp}°C and the highest being {highest_temp}°C.")
         return history
     else:
         future = (
-            f"The predicted weather for {chosen_city} on the selected dates will be an average of "
+            f"The predicted weather \U0001F308 for {chosen_city} on the selected dates will be an average of "
             f"{avg_temp_for_dates}°C, with "
             f"the lowest being {lowest_temp}°C and the highest being {highest_temp}°C.")
         print(
-            f"The predicted weather for {chosen_city} on the selected dates will be an average of "
+            f"The predicted weather \U0001F308 for {chosen_city} on the selected dates will be an average of "
             f"{avg_temp_for_dates}°C, with "
             f"the lowest being {lowest_temp}°C and the highest being {highest_temp}°C.")
         return future

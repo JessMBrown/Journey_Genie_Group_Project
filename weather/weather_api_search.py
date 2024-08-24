@@ -1,5 +1,5 @@
 import requests
-from config_joana import weather_api_key
+from config import weather_api_key
 
 
 class GetWeatherByLocation:
