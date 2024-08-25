@@ -12,6 +12,7 @@ favourites_manager = SavingToFavourites()
 input_check = UserInputCheck()
 location_manager = Location(host=HOST, user=USER, password=PASSWORD, db_name='destinations')
 
+
 # custom error to handle activities
 class NoActivitiesFoundError(Exception):
     pass
@@ -40,11 +41,13 @@ def find_and_display_activities(city):
     saved_activities = favourites_manager.get_favourites('activities')
     return saved_activities
 
+
 # retrieve the country name for the chosen city
 def get_country_for_city(city):
     # calling function in get hotels to retrieve the country name to be used in the save_favourites
     location_info = city_search(city)
     return location_info.get('countryName')
+
 
 # retrieve the country name for the chosen city
 def get_cityID_for_city_in_country(city_choice, chosen_country):
@@ -54,6 +57,7 @@ def get_cityID_for_city_in_country(city_choice, chosen_country):
 
     except Exception as e:
         print(f'An error occurred: {e}')
+
 
 def get_city_coordinates(city):
     # calling API
@@ -124,6 +128,7 @@ def fetch_activities(city, coordinates, kinds):
 
     return activities
 
+
 # function to extract the country_code
 def extract_country_code_from_activities(activities):
     if activities:
@@ -164,6 +169,7 @@ def process_and_display_activities(activities, city):
         print(f"{index}. {item}")
 
     return final_results
+
 
 # to extract specific details
 def get_activity_details(final_results, results, city_choice, city_id, country_choice):
@@ -206,7 +212,7 @@ def display_activity_details(selected_activity, city_choice, city_id, country_ch
 
     # calling function above to retrieve format for data to be displayed and displaying it
     activity_details = extract_specific_details(details)
-    print(f'Here are the details for {selected_activity['name']}:')
+    print(f'Here are the details for {selected_activity }: ')
     pprint(activity_details)
 
     # extracting country_code from details to use in save_favourite
@@ -219,6 +225,7 @@ def display_activity_details(selected_activity, city_choice, city_id, country_ch
 
     return details
 
+
 def extract_specific_details(details):
     # declaring what data from API we want to display
     return {
@@ -228,6 +235,7 @@ def extract_specific_details(details):
         'wikipedia': details.get('wikipedia', ''),
         'wikipedia_extracts': details.get('wikipedia_extracts', {}).get('html', '')
     }
+
 
 def save_activity_to_favourite(results, city_choice, country_choice, city_id, country_code):
     for item in results:

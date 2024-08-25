@@ -136,8 +136,8 @@ def plan_trip_details(city_choice, start_date, end_date, chosen_country):
 def main():
     # Welcoming user and getting some basic details
     sparkle = emoji.emojize(":sparkles:")
-    print(f"Hello! Welcome to {sparkle}Journey Genie{sparkle}!\nLet's start prepping your next holiday"
-          f" {emoji.emojize(":beach_with_umbrella:")}")
+    print(f"Hello! Welcome to {sparkle}Journey Genie{sparkle}!\nLet's start prepping your next holiday")
+    #       f" {emoji.emojize(":beach_with_umbrella:")}")
     start_date, end_date = get_valid_dates()
 
     knows_where = input_check.get_input("Do you know which country you'd like to go to? Y/N ")
@@ -155,6 +155,7 @@ def main():
 
     print("\nThe Journey Genie has done his magic! \U0001F4AB Now back to the lamp sipping cocktails \U0001F379 "
           "until you need him again!")
+
 
 if __name__ == "__main__":
     main()

@@ -5,6 +5,7 @@ from mail_and_favourites.get_favourites import SavingToFavourites
 from config import HOST, PASSWORD, USER
 from location.get_location import Location
 
+
 class CityNotFoundError(Exception):
     pass
 
@@ -38,6 +39,7 @@ def get_number_of_people():
         except ValueError:
             print("Invalid input. Please enter a valid number.")
 
+
 # ensuring a valid number of rooms
 def get_number_of_rooms(adults):
     while True:
@@ -51,6 +53,7 @@ def get_number_of_rooms(adults):
                 return rooms
         except ValueError:
             print("Invalid input. Please enter a valid number.")
+
 
 def get_selected_filters():
     available_filters = [
@@ -109,10 +112,10 @@ def find_hotels(location_id, start_date, end_date, selected_filters, rooms, adul
 
     return hotel_prices
 
+
 # link for the hotels
 def display_hotels_with_links(hotel_prices, hotels_with_links, city_name, selected_filters):
     print(f"\nHotels in {city_name} with the filters: {(', '.join(selected_filters)).capitalize()} (by price asc):")
-
 
     for index, hotel in enumerate(hotel_prices):
         price_display = f"{hotel['price']} GBP" if isinstance(hotel['price'], (int, float)) else hotel['price']
@@ -126,6 +129,7 @@ def display_hotels_with_links(hotel_prices, hotels_with_links, city_name, select
         # encoded so special characters can be read in the url
         hotel_link = urllib.parse.quote(hotel_link, safe=":/?&=")
         print(f"{hotel_link}")
+
 
 # user can select a hotel from the options and choice is displayed
 def get_hotel_choice(hotel_prices):
@@ -141,13 +145,15 @@ def get_hotel_choice(hotel_prices):
         except ValueError:
             print("Invalid input. Please enter a valid number.")
 
+
 # retrieve the country name for the chosen city
-def get_city_id_for_city_in_country(city_choice, country_choice):
+def get_cityID_for_city_in_country(city_choice, country_choice):
     try:
         city_id = location_manager.get_city_id(chosen_city=city_choice, chosen_country=country_choice)
         return str(city_id)
     except Exception as e:
         print(f'An error occurred: {e}')
+
 
 def save_hotel_to_favourite(results, city_choice, city_id, country_choice, country_code):
     hotel_id, hotel_name = results['hotelId'], results['hotelName']
@@ -188,4 +194,3 @@ def get_hotels(city_choice, start_date, end_date):
 
     saved_hotels = favourites_manager.get_favourites('hotels')
     return saved_hotels
-

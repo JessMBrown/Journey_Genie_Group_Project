@@ -65,7 +65,7 @@ pip install -r requirements.txt
 ***a)*** **TravelPayouts Hotels Data API**
 - Create a TravelPayouts account [here](https://passport.travelpayouts.com/registration?client_id=b0e02fcc-0ab4-4b2c-a164-742762783a4e&response_type=code&redirect_uri=https%3A%2F%2Fapp.travelpayouts.com%2Fapi%2Fauth%2Fcallback&locale=en&parent_marker=direct&ad_source=support_en&ad_content=articles%2B115000343268-Hotels-data-API&tp_referrer=google.com%2F&regpage=mainpage)
 - Ignore the select question and scroll to the bottom  to press "I'm here for White Label or API"
-- Click "Create a Project in the popup that appears in the bottom right
+- Click "Create a Project" in the popup that appears in the bottom right
 - Click Mobile app > next > travel business > next > next > select Hotellook under hotels and accomodations > next > view tools
 - In the sidebar, press API and it should reveal your API token
 
