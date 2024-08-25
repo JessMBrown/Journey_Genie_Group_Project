@@ -122,7 +122,7 @@ class TestLocation(unittest.TestCase):
                 table_name="countries",
                 columns=['DISTINCT countries.country_name'],
                 join="INNER JOIN cities ON countries.country_code = cities.country_code",
-                conditions="cities.keyword IN ('wine')"
+                conditions="cities.keyword IN (wine)"
             )
 
     def test_get_holiday_type_countries_multiple_valid(self):
@@ -174,7 +174,6 @@ class TestLocation(unittest.TestCase):
         """Test closing the database connection."""
         self.location.close()
         self.mock_db_instance.close.assert_called_once()
-
 
 
 if __name__ == '__main__':
