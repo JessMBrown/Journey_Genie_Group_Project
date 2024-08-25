@@ -103,7 +103,7 @@ def get_minimum_maximum_average_temperature(chosen_city, weather_for_dates, endp
             f"The weather \U0001F308 last year on the same dates in {chosen_city} was an average of {avg_temp_for_dates}°C, with "
             f"the lowest being {lowest_temp}°C and the highest being {highest_temp}°C.")
         print(
-            f" The weather \U0001F308 last year on the same dates in {chosen_city} was an average of {avg_temp_for_dates}°C, with "
+            f"The weather \U0001F308 last year on the same dates in {chosen_city} was an average of {avg_temp_for_dates}°C, with "
             f"the lowest being {lowest_temp}°C and the highest being {highest_temp}°C.")
         return history
     else:
