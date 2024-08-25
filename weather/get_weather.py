@@ -51,10 +51,6 @@ def subtract_days(number_of_days_to_subtract, today_date=datetime.today().date()
 
 
 def create_list_of_dates(start_date, end_date):
-    # convert start_date to a datetime.date format (YYYY-MM-DD)
-    # list_start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
-    # convert end_date to a datetime.date format (YYYY-MM-DD)
-    # list_end_date = datetime.strptime(end_date, "%Y-%m-%d").date()
     # create an empty list for the dates
     dates_list = []
     # set the starting value for the while loop
