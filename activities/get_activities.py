@@ -77,7 +77,6 @@ def get_user_selected_kinds(city, coordinates):
     }
 
     while True:
-
         # assigning numbers in front of each value to handle user input better
         for index, display in enumerate(kinds_choices.values(), start=1):
             print(f'{index}. {display}')

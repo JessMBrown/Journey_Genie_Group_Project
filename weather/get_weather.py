@@ -1,7 +1,9 @@
 from weather.weather_api_search import GetWeatherByLocation
 from datetime import datetime, timedelta
+from utils import get_valid_dates, UserInputCheck
 import emoji
 
+input_check = UserInputCheck()
 get_weather = GetWeatherByLocation(location=None, start_date=None, end_date=None)
 
 
@@ -14,27 +16,29 @@ def find_weather(chosen_city, start_date, end_date):
 
 
 def weather_api_endpoint_calculator(start_date):
-    present_date = str(datetime.today().date())
-    from_300_days_present_date = str(add_days(300))
-    fourteen_days_in_the_future = str(add_days(14))
-    fourteen_days_in_the_past = str(subtract_days(14))
-    # if the start_date is +/- 14 days from present_date then cannot get weather due to api limitations
-    if fourteen_days_in_the_past <= str(start_date) < present_date or fourteen_days_in_the_future > str(
-            start_date) > present_date:
-        print("Sorry, cannot fetch the weather for these dates")
+    while True:
+        present_date = str(datetime.today().date())
+        from_300_days_present_date = str(add_days(300))
+        fourteen_days_in_the_future = str(add_days(14))
+        fourteen_days_in_the_past = str(subtract_days(14))
+        # if the start_date is +/- 14 days from present_date then cannot get weather due to api limitations
+        if fourteen_days_in_the_past <= str(start_date) < present_date or fourteen_days_in_the_future > str(
+                start_date) > present_date:
+            print("Sorry, cannot fetch the weather, dates must be 14 days from today.")
         #     if the start_date is more than 300 days from present_date or is less than present_date
         #     then the endpoint_url = "history" - reasoning, the API only returns weather predictions
         #     300 days from today's date, so if the dates requested are more than the APIs limits for
         #     predictions use the data from the historic data
-    elif str(start_date) > from_300_days_present_date or str(start_date) < present_date:
-        endpoint_url = "history"
-        return endpoint_url
-    elif str(start_date) > present_date:
-        endpoint_url = "future"
-        return endpoint_url
+        elif str(start_date) > from_300_days_present_date or str(start_date) < present_date:
+            endpoint_url = "history"
+            return endpoint_url
+        elif str(start_date) > present_date:
+            endpoint_url = "future"
+            return endpoint_url
 
-    else:
-        print("Cannot get weather for this date")
+        else:
+            print("No available weather data for these dates.\U0001F926\U0000200D\U00002640\U0000FE0F")
+            return
 
 
 def add_days(number_of_days_to_add, today_date=datetime.today().date()):

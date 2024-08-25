@@ -113,7 +113,7 @@ def plan_trip_details(city_choice, start_date, end_date, chosen_country):
     print("")
     find_weather(city_choice, start_date, end_date)
     print("")
-
+    print(start_date)
     # call get_hotels to get a selection of hotels by filter
     print("Looks great! Now, let's find you a hotel \U0001F3E8")
     saved_hotels = get_hotels(city_choice, start_date, end_date)

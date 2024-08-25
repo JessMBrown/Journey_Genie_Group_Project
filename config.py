@@ -6,10 +6,10 @@
 # USER = "root"
 # PASSWORD = ""
 
+activities_api_key = '5ae2e3f221c38a28845f05b611437f75b92d726137cebc93ee19bb4b'
+hotels_api_key = '8d02f540e901a1cec863e9e6b408cdb0'
+weather_api_key = '09ee5276651f4e50ae4124339242308'
+
 HOST = "localhost"
 USER = "root"
-PASSWORD = "D@mn3ron"
-
-hotels_api_key = "438793230bf5b5f976eb587fb93f532e"
-activities_api_key = "5ae2e3f221c38a28845f05b6163c30aca4c337beba00f5a64b20a267"
-weather_api_key = "dbe4c165ac0a44b8bac160154242408"
+PASSWORD = "2324"
