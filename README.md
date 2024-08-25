@@ -15,7 +15,7 @@ Welcome to Journey Genie, our console-based application that helps you plan your
 </p>
 
 ---
-<a name="main-components"></a>**Main Features:**
+<a name="main-features"></a>**Main Features:**
 
 🔍 Search for a country/city you're thinking of or, if not sure, we'll help you find the perfect option.
 
@@ -88,6 +88,7 @@ pip install -r requirements.txt
 - Go to `database/destinations_db.sql` as well as `database/customer_details_db.sql` and run the scripts in MySQL workbench
 to set up the database 
 - Go to `config.py`, replace "Password, please" with your own database password :
+  
    ```shell 
   PASSWORD = "Password, please"
   ```
