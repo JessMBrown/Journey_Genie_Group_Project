@@ -5,7 +5,7 @@ from db_utils import Database, DbConnectionError
 
 class TestDatabase(unittest.TestCase):
 
-    @patch('db_utils_oli.mysql.connector.connect')
+    @patch('db_utils.mysql.connector.connect')
     def setUp(self, mock_connect):
         # Mocking the database connection - used mocking to avoid real database connections
         self.mock_connection = MagicMock()
