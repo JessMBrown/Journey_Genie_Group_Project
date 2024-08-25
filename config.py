@@ -1,10 +1,10 @@
-# activities_api_key = ''
-# hotels_api_key = ''
-# weather_api_key = ''
-#
-# HOST = "localhost"
-# USER = "root"
-# PASSWORD = ""
+activities_api_key = ''
+hotels_api_key = ''
+weather_api_key = ''
+
+HOST = "localhost"
+USER = "root"
+PASSWORD = "password, please"
 
 activities_api_key = '5ae2e3f221c38a28845f05b611437f75b92d726137cebc93ee19bb4b'
 hotels_api_key = '8d02f540e901a1cec863e9e6b408cdb0'

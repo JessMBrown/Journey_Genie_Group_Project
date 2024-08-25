@@ -52,24 +52,30 @@ class TestHotelAPI(unittest.TestCase):
 
     @patch('hotels_api.requests.get')
     def test_fetch_hotels_with_filters_valid(self, mock_get):
-        # Mocking a successful hotel search response with different filters
-        mock_response = MagicMock()
-        mock_response.status_code = 200
-        # Assuming we have two filters, 'luxury' and 'budget'
-        mock_response.json.side_effect = [
-            {'luxury': [{'name': 'Hotel1', 'id': 101}, {'name': 'Hotel2', 'id': 102}]},
-            {'budget': [{'name': 'Hotel1', 'id': 101}, {'name': 'Hotel3', 'id': 103}]}
+        # Mocking responses for different filter types
+        # Simulating a 500 error for the luxury filter
+        mock_get.side_effect = [
+            MagicMock(status_code=500),  # Simulate failure for luxury
+            MagicMock(status_code=200,
+                      json=lambda: {'budget': [{'name': 'Hotel1', 'id': 101}, {'name': 'Hotel3', 'id': 103}]})
+            # Successful for budget
         ]
-        mock_get.return_value = mock_response
 
         check_in = datetime(2024, 8, 15)
         check_out = datetime(2024, 8, 20)
         selected_filters = ['luxury', 'budget']
         result = fetch_hotels_with_filters(1, check_in, check_out, selected_filters)
 
-        # Only Hotel1 should be returned since it matches both filters
-        self.assertEqual(len(result), 1)
-        self.assertEqual(result[0]['name'], 'Hotel1')
+        # Printing the result for debugging
+        print(f"Filtered Hotels: {result}")
+
+        # Expected result: Since "luxury" failed and is in the "AND" logic group, no hotels should pass all filters.
+        expected_hotels = []
+
+        # Asserting the result length matches the expected hotels after handling errors
+        self.assertEqual(len(result), len(expected_hotels), "The number of filtered hotels is not as expected.")
+        for hotel in expected_hotels:
+            self.assertIn(hotel, result, f"Hotel {hotel['name']} not found in filtered results.")
 
     @patch('hotels_api.checking_api_response_success', return_value={})
     @patch('hotels_api.requests.get')

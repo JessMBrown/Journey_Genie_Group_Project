@@ -71,27 +71,33 @@ class TestLocation(unittest.TestCase):
         """Testing fetching cities for valid holiday types."""
         self.mock_db_instance.fetch_data.return_value = [('Paris', 'France', 'museums'), ('Lyon', 'France', 'museums')]
 
-        with patch('builtins.input', return_value='museums'):
-            self.location.get_holiday_type_cities()
-            self.mock_db_instance.fetch_data.assert_called_once_with(
-                table_name="cities",
-                columns=['cities.city_name', 'countries.country_name', 'cities.keyword'],
-                join="INNER JOIN countries ON cities.country_code = countries.country_code",
-                conditions="cities.keyword IN ('museums')"
-            )
+        with patch('get_location.input_check.get_input', return_value='y'):
+            # First input for selecting 'museums', second for selecting the city
+            with patch('builtins.input', side_effect=['museums', '1']):
+                chosen_city, _ = self.location.get_holiday_type_cities()
+                self.mock_db_instance.fetch_data.assert_called_once_with(
+                    table_name="cities",
+                    columns=['cities.city_name', 'countries.country_name', 'cities.keyword'],
+                    join="INNER JOIN countries ON cities.country_code = countries.country_code",
+                    conditions="cities.keyword IN ('museums')"
+                )
+                self.assertEqual(chosen_city, 'Paris')
 
     def test_get_holiday_type_cities_multiple_valid(self):
         """Testing fetching cities for multiple valid holiday types."""
         self.mock_db_instance.fetch_data.return_value = [('Paris', 'France', 'museums'), ('Nice', 'France', 'beaches')]
 
-        with patch('builtins.input', return_value='museums, beaches'):
-            self.location.get_holiday_type_cities()
-            self.mock_db_instance.fetch_data.assert_called_once_with(
-                table_name="cities",
-                columns=['cities.city_name', 'countries.country_name', 'cities.keyword'],
-                join="INNER JOIN countries ON cities.country_code = countries.country_code",
-                conditions="cities.keyword IN ('museums', 'beaches')"
-            )
+        with patch('get_location.input_check.get_input', return_value='y'):
+            # First input for selecting 'museums, beaches', second for selecting the city
+            with patch('builtins.input', side_effect=['museums, beaches', '1']):
+                chosen_city, _ = self.location.get_holiday_type_cities()
+                self.mock_db_instance.fetch_data.assert_called_once_with(
+                    table_name="cities",
+                    columns=['cities.city_name', 'countries.country_name', 'cities.keyword'],
+                    join="INNER JOIN countries ON cities.country_code = countries.country_code",
+                    conditions="cities.keyword IN ('museums', 'beaches')"
+                )
+                self.assertEqual(chosen_city, 'Paris')
 
     def test_get_holiday_type_cities_invalid(self):
         """Testing fetching cities for an invalid holiday type and retry."""
