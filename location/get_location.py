@@ -4,6 +4,7 @@ from config import HOST, PASSWORD, USER
 
 input_check = UserInputCheck()
 
+
 class Location:
     def __init__(self, host, user, password, db_name):
         """Initialize the database connection."""
@@ -145,7 +146,7 @@ class Location:
         holiday_types = self.get_holiday_type_input()
 
         try:
-            conditions = f"cities.keyword IN ({', '.join(f'\'{ht}\'' for ht in holiday_types)})"
+            conditions = f"cities.keyword IN ({', '.join(f'{ht}' for ht in holiday_types)})"
             columns = ['DISTINCT countries.country_name']
             join = "INNER JOIN cities ON countries.country_code = cities.country_code"
 

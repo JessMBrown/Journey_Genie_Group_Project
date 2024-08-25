@@ -10,6 +10,7 @@ def checking_api_response_success(response):
         print(f"...request failed with status code: {response.status_code}")
         return None
 
+
 # api call for the city search
 def search_cities(query):
     url = "https://engine.hotellook.com/api/v2/lookup.json"
@@ -25,6 +26,7 @@ def search_cities(query):
     # request to search for cities
     response = requests.get(url, params=search_payload)
     return checking_api_response_success(response)
+
 
 # api call to fetch hotels with selected filters
 def fetch_hotels_with_filters(location_id, check_in, check_out, selected_filters):
@@ -79,12 +81,13 @@ def fetch_hotels_with_filters(location_id, check_in, check_out, selected_filters
             if filtered_hotels:
                 filtered_hotels = [hotel for hotel in filtered_hotels if hotel in hotels]
             else:
-            #if no 'or', then list starts with the first and filter
+                # if no 'or', then list starts with the first and filter
                 filtered_hotels = hotels
         else:
             print(f"Failed to retrieve hotels for filter: {filter_type}")
 
     return filtered_hotels
+
 
 # api call for the price of hotels
 def fetch_price(hotel_id=None, check_in=None, check_out=None, rooms=1, adults=2, currency='GBP'):

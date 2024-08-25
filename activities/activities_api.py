@@ -21,8 +21,7 @@ class OpenTripMapApi:
         except requests.exceptions.RequestException:
             print('Request failed')
 
-
-# This method will return activities depending on the kinds the user will have selected can take up to 3 kinds.
+    # This method will return activities depending on the kinds the user will have selected can take up to 3 kinds.
     def get_activities(self, city, lat, lon, kinds, radius=80467, limit=50, rate=3):
 
         endpoint = f"{self.base_url}/places/autosuggest"
@@ -53,7 +52,6 @@ class OpenTripMapApi:
         except requests.exceptions.RequestException:
             print('Request failed')
 
-
     def get_activity_details(self, xid):
         endpoint = f"{self.base_url}/places/xid/{xid}"
 
@@ -69,4 +67,3 @@ class OpenTripMapApi:
 
         except requests.exceptions.RequestException:
             print('Request failed')
-
