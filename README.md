@@ -4,22 +4,24 @@
 
 ---
 ### Your travel wish is our command 🪄
-<a href="#introduction">Introduction</a> | <a href="#main-features">Main Features</a> | <a href="#clone-the-repository">Clone the Repository</a> | <a href="#install-dependencies">Install Dependencies</a> | <a href="#obtain-the-3-api-tokens">Obtain the 3 API Tokens</a> | <a href="#database-setup">Database Setup</a> | <a href="#putting-the-tokens-in-the-configpy">Putting the tokens in the Config.py</a> | <a href="#run-the-code">Run the Code</a> | <a href="#closing">Closing</a> | <a href="#contributors">Contributors</a> | <a href="#development-stack">Development Stack</a> |
+<a href="#introduction">Introduction</a> | <a href="#main-features">Main Features</a> | <a href="#clone-the-repository">Clone the Repository</a> | <a href="#install-dependencies">Install Dependencies</a> | <a href="#obtain-the-3-api-tokens">Obtain the 3 API Tokens</a> | <a href="#database-setup">Database Setup</a> | <a href="#putting-the-tokens-in-the-configpy">Putting the tokens in the config.py</a> | <a href="#run-the-code">Run the Code</a> | <a href="#closing">Closing</a> | <a href="#contributors">Contributors</a> | <a href="#development-stack">Development Stack</a> |
 <a href="#license">License</a>  
 
 ## Introduction
 
 <p>
 <img src="README_media/holiday.gif" alt="Holiday GIF" align="right" width="100" height="90" style="margin-left: 20px;">
-Welcome to Journey Genie, our console-based application that helps you plan your perfect vacation! Whether you're looking for a luxury experience, a business stay, or a fun family holiday, we've got you covered. Journey Genie eliminates the need to spend hours browsing tonnes of sites as it's all done in one place. Sit back, relax, and let the magic unfold...
+Welcome to Journey Genie, our console-based application that helps you plan your perfect holiday! Whether you're looking for a luxury experience, a business stay, or a fun family holiday, we've got you covered. Journey Genie eliminates the need to spend hours browsing tons of sites as it's all done in one place. Sit back, relax, and let the magic unfold...
 </p>
 
 ---
 <a name="main-components"></a>**Main Features:**
 
-🔍 Search for a country/city you're thinking of or, if not sure, activate our *Take me anywhere* option
+🔍 Search for a country/city you're thinking of or, if not sure, we'll help you find the perfect option.
 
 📆 Narrow your search with dates, number of people and number of rooms
+
+🌞 Receive average temperature information for your time of stay
 
 ⭐ Filter hotels with the option of 10 categories such as stars, family-friendly and hotels with pools
 
@@ -27,13 +29,11 @@ Welcome to Journey Genie, our console-based application that helps you plan your
  
 🔗 Clickable link to help decide the perfect hotel for you
 
-🩷 Save your favourites 
-
-🌞 Receive average temperature information for your time of stay
-
 🏄‍ Get suggested attractions and activities in the area
 
-📜 Receive the full plan at the end!
+🩷 Save your favourites 
+
+📜 Receive a summary and the full plan by email at the end!
 
 ---
 ## Getting Started
@@ -87,7 +87,7 @@ pip install -r requirements.txt
 ### 4. Database Setup
 - Go to `database/destinations_db.sql` as well as `database/customer_details_db.sql` and run the scripts in MySQL workbench
 to set up the database 
-- Go to `config_oli.py`, replace "Password, please" with your own database password :
+- Go to `config.py`, replace "Password, please" with your own database password :
    ```shell 
   PASSWORD = "Password, please"
   ```
@@ -99,7 +99,8 @@ to set up the database
 ---
 <a name="run-the-code"></a>
 ### 6. Run the code
-- Make sure you are in the *main* directory and run the following command:
+- Run app.py first to start the server connection
+- Run the following command to start the program:
 
 ```shell
 python main.py
@@ -107,7 +108,7 @@ python main.py
 ---
 ## Closing
 
-Thank you for using Journey Genie! We're so glad you did. And a special thanks to the <a href="https://codefirstgirls.com/" target="_blank">Code First Girls</a> team and Olamide and Helen for building our skills and teaching us all we know. But for now,
+Thank you for using Journey Genie! We're so glad you did. And a special thanks to the <a href="https://codefirstgirls.com/" target="_blank">Code First Girls</a> team, Olamide, Helen, Sumeet and Abilash for building our skills and teaching us all we know. But for now,
 
 🚢 Bon voyage!!!
 
@@ -129,6 +130,7 @@ Thank you for using Journey Genie! We're so glad you did. And a special thanks t
 [<img height="32" width="32" alt="Jira" src="https://cdn.worldvectorlogo.com/logos/jira-1.svg"/>]()
 [<img height="32" width="32" alt="Slack" src="https://cdn.worldvectorlogo.com/logos/slack-new-logo.svg"/>]()
 [<img height="32" width="32" alt="Google Meet" src="https://cdn.worldvectorlogo.com/logos/google-meet-icon-2020-.svg"/>]()
+[<img height="32" width="32" alt="Lucid Chart" src="README_media/Lucid_Chart.jpeg"/>]()
 
 ---
 <a name="license"></a>
