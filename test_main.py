@@ -76,7 +76,8 @@ class TestFetchAndDisplaySummary(unittest.TestCase):
         saved_activities = {'history'}
         city_choice = 'London'
         chosen_country = 'United Kingdom'
-        result = fetch_and_display_summary(start_date, end_date, saved_hotels, saved_activities, city_choice, chosen_country)
+        result = fetch_and_display_summary(start_date, end_date, saved_hotels, saved_activities, city_choice,
+                                           chosen_country)
         self.assertEqual(result, 'London')
 
     @patch('main.fetch_and_display_summary')
@@ -88,9 +89,9 @@ class TestFetchAndDisplaySummary(unittest.TestCase):
         saved_activities = {'history'}
         city_choice = 'Leeds'
         chosen_country = 'United Kingdom'
-        result = fetch_and_display_summary(start_date, end_date, saved_hotels, saved_activities, city_choice, chosen_country)
+        result = fetch_and_display_summary(start_date, end_date, saved_hotels, saved_activities, city_choice,
+                                           chosen_country)
         self.assertNotEqual(result, 'USA')
-
 
 
 class TestPlanTripDetails(unittest.TestCase):
