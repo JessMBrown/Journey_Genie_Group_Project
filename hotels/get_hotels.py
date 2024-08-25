@@ -9,6 +9,7 @@ from location.get_location import Location
 class CityNotFoundError(Exception):
     pass
 
+
 # creating instances for different class needed in this file
 favourites_manager = SavingToFavourites()
 input_check = UserInputCheck()
@@ -34,6 +35,8 @@ def get_number_of_people():
             adults = int(input("Enter the number of people (max 4 per booking): "))
             if adults > 4:
                 print("The maximum number of people allowed within a single booking is 4. Please try again.")
+            elif adults < 1:
+                print("There should be at least 1 person for booking.")
             else:
                 return adults
         except ValueError:
@@ -65,7 +68,8 @@ def get_selected_filters():
         print(f"{index}. {filter_name.capitalize()}")
 
     while True:
-        selected_filters_input = input("\nEnter the numbers corresponding to the filters you'd like to apply (comma-separated): ")
+        selected_filters_input = input("\nEnter the numbers corresponding to the filters you'd like to apply"
+                                       "(comma-separated): ")
         selected_filters_indexes = selected_filters_input.split(',')
         try:
             selected_filters = [available_filters[int(index) - 1] for index in selected_filters_indexes]
@@ -159,7 +163,8 @@ def save_hotel_to_favourite(results, city_choice, city_id, country_choice, count
     hotel_id, hotel_name = results['hotelId'], results['hotelName']
 
     # calling method from utils to check if user wants to save the activities
-    favourites_manager.save_favourite_hotels(hotel_id, hotel_name, city_choice, city_id, input_check, country_choice, country_code)
+    favourites_manager.save_favourite_hotels(hotel_id, hotel_name, city_choice, city_id, input_check, country_choice,
+                                             country_code)
 
 
 def get_hotels(city_choice, start_date, end_date):
@@ -180,7 +185,8 @@ def get_hotels(city_choice, start_date, end_date):
                 hotel_selected = get_hotel_choice(hotel_prices)
                 if hotel_selected:
                     # call method from get_favourites to save favourites
-                    save_hotel_to_favourite(hotel_selected, chosen_option['cityName'], city_id, country_choice, country_code)
+                    save_hotel_to_favourite(hotel_selected, chosen_option['cityName'], city_id, country_choice,
+                                            country_code)
                     # offering possibility to choose another hotel
                     other_details = input_check.get_input(f'\nWould you like to select another hotel? Y/N ')
                     if other_details != 'y':
