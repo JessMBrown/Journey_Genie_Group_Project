@@ -135,7 +135,7 @@ class TestLocation(unittest.TestCase):
                 table_name="countries",
                 columns=['DISTINCT countries.country_name'],
                 join="INNER JOIN cities ON countries.country_code = cities.country_code",
-                conditions="cities.keyword IN ('wine', 'fashion')"
+                conditions="cities.keyword IN (wine, fashion)"
             )
 
     def test_get_holiday_type_countries_invalid(self):
@@ -148,7 +148,7 @@ class TestLocation(unittest.TestCase):
                 table_name="countries",
                 columns=['DISTINCT countries.country_name'],
                 join="INNER JOIN cities ON countries.country_code = cities.country_code",
-                conditions="cities.keyword IN ('wine')"
+                conditions="cities.keyword IN (wine)"
             )
 
     def test_get_cities_by_country_invalid_number(self):
