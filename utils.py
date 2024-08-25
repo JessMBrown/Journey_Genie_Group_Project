@@ -1,6 +1,7 @@
 import re
 from datetime import datetime
 
+
 # class to handle user input for various possibilities
 class UserInputCheck:
     def __init__(self):

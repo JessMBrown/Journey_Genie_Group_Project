@@ -162,7 +162,7 @@ cython_debug/
 #.idea/
 
 
-config_joana.py
+config.py
 .idea/workspace.xml
 
 .idea/

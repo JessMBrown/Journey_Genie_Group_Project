@@ -120,7 +120,8 @@ class TestGetMinMaxAvgTempFunction(unittest.TestCase):
                                  {'average_temp': 4.5, 'date': '2024-10-02'},
                                  {'average_temp': 5.5, 'date': '2024-10-03'}]
         self.endpoint = 'history'
-        self.expected = ('The weather 🌈 last year on the same dates in London was an average of 8.2°C, with the lowest being 4.5°C and the highest being 14.5°C.')
+        self.expected = ('The weather 🌈 last year on the same dates in London was an average of 8.2°C, with the '
+                         'lowest being 4.5°C and the highest being 14.5°C.')
         self.assertEqual(self.expected,
                          get_weather.get_minimum_maximum_average_temperature(self.city, self.list_for_max_val,
                                                                              self.endpoint))

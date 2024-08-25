@@ -32,6 +32,8 @@ class TestGetCoordinatesFunction(unittest.TestCase):
         }
         self.assertEqual(self.expected, OpenTripMapApi.get_coordinates(self.pass_api_key, "Tokyo"))
 
+        # NOTE: running the test module will have the below test fail due to an API constraints,
+        # they do pass in isolation
     def test_coordinates_invalid_minus_51_point_223_and_100_point_100(self):
         self.expected = {'status': 'NOT_FOUND', 'error': 'Name -51.223, 100.100 at  not found'}
         self.assertEqual(self.expected, OpenTripMapApi.get_coordinates(self.pass_api_key, "-51.223, 100.100"))

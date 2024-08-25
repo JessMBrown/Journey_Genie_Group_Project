@@ -1,7 +1,6 @@
 from weather.weather_api_search import GetWeatherByLocation
 from datetime import datetime, timedelta
-from utils import get_valid_dates, UserInputCheck
-import emoji
+from utils import UserInputCheck
 
 input_check = UserInputCheck()
 get_weather = GetWeatherByLocation(location=None, start_date=None, end_date=None)
@@ -9,6 +8,8 @@ get_weather = GetWeatherByLocation(location=None, start_date=None, end_date=None
 
 def find_weather(chosen_city, start_date, end_date):
     endpoint_url = weather_api_endpoint_calculator(start_date)
+    if endpoint_url is None:
+        return "Weather data not available."
     list_of_dates = create_list_of_dates(start_date, end_date)
     weather_for_dates = make_weather_api_request(chosen_city, start_date, end_date, endpoint_url, list_of_dates)
     get_minimum_maximum_average_temperature(chosen_city, weather_for_dates, endpoint_url)
@@ -39,7 +40,8 @@ def weather_api_endpoint_calculator(start_date):
 
         else:
             print("No available weather data for these dates.\U0001F926\U0000200D\U00002640\U0000FE0F")
-            return
+            endpoint_url = None
+            return endpoint_url
 
 
 def add_days(number_of_days_to_add, today_date=datetime.today().date()):
@@ -90,20 +92,21 @@ def make_weather_api_request(location, start_date, end_date, endpoint_url, list_
 
 
 def get_minimum_maximum_average_temperature(chosen_city, weather_for_dates, endpoint):
+    if weather_for_dates is None:
+        return "Weather data not available."
     lowest_temp = find_min_val_from_dict(weather_for_dates)
     highest_temp = find_max_val_from_dict(weather_for_dates)
     avg_temp_for_dates = find_avg_val_from_dict(weather_for_dates)
 
-
     if endpoint == "history":
         history = (
-            f"The weather \U0001F308 last year on the same dates in {chosen_city} was an average of {avg_temp_for_dates}°C, with "
-            f"the lowest being {lowest_temp}°C and the highest being {highest_temp}°C.")
+            f"The weather \U0001F308 last year on the same dates in {chosen_city} was an average of "
+            f"{avg_temp_for_dates}°C, with the lowest being {lowest_temp}°C and the highest being {highest_temp}°C.")
         print(
-            f"The weather \U0001F308 last year on the same dates in {chosen_city} was an average of {avg_temp_for_dates}°C, with "
-            f"the lowest being {lowest_temp}°C and the highest being {highest_temp}°C.")
+            f"The weather \U0001F308 last year on the same dates in {chosen_city} was an average of "
+            f"{avg_temp_for_dates}°C, with the lowest being {lowest_temp}°C and the highest being {highest_temp}°C.")
         return history
-    else:
+    elif endpoint == "future":
         future = (
             f"The predicted weather \U0001F308 for {chosen_city} on the selected dates will be an average of "
             f"{avg_temp_for_dates}°C, with "
@@ -113,6 +116,8 @@ def get_minimum_maximum_average_temperature(chosen_city, weather_for_dates, endp
             f"{avg_temp_for_dates}°C, with "
             f"the lowest being {lowest_temp}°C and the highest being {highest_temp}°C.")
         return future
+    else:
+        return
 
 
 def find_min_val_from_dict(min_val_to_find):
@@ -138,5 +143,3 @@ def find_avg_val_from_dict(avg_val_to_find):
 def return_average_number(avg_val_to_find):
     # round the average to 1 decimal place, seeing the message average of 8.16666666 °C is not as informative as 8.2
     return round(sum(avg_val_to_find) / len(avg_val_to_find), 1)
-
-
