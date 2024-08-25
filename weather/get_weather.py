@@ -25,6 +25,7 @@ def weather_api_endpoint_calculator(start_date):
         if fourteen_days_in_the_past <= str(start_date) < present_date or fourteen_days_in_the_future > str(
                 start_date) > present_date:
             print("Sorry, cannot fetch the weather, dates must be 14 days from today.")
+            break
         #     if the start_date is more than 300 days from present_date or is less than present_date
         #     then the endpoint_url = "history" - reasoning, the API only returns weather predictions
         #     300 days from today's date, so if the dates requested are more than the APIs limits for

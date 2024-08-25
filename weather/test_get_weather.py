@@ -19,8 +19,8 @@ class TestFindWeatherFunction(unittest.TestCase):
                        {'average_temp': 15.7, 'date': '2024-05-09'},
                        {'average_temp': 15.8, 'date': '2024-05-10'}]
         self.assertEqual(self.expect, get_weather.find_weather(self.input_weather_data_location,
-                                                                       self.input_weather_data_start_date,
-                                                                       self.input_weather_data_end_date))
+                                                               self.input_weather_data_start_date,
+                                                               self.input_weather_data_end_date))
 
     def test_weather_future_endpoint_valid(self):
         self.input_weather_data_location = "London"
@@ -29,8 +29,8 @@ class TestFindWeatherFunction(unittest.TestCase):
         self.expect = [{'average_temp': 14.5, 'date': '2024-10-01'}, {'average_temp': 13.9, 'date': '2024-10-02'},
                        {'average_temp': 13.9, 'date': '2024-10-03'}]
         self.assertEqual(self.expect, get_weather.find_weather(self.input_weather_data_location,
-                                                                       self.input_weather_data_start_date,
-                                                                       self.input_weather_data_end_date))
+                                                               self.input_weather_data_start_date,
+                                                               self.input_weather_data_end_date))
 
 
 class TestAddDaysFunction(unittest.TestCase):
@@ -103,7 +103,7 @@ class TestWeatherApiEndpointCalculatorFunction(unittest.TestCase):
         present_date = datetime.today().date()
         self.number_to_subtract = get_weather.subtract_days(14, present_date)
         self.expected = None
-        self.assertEqual(self.expected,get_weather.weather_api_endpoint_calculator(self.number_to_subtract))
+        self.assertEqual(self.expected, get_weather.weather_api_endpoint_calculator(self.number_to_subtract))
 
     def test_calculator_14_days_before_rule_boundary_0_days(self):
         present_date = datetime.today().date()
@@ -120,11 +120,10 @@ class TestGetMinMaxAvgTempFunction(unittest.TestCase):
                                  {'average_temp': 4.5, 'date': '2024-10-02'},
                                  {'average_temp': 5.5, 'date': '2024-10-03'}]
         self.endpoint = 'history'
-        self.expected = ('The weather last year on the same dates in London was an average of 8.2°C, '
-                         'with the lowest being 4.5°C and the highest being 14.5°C.')
+        self.expected = ('The weather 🌈 last year on the same dates in London was an average of 8.2°C, with the lowest being 4.5°C and the highest being 14.5°C.')
         self.assertEqual(self.expected,
-                        get_weather.get_minimum_maximum_average_temperature(self.city, self.list_for_max_val,
-                                                                                     self.endpoint))
+                         get_weather.get_minimum_maximum_average_temperature(self.city, self.list_for_max_val,
+                                                                             self.endpoint))
 
     def test_get_min_max_avg_valid_london_14_5_4_5_5_5future(self):
         self.city = 'London'
@@ -132,11 +131,11 @@ class TestGetMinMaxAvgTempFunction(unittest.TestCase):
                                  {'average_temp': 4.5, 'date': '2024-10-02'},
                                  {'average_temp': 5.5, 'date': '2024-10-03'}]
         self.endpoint = 'future'
-        self.expected = ('The predicted weather for London on the selected dates will be an average of 8.2°C, '
+        self.expected = ('The predicted weather 🌈 for London on the selected dates will be an average of 8.2°C, '
                          'with the lowest being 4.5°C and the highest being 14.5°C.')
         self.assertEqual(self.expected,
-                        get_weather.get_minimum_maximum_average_temperature(self.city, self.list_for_max_val,
-                                                                                     self.endpoint))
+                         get_weather.get_minimum_maximum_average_temperature(self.city, self.list_for_max_val,
+                                                                             self.endpoint))
 
 
 class TestFindMinValFromDictFunction(unittest.TestCase):
@@ -156,7 +155,7 @@ class TestFindMaxValFromDictFunction(unittest.TestCase):
                                  {'average_temp': 4.5, 'date': '2024-10-02'},
                                  {'average_temp': 5.5, 'date': '2024-10-03'}]
         self.expected = 14.5
-        self.assertEqual(self.expected,get_weather.find_max_val_from_dict(self.list_for_max_val))
+        self.assertEqual(self.expected, get_weather.find_max_val_from_dict(self.list_for_max_val))
 
 
 class TestFindAverageFromDictFunction(unittest.TestCase):
@@ -174,7 +173,7 @@ class TestReturnAverageFunction(unittest.TestCase):
     def test_find_avg_temp_from_dict(self):
         self.values_for_average_calc = [14.5, 4.5, 5.5]
         self.expected = 8.2
-        self.assertEqual(self.expected,get_weather.return_average_number(self.values_for_average_calc))
+        self.assertEqual(self.expected, get_weather.return_average_number(self.values_for_average_calc))
 
 
 if __name__ == "__main__":
